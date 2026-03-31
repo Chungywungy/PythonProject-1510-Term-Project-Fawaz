@@ -1,0 +1,24 @@
+{
+  "character": {
+    "name": "Amon",
+    "class": "Knight",
+    "stats": {
+      "charisma": 10,
+      "wisdom": 10,
+      "intellect": 10,
+      "strength": 10,
+      "constitution": 10,
+      "dexterity": 10
+    },
+    "inventory": [],
+    "equipment": {
+      "head": "Empty",
+      "chest": "Iron Chestplate",
+      "legs": "Iron Leggings",
+      "feet": "Iron Boots"
+    },
+    "status": [
+      "Healthy"
+    ]
+  }
+}
