@@ -32,9 +32,9 @@ the princess and save her, no matter the cost". He then personally calls up the 
 and tells them to deliver a letter to the giant king, asking for help.
 
 The character then goes on a journey to the Giant King's Court. On the way they pass by
-their hometown(Afternoon Town), which has been plagued by a giant tree. The character
-can choose to cut it down or not. After dealing with the tree or not, the character moves
-on towards the giant king's court.
+their hometown(Afternoon Town), which has been plagued by a giant tree with giant fruits.
+The character can choose to cut it down or not. After dealing with the tree or not, the
+character moves on towards the giant king's court.
 
 The character goes towards the giant king's court gate and is immediately stopped by two
 giants. The giants ask why the character is standing in a sacred area. After explaining,
@@ -60,11 +60,63 @@ It doesn't matter which city the character goes to. In either city they will enc
 a giant tree, but this time the giant fruits have split open. There are devils
 terrorizing the city.
 
+Luckily there are also some fellow knights here that were searching for the princess.
+With their help the character is able to just barely defeat the devils. Just as the final
+devil dies it says one final thing, "Mother Tree of Desire; Father of Devils; Lord of
+Deviants; Source of Curses; Perpetual Blatherer; Heartless God.", with those words the
+giant tree starts to pulsate and slowly transform. If the character doesn't cut the tree, indecipherable
+ravings can be heard by everyone in the city, causing them to slowly mutate and give in to 
+their desires.
+
+Either way the character cuts down the tree and is deemed a hero by the remaining
+civilians. Afterwards, one of the knights that the character fought with lets them
+know that the vampire was seen passing here before the tree sprouted. After some questioning
+the character finds out that the vampire is at Sher No'Bel Valley.
+
+The knights let the character know that they will stay in the city to deal with clean up.
+The character goes towards the valley. Once they're there the only thing they see is the
+giant valley and small ledge that goes all the way down the valley.
+
+Once they reach the bottom of the valley, they're met by a giant building with grayish
+white architecture with an iron gate in front of it. Beside the gate on both sides are
+two long black metal tube like weapons. The character goes through the gate and enters
+the building. Inside the building are papers all over tables and some other futuristic
+equipment. Scrawled on the papers are research notes about things the people that lived
+here used to research. Based on the materials found inside the building, the character 
+finds out that the building was called Chernobyl in the past. Chernobyl was a research institute studying the 
+reason why a once-dried oilfield started to produce crude oil again. They discovered
+something deep inside the field, and people started to turn into crude oil. There is a
+voice calling from the underground. After reading the notes the character starts to hear
+voice that belongs to the princess, calling out for anyone to help them.
+
 ### Climax
+
+As the character goes towards the voice they start to hear the indecipherable ravings
+again for a bit. Once the character gets closer to the voice, the ravings stop, and they are
+met by the princess and the vampire who was about to push the princess into a large cliff
+filled with a black sticky looking substance. The vampire stops his action and looks at
+the character with a smile. He then pushes the princess into the cliff and
+introduces himself as Zedus the apostle of the Primordial Moon. After a chat, the
+character and the vampire fight each other. When the character is about to defeat the vampire,
+he starts to chant "Mother Goddess of Depravity; Origin of Evil; The Indestructible; 
+Goddess of Origin; Mother of all; Brood Hive of Filth; Sovereign of the Physical World".
+As soon as that happens, the building starts to rumble and becomes a deep red hue. The
+vampire collapses and the rumbling stops. The character then sees the princess climb out of
+the cliff. She comes up with an excuse about how she got out.
 
 ### Falling Action
 
+With the princess saved, the character and the princess go back to the Kingdom of Silver.
+The character asks the princess some questions about what happened, on the way back. Once
+the character and princess reach the kingdom, they are met with a grand celebration
+prepared by the king.
+
 ### Resolution
+
+Once the celebration is over and the sun starts to set with the crimson moon rising. The
+princess walks up to the character and starts to talk to the player. This eventually leads to
+the princess revealing who she really is and deleting the player's save files and ending
+the game.
 
 ## Characters
 
@@ -78,6 +130,11 @@ terrorizing the city.
 known as: Primordial Moon, The Great Mother, Sovereign of the Physical World, and the
 Mother of All Things.
 
+**Mother Tree of Desire**: Shows up after the character has beaten the devils in one of
+the cities. Mainly just in the city as a midboss and to introduce the character to the
+language of the great old ones. Also known as: Father of Devils; Lord of Deviants;
+Source of Curses; Perpetual Blatherer; Heartless God.
+
 **King**: king of the kingdom of silver. He's old and only cares about his daughter.
 
 **Aurmir**: King of kings. Resides in the Giant King's Court.
@@ -90,7 +147,7 @@ Princess is kidnapped by Zedus. MC Must save her, no matter the cost.
 
 ## Theme
 
-Victory is always within reach, no matter what the odds are against you.
+Victory, but at what cost?
 
 ## Setting
 
