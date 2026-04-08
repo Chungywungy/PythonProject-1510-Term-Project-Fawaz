@@ -1,6 +1,7 @@
 {
   "character": {
     "name": "Amon",
+    "level": 1,
     "class": "Knight",
     "stats": {
       "charisma": 10,
@@ -13,9 +14,11 @@
     "inventory": [],
     "equipment": {
       "head": "Empty",
-      "chest": "Iron Chestplate",
-      "legs": "Iron Leggings",
-      "feet": "Iron Boots"
+      "chest": "Steel Chestplate",
+      "legs": "Steel Leggings",
+      "feet": "Steel Boots",
+      "weapon": "Steel Sword",
+      "sub weapon": "Steel Shield"
     },
     "status": [
       "Healthy"
