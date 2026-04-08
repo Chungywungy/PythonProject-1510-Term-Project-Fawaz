@@ -30,6 +30,10 @@ def equip_item():
     pass
 
 
+def validate_equip():
+    pass
+
+
 def see_inventory():
     pass
 
