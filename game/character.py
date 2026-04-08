@@ -38,6 +38,10 @@ def see_inventory():
     pass
 
 
+def level_up():
+    pass
+
+
 def main():
     pass
 
