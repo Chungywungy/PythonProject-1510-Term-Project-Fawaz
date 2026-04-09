@@ -104,10 +104,6 @@ def character_class(file: str):
     return pick_class
 
 
-def validate_class():
-    pass
-
-
 def equip_item():
     pass
 
