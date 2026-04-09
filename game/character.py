@@ -52,15 +52,19 @@ def player_name() -> str:
 
 
 def create_character(character: str, player: str, file: str):
-    if "json" not in file:
-        raise ValueError("File is not a json file.")
+    if ".json" not in file:
+        raise ValueError("File is not a JSON file.")
     else:
         with open(file, 'r+') as file_object:
-            character_data = json.load(file_object)
-            character_data["character"]["name"] = character
-            character_data["character"]["player"] = player
-            file_object.seek(0)
-            json.dump(character_data, file_object, indent=4)
+            try:
+                character_data = json.load(file_object)
+            except json.JSONDecodeError:
+                raise ValueError("The JSON file is empty.")
+            else:
+                character_data["character"]["name"] = character
+                character_data["character"]["player"] = player
+                file_object.seek(0)
+                json.dump(character_data, file_object)
     return
 
 
