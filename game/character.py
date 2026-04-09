@@ -1,4 +1,7 @@
-def character_name():
+import json
+
+
+def character_name() -> str:
     mc_name = str(input("What is your characters' name? ").strip().title())
 
     while True:
@@ -27,11 +30,30 @@ def character_name():
     return mc_name
 
 
-def player_name():
-    pass
+def player_name() -> str:
+    player = str(input("What is your name oh mighty player? ")).strip().title()
+
+    while True:
+        if len(player) == 0:
+            player = str(input("You can't have no name. Now tell me what is your name? "))
+            continue
+        else:
+            validate = str(
+                input(f"Your name is {player}. Are you sure about that? (y/n) ")).strip().lower()
+            if validate == 'y':
+                break
+            elif validate == 'n':
+                player = str(input("What is your name, player? ").strip().title())
+                continue
+            else:
+                print("Please input 'y' or 'n'.")
+                continue
+    return player
 
 
-def create_character():
+def create_character(character: str, player: str, file: str):
+    with open(file, 'r', 'w') as file_object:
+        character_data = json.load(file_object)
     pass
 
 
