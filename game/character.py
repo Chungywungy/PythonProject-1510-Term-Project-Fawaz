@@ -68,8 +68,23 @@ def create_character(character: str, player: str, file: str):
     return
 
 
-def is_alive():
-    pass
+def is_alive(file: str) -> bool:
+    if ".json" not in file:
+        raise ValueError("File is not a JSON file.")
+    else:
+        with open(file, 'r') as file_object:
+            try:
+                character_data = json.load(file_object)
+            except json.JSONDecodeError:
+                raise ValueError("The JSON file is empty.")
+            else:
+                try:
+                    if character_data["character"]["current"]["health"] > 0:
+                        return True
+                except KeyError:
+                    raise ValueError("One or more keys for current health don't exist.")
+                else:
+                    return False
 
 
 def character_class():
