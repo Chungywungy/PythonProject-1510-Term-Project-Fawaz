@@ -7,8 +7,8 @@ def check_for_foes() -> bool:
     A simple function that calculates the odds of a foe showing up.
 
     :param: None
-    :precondition: 'foe' is equal to 1 and 'chance' is a random number between [1, 4]
-    :postcondition: calculate equivalence between foe and chance
+    :precondition: 'chance' is a random number between [1, 4]
+    :postcondition: calculate chance
     :return: True or False
     >>> type(check_for_foes())
     <class 'bool'>
