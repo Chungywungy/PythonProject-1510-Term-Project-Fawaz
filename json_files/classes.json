@@ -1,1 +1,337 @@
-"Three classes for the main character will be put in here"
+{
+  "pathway": {
+    "name": "Sun",
+    "description": "A pathway focused on holy light, fire, and supportive chants. Users can buff allies, purify enemies, and wield powerful radiant attacks.",
+    "levels": {
+      "1": {
+        "name": "Bard",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Physical Enhancement",
+            "description": "A bard's physical condition is greater than the average person.",
+            "effect": {
+              "constitution": 3
+            }
+          },
+          "singing": {
+            "name": "Singing",
+            "description": "A bard can imbue effects onto themselves using song.",
+            "effect": {}
+          }
+        },
+        "actions": {
+          "melee_attack": {
+            "name": "Melee Attack",
+            "description": "Strike an enemy with your weapon.",
+            "fight_description": "You attack the enemy with your weapon.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 1
+            },
+            "mana_cost": 0,
+            "cooldown": 0
+          },
+          "song_of_strength": {
+            "name": "Song of Strength",
+            "description": "Bolster your body with a strengthening chant.",
+            "fight_description": "You sing a song that invigorates your body. Your strength increases.",
+            "type": "buff",
+            "effect": {
+              "stat": "strength",
+              "amount": 1,
+              "duration": 5,
+              "target": "self"
+            },
+            "mana_cost": 1,
+            "cooldown": 1
+          },
+          "song_of_healing": {
+            "name": "Song of Healing",
+            "description": "A soothing melody that restores health.",
+            "fight_description": "You sing a beautiful melody that heals your wounds.",
+            "type": "heal",
+            "amount": 20,
+            "target": "self",
+            "mana_cost": 1,
+            "cooldown": 2
+          },
+          "song_of_memories": {
+            "name": "Song of Memories",
+            "description": "A nostalgic tune that dispels fear.",
+            "fight_description": "You sing a nostalgic song, clearing your mind of fear.",
+            "type": "cleanse",
+            "removes": [
+              "fear"
+            ],
+            "target": "self",
+            "mana_cost": 1,
+            "cooldown": 2
+          }
+        }
+      },
+      "2": {
+        "name": "Light Suppliant",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Physical Enhancement",
+            "description": "A Light Suppliant's body is strengthened beyond normal limits.",
+            "effect": {
+              "constitution": 2
+            }
+          },
+          "spiritual_enhancement": {
+            "name": "Spiritual Enhancement",
+            "description": "Your mind is infused with otherworldly knowledge.",
+            "effect": {
+              "intellect": 3
+            }
+          },
+          "singing": {
+            "name": "Advanced Singing",
+            "description": "Your songs now affect allies as well.",
+            "effect": {}
+          }
+        },
+        "actions": {
+          "melee_attack": {
+            "name": "Melee Attack",
+            "description": "Strike an enemy with your weapon.",
+            "fight_description": "You attack the enemy with your weapon.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 1.2
+            },
+            "mana_cost": 0,
+            "cooldown": 0
+          },
+          "song_of_strength": {
+            "name": "Song of Strength",
+            "description": "Empower yourself and allies with strength.",
+            "fight_description": "You sing a powerful chant, strengthening your allies.",
+            "type": "buff",
+            "effect": {
+              "stat": "strength",
+              "amount": 2,
+              "duration": 5,
+              "target": "allies"
+            },
+            "mana_cost": 1,
+            "cooldown": 1
+          },
+          "song_of_healing": {
+            "name": "Song of Healing",
+            "description": "Heal yourself and nearby allies.",
+            "fight_description": "Your song radiates warmth, healing everyone nearby.",
+            "type": "heal",
+            "amount": 30,
+            "target": "allies",
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "song_of_memories": {
+            "name": "Song of Memories",
+            "description": "Removes fear from allies.",
+            "fight_description": "You sing a nostalgic melody, calming your allies.",
+            "type": "cleanse",
+            "removes": [
+              "fear"
+            ],
+            "target": "allies",
+            "mana_cost": 1,
+            "cooldown": 2
+          },
+          "sunshine": {
+            "name": "Sunshine",
+            "description": "Create a blinding flash of sunlight.",
+            "fight_description": "A brilliant light erupts, blinding your enemies.",
+            "type": "status_effect",
+            "effect": {
+              "type": "blind",
+              "chance": 0.8,
+              "duration": 2,
+              "target": "enemies"
+            },
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "blessing": {
+            "name": "Blessing",
+            "description": "Empower allies and strengthen them against the undead.",
+            "fight_description": "You chant a blessing, empowering your allies against darkness.",
+            "type": "buff",
+            "effect": {
+              "stat": "strength",
+              "amount": 2,
+              "duration": 5,
+              "bonus_vs": "undead",
+              "target": "allies"
+            },
+            "mana_cost": 2,
+            "cooldown": 3
+          },
+          "scorching_ray": {
+            "name": "Scorching Ray",
+            "description": "Fire a concentrated beam of burning sunlight.",
+            "fight_description": "You unleash a scorching beam of radiant light.",
+            "type": "attack",
+            "scaling": {
+              "stat": "intellect",
+              "multiplier": 2
+            },
+            "mana_cost": 2,
+            "cooldown": 1
+          }
+        }
+      },
+      "3": {
+        "name": "Solar High Priest",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Enhanced Physique",
+            "description": "Your body is strengthened and resistant to harsh conditions.",
+            "effect": {
+              "constitution": 2,
+              "strength": 2
+            }
+          },
+          "spiritual_enhancement": {
+            "name": "Greater Enlightenment",
+            "description": "Your mind is further empowered by divine knowledge.",
+            "effect": {
+              "intellect": 3
+            }
+          },
+          "singing": {
+            "name": "Masterful Singing",
+            "description": "Your songs affect all allies and enhance area abilities.",
+            "effect": {}
+          }
+        },
+        "actions": {
+          "cleave_of_purification": {
+            "name": "Cleave of Purification",
+            "description": "Imbue your weapon with radiant power and strike.",
+            "fight_description": "Your weapon glows with sunlight as you cleave your enemy.",
+            "type": "attack",
+            "scaling": [
+              {
+                "stat": "strength",
+                "multiplier": 1
+              },
+              {
+                "stat": "intellect",
+                "multiplier": 1
+              }
+            ],
+            "mana_cost": 1,
+            "cooldown": 0
+          },
+          "song_of_strength": {
+            "name": "Song of Strength",
+            "description": "Greatly enhance the strength of allies.",
+            "fight_description": "Your powerful hymn surges through your allies.",
+            "type": "buff",
+            "effect": {
+              "stat": "strength",
+              "amount": 3,
+              "duration": 5,
+              "target": "allies"
+            },
+            "mana_cost": 1,
+            "cooldown": 1
+          },
+          "song_of_healing": {
+            "name": "Song of Healing",
+            "description": "Restore a large amount of health to allies.",
+            "fight_description": "Radiant music flows through the battlefield, healing wounds.",
+            "type": "heal",
+            "amount": 40,
+            "target": "allies",
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "song_of_memories": {
+            "name": "Song of Memories",
+            "description": "Cleanse fear from all allies.",
+            "fight_description": "Your song restores courage to everyone.",
+            "type": "cleanse",
+            "removes": [
+              "fear"
+            ],
+            "target": "allies",
+            "mana_cost": 1,
+            "cooldown": 2
+          },
+          "sunshine": {
+            "name": "Sunshine",
+            "description": "Unleash an intense burst of light.",
+            "fight_description": "A blinding solar flare engulfs your enemies.",
+            "type": "status_effect",
+            "effect": {
+              "type": "blind",
+              "chance": 0.9,
+              "duration": 2,
+              "target": "enemies"
+            },
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "blessing": {
+            "name": "Blessing",
+            "description": "Greatly empower allies and enhance damage against undead.",
+            "fight_description": "A divine blessing strengthens your allies.",
+            "type": "buff",
+            "effect": {
+              "stat": "strength",
+              "amount": 3,
+              "duration": 5,
+              "bonus_vs": "undead",
+              "target": "allies"
+            },
+            "mana_cost": 2,
+            "cooldown": 3
+          },
+          "scorching_ray": {
+            "name": "Scorching Ray",
+            "description": "Fire a powerful beam of sunlight.",
+            "fight_description": "A blazing ray of divine light scorches your foe.",
+            "type": "attack",
+            "scaling": {
+              "stat": "intellect",
+              "multiplier": 3
+            },
+            "mana_cost": 2,
+            "cooldown": 1
+          },
+          "sun_halo": {
+            "name": "Sun Halo",
+            "description": "Create a radiant halo that protects against debuffs.",
+            "fight_description": "A golden halo appears, shielding you from harm.",
+            "type": "buff",
+            "effect": {
+              "status_immunity": true,
+              "duration": 3,
+              "target": "allies"
+            },
+            "mana_cost": 3,
+            "cooldown": 4
+          },
+          "holy_light_summoning": {
+            "name": "Holy Light Summoning",
+            "description": "Call down a devastating beam of divine light.",
+            "fight_description": "A pillar of holy light descends from the heavens.",
+            "type": "attack",
+            "scaling": {
+              "stat": "intellect",
+              "multiplier": 5
+            },
+            "mana_cost": 3,
+            "cooldown": 3
+          }
+        }
+      }
+    }
+  }
+}

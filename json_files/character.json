@@ -3,7 +3,7 @@
     "name": "Amon",
     "level": 1,
     "class": "Knight",
-    "stats": {
+    "base_stats": {
       "charisma": 10,
       "wisdom": 10,
       "intellect": 10,
@@ -11,17 +11,46 @@
       "constitution": 10,
       "dexterity": 10
     },
-    "inventory": [],
+    "derived_stats": {
+      "max_health": {
+        "base": "constitution",
+        "multiplier": 2
+      },
+      "max_mana": {
+        "base": "intellect",
+        "multiplier": 2
+      }
+    },
+    "current": {
+      "health": 20,
+      "mana": 20
+    },
+    "inventory": [
+      {
+        "name": "Health Potion",
+        "type": "consumable",
+        "effect": {
+          "heal": 20
+        }
+      }
+    ],
     "equipment": {
-      "head": "Empty",
+      "head": null,
       "chest": "Steel Chestplate",
       "legs": "Steel Leggings",
       "feet": "Steel Boots",
       "weapon": "Steel Sword",
-      "sub weapon": "Steel Shield"
+      "offhand": "Steel Shield"
     },
-    "status": [
-      "Healthy"
-    ]
+    "status_effects": {
+      "fear": {
+        "active": false,
+        "duration": 0
+      },
+      "blind": {
+        "active": false,
+        "duration": 0
+      }
+    }
   }
 }
