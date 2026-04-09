@@ -1,5 +1,5 @@
 import json
-
+from file_tampering import open_json
 
 def character_name() -> str:
     mc_name = str(input("What is your characters' name? ").strip().title())
@@ -69,22 +69,15 @@ def create_character(character: str, player: str, file: str):
 
 
 def is_alive(file: str) -> bool:
-    if ".json" not in file:
-        raise ValueError("File is not a JSON file.")
+    character_data = open_json(file)
+
+    try:
+        if character_data["character"]["current"]["health"] > 0:
+            return True
+    except KeyError:
+        raise ValueError("One or more keys for current health don't exist.")
     else:
-        with open(file, 'r') as file_object:
-            try:
-                character_data = json.load(file_object)
-            except json.JSONDecodeError:
-                raise ValueError("The JSON file is empty.")
-            else:
-                try:
-                    if character_data["character"]["current"]["health"] > 0:
-                        return True
-                except KeyError:
-                    raise ValueError("One or more keys for current health don't exist.")
-                else:
-                    return False
+        return False
 
 
 def character_class():
