@@ -35,7 +35,7 @@ def player_name() -> str:
 
     while True:
         if len(player) == 0:
-            player = str(input("You can't have no name. Now tell me what is your name? "))
+            player = str(input("You can't have no name. Now tell me what is your name? ")).strip().title()
             continue
         else:
             validate = str(
@@ -51,7 +51,7 @@ def player_name() -> str:
     return player
 
 
-def create_character(character: str, player: str, file: str):
+def create_character(character: str, player: str, file: str, pathway: str):
     if ".json" not in file:
         raise ValueError("File is not a JSON file.")
     else:
@@ -63,8 +63,9 @@ def create_character(character: str, player: str, file: str):
             else:
                 character_data["character"]["name"] = character
                 character_data["character"]["player"] = player
+                character_data["character"]["class"] = pathway
                 file_object.seek(0)
-                json.dump(character_data, file_object)
+                json.dump(character_data, file_object, indent=4)
     return
 
 
@@ -80,8 +81,27 @@ def is_alive(file: str) -> bool:
         return False
 
 
-def character_class():
-    pass
+def character_class(file: str):
+    class_data = open_json(file)
+
+    while True:
+        pick_class = str(input("What is your character's pathway? ")).strip().title()
+        if len(pick_class) > 0:
+            if pick_class in class_data["pathway"]["name"]:
+                validate = str(
+                    input(f"Your character will be a knight of the {class_data["pathway"]["name"]} pathway. Are you "
+                          f"sure about that? (y/n) ")).strip().lower()
+                if validate == 'y':
+                    break
+                elif validate == 'n':
+                    continue
+                else:
+                    print("Please input 'y' or 'n'.")
+                    continue
+        else:
+            print("Your character's pathway can't be empty.")
+            continue
+    return pick_class
 
 
 def validate_class():
