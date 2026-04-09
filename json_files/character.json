@@ -34,6 +34,10 @@
         }
       }
     ],
+    "location": {
+      "character_x": 0,
+      "character_y": 0
+    },
     "equipment": {
       "head": null,
       "chest": "Steel Chestplate",
