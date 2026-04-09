@@ -52,20 +52,19 @@ def player_name() -> str:
 
 
 def create_character(character: str, player: str, file: str):
-    with open(file, 'r+') as file_object:
-        character_data = json.load(file_object)
-        character_data["character"]["name"] = character
-        character_data["character"]["player"] = player
-        file_object.seek(0)
-        json.dump(character_data, file_object)
+    if "json" not in file:
+        raise ValueError("File is not a json file.")
+    else:
+        with open(file, 'r+') as file_object:
+            character_data = json.load(file_object)
+            character_data["character"]["name"] = character
+            character_data["character"]["player"] = player
+            file_object.seek(0)
+            json.dump(character_data, file_object, indent=4)
     return
 
 
 def is_alive():
-    pass
-
-
-def validate_player_name():
     pass
 
 
