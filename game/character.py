@@ -52,9 +52,13 @@ def player_name() -> str:
 
 
 def create_character(character: str, player: str, file: str):
-    with open(file, 'r', 'w') as file_object:
+    with open(file, 'r+') as file_object:
         character_data = json.load(file_object)
-    pass
+        character_data["character"]["name"] = character
+        character_data["character"]["player"] = player
+        file_object.seek(0)
+        json.dump(character_data, file_object)
+    return
 
 
 def is_alive():
