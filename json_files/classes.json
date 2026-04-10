@@ -1,8 +1,8 @@
 {
-  "pathway": {
+  "pathway_1": {
     "name": "Sun",
     "description": "A pathway focused on holy light, fire, and supportive chants. Users can buff allies, purify enemies, and wield powerful radiant attacks.",
-    "levels": {
+    "level": {
       "1": {
         "name": "Bard",
         "traits": {
@@ -329,6 +329,152 @@
             },
             "mana_cost": 3,
             "cooldown": 3
+          }
+        }
+      }
+    }
+  },
+  "pathway_2": {
+    "name": "Twilight Giant",
+    "description": "The Twilight Giant Pathway has traditional warrior abilities, both offensive and defensive. They possess extreme strength, can easily master all weapons, physically resist supernatural powers, conjure powerful Dawn light-based weapons and armour, harm evil spirits, take damage for others, and enter an almost unbreakable defensive stance. ",
+    "level": {
+      "1": {
+        "name": "Warrior",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Physical Enhancement",
+            "description": "A Warrior possess supernatural strength and agility that greatly transcends the average person.",
+            "effect": {
+              "strength": 3,
+              "dexterity": 3
+            }
+          },
+          "combat_mastery": {
+            "name": "Combat Mastery",
+            "description": "Warriors have a mastery of all kinds of Weapons and Armour, with there being no Weapon they can't use. "
+          }
+        },
+        "actions": {
+          "Strike": {
+            "name": "Strike",
+            "description": "Strike an enemy with your weapon.",
+            "fight_description": "You attack the enemy with your weapon.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 2
+            },
+            "mana_cost": 0,
+            "cooldown": 0
+          },
+          "twin_strike": {
+            "name": "Twin Strike",
+            "description": "Strike an enemy with your weapon twice in a row.",
+            "fight_description": "You attack the enemy with your weapon multiple times.",
+            "type": "attack",
+            "scaling": {
+              "stat": "dexterity",
+              "multiplier": 3
+            },
+            "mana_cost": 0,
+            "cooldown": 1
+          },
+          "bludgeon": {
+            "name": "Bludgeon",
+            "description": "Strike an enemy with your weapon twice in a row.",
+            "fight_description": "You attack the enemy with your weapon multiple times.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 6
+            },
+            "mana_cost": 0,
+            "cooldown": 3
+          },
+          "barricade": {
+            "name": "barricade",
+            "description": "A Warrior can brace their body to mitigate damage.",
+            "fight_description": "You brace for impact, expecting the enemy to attack you.",
+            "type": "buff",
+            "scaling": {
+              "stat": "constitution",
+              "multiplier": 2
+            },
+            "mana_cost": 0,
+            "cooldown": 2
+          }
+        }
+      },
+      "2": {
+        "name": "Pugilist",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Physical Enhancement",
+            "description": "A Pugilist's physical abilities alone can weaken the effects of some enemies attacking them.",
+            "effect": {
+              "strength": 3
+            }
+          },
+          "supernatural_resistance": {
+            "name": "Supernatural Resistance",
+            "description": "Pugilists are experts in Combat that are able to use their own bodies in order to mitigate the effects of certain supernatural forces",
+            "effect": {
+              "constitution": 3
+            }
+          },
+          "combat_mastery": {
+            "name": "Combat Mastery",
+            "description": "Pugilists are more adept at close-quarters Combat than any other pathway"
+          }
+        },
+        "actions": {
+          "Strike": {
+            "name": "Strike",
+            "description": "Strike an enemy with your weapon.",
+            "fight_description": "You attack the enemy with your weapon.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 3
+            },
+            "mana_cost": 0,
+            "cooldown": 0
+          },
+          "twin_strike": {
+            "name": "Twin Strike",
+            "description": "Strike an enemy with your weapon twice in a row.",
+            "fight_description": "You attack the enemy with your weapon multiple times.",
+            "type": "attack",
+            "scaling": {
+              "stat": "dexterity",
+              "multiplier": 6
+            },
+            "mana_cost": 0,
+            "cooldown": 1
+          },
+          "bludgeon": {
+            "name": "Bludgeon",
+            "description": "Strike an enemy with your weapon twice in a row.",
+            "fight_description": "You attack the enemy with your weapon multiple times.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 8
+            },
+            "mana_cost": 0,
+            "cooldown": 3
+          },
+          "barricade": {
+            "name": "barricade",
+            "description": "A Warrior can brace their body to mitigate damage.",
+            "fight_description": "You brace for impact, expecting the enemy to attack you.",
+            "type": "buff",
+            "scaling": {
+              "stat": "constitution",
+              "multiplier": 3
+            },
+            "mana_cost": 0,
+            "cooldown": 2
           }
         }
       }
