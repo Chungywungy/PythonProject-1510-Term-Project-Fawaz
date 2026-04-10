@@ -104,15 +104,26 @@ def character_class(file: str):
     return pick_class
 
 
-def equip_item():
+def commands(character):
+    def equip():
+        pass
+
+    def inventory():
+        pass
+
+    def use_item():
+        pass
+
+    def flee():
+        pass
+
+    def attack():
+        pass
+
     pass
 
 
 def validate_equip():
-    pass
-
-
-def see_inventory():
     pass
 
 
