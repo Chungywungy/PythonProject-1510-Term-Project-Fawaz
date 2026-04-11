@@ -36,7 +36,8 @@
     ],
     "location": {
       "character_x": 0,
-      "character_y": 0
+      "character_y": 0,
+      "character_z": 0
     },
     "equipment": {
       "head": null,
