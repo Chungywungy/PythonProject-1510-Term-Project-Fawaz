@@ -3,11 +3,15 @@ import random
 
 def build_map(layers, rows, columns):
     atlas = dict()
-    for layer in range(layers + 1):
-        atlas[layer] = {"position": {}}
-        for row in range(rows + 1):
-            for column in range(columns + 1):
-                atlas[layer]["position"][(row, column)] = random.choice(range(1, 11))
+
+    if (type(layers) or type(rows) or type(columns)) != int:
+        raise TypeError("layers, rows, and columns must be integers")
+    else:
+        for layer in range(layers + 1):
+            atlas[layer] = {"position": {}}
+            for row in range(rows + 1):
+                for column in range(columns + 1):
+                    atlas[layer]["position"][(row, column)] = random.choice(range(1, 11))
 
     return atlas
 
