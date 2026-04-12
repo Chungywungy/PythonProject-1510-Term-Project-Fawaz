@@ -28,7 +28,7 @@ def describe_location(events: str, character: str, atlas: dict) -> str:
     except KeyError:
         raise KeyError("The character does not have a location.")
     else:
-        return events["events"][:][atlas[character_z]["position"][(character_x, character_y)]]["description"]
+        return events["events"][atlas[character_z]["position"][(character_x, character_y)]]["description"]
 
 
 def character_direction():
