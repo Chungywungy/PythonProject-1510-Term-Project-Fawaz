@@ -64,16 +64,12 @@ def create_character(character: str, player: str, file: str, pathway: str):
                 character_data["character"]["name"] = character
                 character_data["character"]["player"] = player
                 character_data["character"]["class"] = pathway
-                file_object.seek(0)
-                json.dump(character_data, file_object, indent=4)
-    return
+    return character_data
 
 
-def is_alive(file: str) -> bool:
-    character_data = open_json(file)
-
+def is_alive(character: dict) -> bool:
     try:
-        if character_data["character"]["current"]["health"] > 0:
+        if character["character"]["current"]["health"] > 0:
             return True
     except KeyError:
         raise ValueError("One or more keys for current health don't exist.")
