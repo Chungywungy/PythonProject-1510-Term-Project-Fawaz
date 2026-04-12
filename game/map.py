@@ -20,8 +20,15 @@ def display_map():
     pass
 
 
-def describe_location():
-    pass
+def describe_location(events: str, character: str, atlas: dict) -> str:
+    try:
+        character_x = character["character"]["location"]["character_x"]
+        character_y = character["character"]["location"]["character_y"]
+        character_z = character["character"]["location"]["character_z"]
+    except KeyError:
+        raise KeyError("The character does not have a location.")
+    else:
+        return events["events"][:][atlas[character_z]["position"][(character_x, character_y)]]["description"]
 
 
 def character_direction():
