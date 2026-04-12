@@ -31,6 +31,33 @@ def describe_location(events: str, character: str, atlas: dict) -> str:
         return events["events"][atlas[character_z]["position"][(character_x, character_y)]]["description"]
 
 
+def get_user_choice() -> int:
+    """
+    Get the direction.
+
+    A simple function that takes user input and converts it into one of the four
+    cardinal directions.
+
+    :postcondition: Store a valid integer corresponding to a direction
+    :return: an integer representing one of the four cardinal directions
+    """
+    compass = {1, 2, 3, 4}
+
+    while True:
+        print("1: North, 2: East, 3: South, 4: West")
+        try:
+            direction = int(input("Enter the direction you wish to travel: "))
+        except ValueError:
+            print("Please enter a valid integer.")
+        else:
+            if direction in compass:
+                break
+            else:
+                print("Please enter a number corresponding to one of the directions.")
+                continue
+    return direction
+
+
 def character_direction():
     pass
 
