@@ -66,8 +66,29 @@ def move_character():
     pass
 
 
-def validate_move():
-    pass
+def validate_move(direction: int, character: dict, atlas: dict):
+    character_z = character["character"]["location"]["character_z"]
+
+    if direction == 1:
+        character_x = character["character"]["location"]["character_x"]
+        character_y = character["character"]["location"]["character_y"] - 1
+    elif direction == 2:
+        character_x = character["character"]["location"]["character_x"] + 1
+        character_y = character["character"]["location"]["character_y"]
+    elif direction == 3:
+        character_x = character["character"]["location"]["character_x"]
+        character_y = character["character"]["location"]["character_y"] + 1
+    elif direction == 4:
+        character_x = character["character"]["location"]["character_x"] - 1
+        character_y = character["character"]["location"]["character_y"]
+    else:
+        return False
+
+    if atlas[character_z]["position"].get((character_x, character_y)):
+        return True
+    else:
+        return False
+
 
 
 def main():
