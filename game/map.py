@@ -58,15 +58,20 @@ def get_user_choice() -> int:
     return direction
 
 
-def character_direction():
-    pass
+
+def move_character(character: dict, direction: int) -> dict:
+    if direction == 1:
+        character["character"]["location"]["character_y"] -= 1
+    elif direction == 2:
+        character["character"]["location"]["character_x"] += 1
+    elif direction == 3:
+        character["character"]["location"]["character_y"] += 1
+    else:
+        character["character"]["location"]["character_x"] -= 1
+    return character
 
 
-def move_character():
-    pass
-
-
-def validate_move(direction: int, character: dict, atlas: dict):
+def validate_move(direction: int, character: dict, atlas: dict) -> bool:
     character_z = character["character"]["location"]["character_z"]
 
     if direction == 1:
