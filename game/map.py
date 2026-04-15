@@ -16,8 +16,30 @@ def build_map(layers, rows, columns):
     return atlas
 
 
-def display_map():
-    pass
+def display_map(character: dict, atlas: dict) -> None:
+    display = []
+
+    character_x = character["character"]["location"]["character_x"]
+    character_y = character["character"]["location"]["character_y"]
+    character_z = character["character"]["location"]["character_z"]
+
+    current_layer = character_z
+
+    for position in atlas[current_layer]["position"]:
+        value = atlas[current_layer]["position"].get(position)
+
+        if (character_x, character_y) == position:
+            display.append("@")
+        elif value == 1 or value == 2:
+            display.append("C")
+        else:
+            display.append("-")
+
+    for index, point in enumerate(display):
+        print(point, end=" ")
+        if (index + 1) % 5 == 0:
+            print()
+    return
 
 
 def describe_location(events: str, character: str, atlas: dict) -> str:
