@@ -1,4 +1,5 @@
 import random
+import character
 
 
 def get_combat_command() -> int:
@@ -17,6 +18,17 @@ def get_combat_command() -> int:
                 return choice
             else:
                 print("Please enter a number corresponding to one of the options.")
+
+
+def flee(character: dict) -> bool:
+    chance = random.random()
+
+    if chance >= 0.5:
+        print(f"{character['character']['name']} successfully fled from combat!")
+        return True
+    else:
+        print("You failed to flee!")
+        return False
 
 
 def enemy_behaviour(events, atlas, character):
@@ -48,7 +60,8 @@ def combat():
 
 
 def main():
-    return get_combat_command()
+    return flee(character.create_character
+                ("Bob","Fawaz", "../json_files/character.json","Sun"))
 
 
 if __name__ == '__main__':
