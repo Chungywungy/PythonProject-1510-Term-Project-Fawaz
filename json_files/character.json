@@ -2,7 +2,7 @@
   "character": {
     "name": "Amon",
     "level": 1,
-    "experience": 0,
+    "xp": 0,
     "class": null,
     "base_stats": {
       "charisma": 10,
