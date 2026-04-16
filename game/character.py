@@ -52,6 +52,37 @@ def player_name() -> str:
     return player
 
 
+def character_class(file: str):
+    class_data = open_json(file)
+
+    pathway_names = {data["name"]: key for key, data in class_data.items()}
+
+
+    while True:
+        pick_class = str(input("What is your character's pathway? ")).strip().title()
+        print("Available pathways: "+", ".join(pathway_names.keys()))
+
+        if len(pick_class) == 0:
+           print("your character's pathway can't be empty.")
+           continue
+        if pick_class not in pathway_names:
+            print(f"{pick_class} is not a valid pathway. Please choose from the list of available pathways.")
+            continue
+
+        print(f"")
+        validate = str(input(f"your character will follow the {pick_class} pathway.\n"
+                             f"Are you sure about that? (y/n) ")).strip().lower()
+
+        if validate == 'y':
+            break
+        elif validate == 'n':
+            continue
+        else:
+            print("Please input 'y' or 'n'.")
+
+    return pick_class
+
+
 def create_character(character: str, player: str, file: str, pathway: str):
     if ".json" not in file:
         raise ValueError("File is not a JSON file.")
@@ -78,41 +109,19 @@ def is_alive(character: dict) -> bool:
         return False
 
 
-def character_class(file: str):
-    class_data = open_json(file)
 
-    while True:
-        pick_class = str(input("What is your character's pathway? ")).strip().title()
-        if len(pick_class) > 0:
-            if pick_class in class_data["pathway_1"]["name"]:
-                validate = str(
-                    input(f"Your character will be a knight of the {class_data["pathway_1"]["name"]} pathway. Are you "
-                          f"sure about that? (y/n) ")).strip().lower()
-                if validate == 'y':
-                    break
-                elif validate == 'n':
-                    continue
-                else:
-                    print("Please input 'y' or 'n'.")
-                    continue
-        else:
-            print("Your character's pathway can't be empty.")
-            continue
-    return pick_class
+def commands(character):
+    def equip():
+        pass
+
+    def inventory():
+        pass
+
+    def use_item():
+        pass
 
 
-# def commands(character):
-#     def equip():
-#         pass
-#
-#     def inventory():
-#         pass
-#
-#     def use_item():
-#         pass
-#
-#
-#     pass
+    pass
 
 
 def validate_equip():
