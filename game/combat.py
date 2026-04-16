@@ -2,20 +2,52 @@ import random
 
 
 
-def get_combat_command() -> int:
-    options = {1: "Attack", 2: "Items", 3: "Flee"}
+def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> tuple:
+    available_actions = get_available_actions(character, classes_data, cooldowns)
+
+    current_mana = character["character"]["current"]["mana"]
+    current_health = character["character"]["current"]["health"]
+    constitution = character["character"]["base_stats"]["constitution"]
+    max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+
+    print(f"--- {character['character']['name']} | HP: {current_health}/{max_health} | mana: {current_mana} ---")
+    print("What will you do?")
+
+    menu = {}
+    index = 1
+    for key, action in available_actions.items():
+        mana_cost = action.get("mana_cost", 0)
+        cooldown = action.get("cooldown", 0)
+        cost_string = f"Mana: {mana_cost}" if mana_cost > 0 else ""
+        cooldown_string = f"Cooldown: {cooldown}" if cooldown > 0 else ""
+        affordable = "" if current_mana >= mana_cost else "Not enough mana."
+
+        print(f"{index}: {action['name']} | {cost_string}{cooldown_string}{affordable}")
+
+        menu[index] = action
+        index += 1
+
+    print(f"{index}: Items")
+    menu[index] = ("items", None)
+    print(f"{index}: Flee")
+    menu[index] = ("flee", None)
 
     while True:
-        print("What will you do?")
-        for key, value in options.items():
-            print(f"{key}: {value}")
         try:
             choice = int(input("Enter your choice: ").strip())
         except ValueError:
-            print("Please enter an integer!")
+            print("Please enter an integer.")
+            continue
         else:
-            if choice in options:
-                return choice
+            if choice in menu:
+                choice_type, action_key = menu[choice]
+
+                if choice_type == "action":
+                    action = available_actions[action_key]
+                    if current_mana < action.get("mana_cost", 0):
+                        print(f"You don't have enough mana for {action}!")
+                        continue
+                return choice_type, action_key
             else:
                 print("Please enter a number corresponding to one of the options.")
 
