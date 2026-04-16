@@ -16,7 +16,7 @@ def build(layers, rows, columns):
     return atlas
 
 
-def display_map(character: dict, atlas: dict) -> None:
+def display_map(character: dict, atlas: dict, events: dict) -> None:
     display = []
 
     character_x = character["character"]["location"]["character_x"]
@@ -28,9 +28,9 @@ def display_map(character: dict, atlas: dict) -> None:
     for position in atlas[current_layer]["position"]:
         value = atlas[current_layer]["position"].get(position)
 
-        if (character_x, character_y) == position:
+        if (character_y, character_x) == position:
             display.append("@")
-        elif value == 1 or value == 2:
+        elif events["events"][value].get("type") == "chest":
             display.append("C")
         else:
             display.append("-")

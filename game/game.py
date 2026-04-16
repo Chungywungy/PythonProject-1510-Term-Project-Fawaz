@@ -28,18 +28,18 @@ def game() -> None:
 
     character_data = character.create_character(character_name, player_name, character_file, class_name)
 
-    map.display_map(character_data, atlas)
+    map.display_map(character_data, atlas, events)
     map.describe_location(events, character_data, atlas)
     while character.is_alive(character_data):
         direction = map.get_user_choice()
         valid_move = map.validate_move(direction, character_data, atlas)
         if valid_move:
             map.move_character(character_data, direction)
-            map.display_map(character_data, atlas)
+            map.display_map(character_data, atlas, events)
             map.describe_location(events, character_data, atlas)
         else:
+            map.display_map(character_data, atlas, events)
             print("You can't go that way. Try again")
-            map.display_map(character_data, atlas)
     return
 
 
