@@ -50,7 +50,7 @@ def describe_location(events: dict, character: dict, atlas: dict) -> str:
     except KeyError:
         raise KeyError("The character does not have a location.")
     else:
-        return print(events["events"][atlas[character_z]["position"][(character_x, character_y)]]["description"])
+        return print(events["events"][atlas[character_z]["position"][(character_y, character_x)]]["description"])
 
 
 def get_user_choice() -> int:

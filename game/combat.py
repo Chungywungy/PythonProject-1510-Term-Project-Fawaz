@@ -10,7 +10,7 @@ def enemy_behaviour(events, atlas, character):
     character_y = character["character"]["location"]["character_y"]
     character_z = character["character"]["location"]["character_z"]
 
-    location = atlas[character_z]["position"][(character_x, character_y)]
+    location = atlas[character_z]["position"][(character_y, character_x)]
 
     attacks = events["events"][location]["enemy"]["attacks"]
 
