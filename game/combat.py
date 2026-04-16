@@ -1,8 +1,22 @@
 import random
 
 
-def combat():
-    pass
+def get_combat_command() -> int:
+    options = {1: "Attack",2: "Items", 3: "Flee"}
+
+    while True:
+        print("What will you do?")
+        for key, value in options.items():
+            print(f"{key}: {value}")
+        try:
+            choice = int(input("Enter your choice: ").strip())
+        except ValueError:
+            print("Please enter an integer!")
+        else:
+            if choice in options:
+                return choice
+            else:
+                print("Please enter a number corresponding to one of the options.")
 
 
 def enemy_behaviour(events, atlas, character):
@@ -29,8 +43,12 @@ def boss_behaviour():
     pass
 
 
-def main():
+def combat():
     pass
+
+
+def main():
+    return get_combat_command()
 
 
 if __name__ == '__main__':
