@@ -125,6 +125,10 @@ def display_inventory(character: dict) -> None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
+    if len(consumables) == 0:
+        print("You have no consumable items!")
+        return
+
     print("Inventory:")
     for index, item in enumerate(consumables, 1):
         print(f"{index}: {item['name']}")
