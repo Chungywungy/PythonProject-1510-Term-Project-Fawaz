@@ -14,9 +14,9 @@ def game() -> None:
 
     The game ends when the player reaches the goal or runs out of HP.
     """
-    rows = 4
-    columns = 4
-    layers = 0
+    rows = 5
+    columns = 5
+    layers = 2
 
     atlas = map.build(layers, rows, columns)
     events = file_tampering.open_json("../json_files/events.json")
@@ -39,6 +39,7 @@ def game() -> None:
             map.describe_location(events, character_data, atlas)
         else:
             print("You can't go that way. Try again")
+            map.display_map(character_data, atlas)
     return
 
 
