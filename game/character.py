@@ -1,6 +1,6 @@
 import json
 from file_tampering import open_json
-from combat import combat
+
 
 def character_name() -> str:
     mc_name = str(input("What is your characters' name? ").strip().title())
@@ -208,7 +208,22 @@ def unequip_item(character: dict, slot: str, items_data: dict) -> dict:
     return character
 
 
-def level_up():
+def award_xp(character: dict, amount: int, class_data: dict, items_data: dict) -> dict:
+    xp_thresholds = {2: 100, 3: 300}
+
+    character["character"]["xp"] += amount
+    print(f"You gained {amount} xp! | Total: {character['character']['xp']} xp")
+
+    current_level = character["character"]["level"]
+    next_level = current_level + 1
+
+    if next_level in xp_thresholds and character["character"]["xp"] >= xp_thresholds[next_level]:
+        character = level_up(character, class_data, items_data)
+
+    return character
+
+
+def level_up(character: dict, class_data: dict, items_data: dict) -> dict:
     pass
 
 
