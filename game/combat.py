@@ -205,11 +205,55 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
     return character
 
 
+
+def combat(character: dict, events_by_id: dict, atlas: dict, classes_data: dict) -> bool:
+    character_x = character["character"]["location"]["character_x"]
+    character_y = character["character"]["location"]["character_y"]
+    character_z = character["character"]["location"]["character_z"]
+
+    event_id = atlas[character_z]["position"][(character_y, character_x)]
+    event = events_by_id[event_id]
+    enemy = dict(event["enemy"])
+
+    cooldowns = {}
+
+    print(f"A {enemy['name']} appears!")
+
+    while enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
+        choice_type, action_key = get_combat_command(character, classes_data, cooldowns)
+
+        enemy_turn = False
+
+        if choice_type == "action":
+            action = get_available_actions(character, classes_data, cooldowns)[action_key]
+            enemy, cooldowns = perform_action(character, enemy, action_key, action, cooldowns)
+
+            if enemy["health"] <= 0:
+                print(f"You defeated the {enemy['name']}!")
+                return True
+            enemy_turn = True
+
+        elif choice_type == "items":
+            use_item(character)
+            enemy_turn = False
+
+        elif choice_type == "flee":
+            if flee(character):
+                return True
+            enemy_turn = True
+
+        if enemy_turn:
+            character = enemy_behaviour(character, enemy)
+            cooldowns = tick_cooldowns(cooldowns)
+
+            if character["character"]["current"]["health"] <= 0:
+                print(f"{character['character']['name']} has been defeated!")
+                return False
+
+    return False
+
+
 def boss_behaviour():
-    pass
-
-
-def combat():
     pass
 
 
