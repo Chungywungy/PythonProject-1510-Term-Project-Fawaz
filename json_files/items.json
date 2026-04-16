@@ -1,1 +1,7 @@
-"this file will have items in it"
+{
+  "name": "Health Potion",
+  "type": "consumable",
+  "effect": {
+    "heal": 20
+  }
+}

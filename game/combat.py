@@ -1,5 +1,5 @@
 import random
-import character
+
 
 
 def get_combat_command() -> int:
@@ -28,15 +28,47 @@ def display_inventory(character: dict) -> None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
-    if len(consumables) == 0:
-        print(f"{character['character']['name']} has no consumable items!")
-        return
-
     print("Inventory:")
     for index, item in enumerate(consumables, 1):
         print(f"{index}: {item['name']}")
 
     return
+
+
+def use_item(character):
+    inventory = character["character"]["inventory"]
+    consumables = [item for item in inventory if item["type"] == "consumable"]
+
+    if len(consumables) == 0:
+        print("You have no consumable items!")
+        return character
+
+    display_inventory(character)
+
+    while True:
+        try:
+            choice = int(input("Choose an item (0 to cancel): ").strip())
+        except ValueError:
+            print("Please enter an integer.")
+            continue
+        else:
+            if choice == 0:
+                print("You put your bag away.")
+                return character
+            elif 1 <= choice <= len(consumables):
+                item = consumables[choice - 1]
+                character = apply_item_effect(character, item)
+                inventory.remove(item)
+                return character
+            else:
+                print("Please enter a number corresponding to one of the options.")
+
+
+
+
+
+def apply_item_effect(character, items):
+    pass
 
 
 def flee(character: dict) -> bool:
@@ -79,7 +111,7 @@ def combat():
 
 
 def main():
-    return display_inventory(character.create_character("Bob","Fawaz", "../json_files/character.json", "Sun"))
+    return
 
 
 if __name__ == '__main__':
