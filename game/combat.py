@@ -1,6 +1,26 @@
 import random
 
 
+def get_available_actions(character: dict, classes_data: dict, cooldowns: dict) -> dict:
+    character_class = character["character"]["class"]
+    character_level = character["character"]["level"]
+
+    pathway = None
+    for pathway_key, pathway_data in classes_data.items():
+        if pathway_data["name"] == character_class or any(level_data["name"] == character_class
+                                                          for level_data in pathway_data["levels"].values()):
+            pathway = pathway_data
+            break
+
+    if pathway is None:
+        raise ValueError(f"No pathway found for {character_class}.")
+
+    actions = pathway["level"][character_level]["actions"]
+
+    available_actions = {key: action for key, action in actions.items() if cooldowns.get(key, 0) == 0}
+
+    return available_actions
+
 
 def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> tuple | None:
     available_actions = get_available_actions(character, classes_data, cooldowns)
@@ -68,25 +88,27 @@ def calculate_damage(character: dict, action: dict) -> int:
     return int(total_damage)
 
 
-def get_available_actions(character: dict, classes_data: dict, cooldowns: dict) -> dict:
-    character_class = character["character"]["class"]
-    character_level = character["character"]["level"]
+def perform_action(character: dict, enemy: dict, action_key: str, action: dict, cooldowns: dict) -> tuple | None:
+    action_type = action["type"]
+    fight_description = action.get("fight_description", f"You use {action['name']}.")
+    mana_cost = action.get("mana_cost", 0)
+    cooldown = action.get("cooldown", 0)
 
-    pathway = None
-    for pathway_key, pathway_data in classes_data.items():
-        if pathway_data["name"] == character_class or any(level_data["name"] == character_class
-                                                          for level_data in pathway_data["levels"].values()):
-            pathway = pathway_data
-            break
+    character["character"]["current"]["mana"] -= mana_cost
 
-    if pathway is None:
-        raise ValueError(f"No pathway found for {character_class}.")
+    if cooldown > 0:
+        cooldowns[action_key] = cooldown
 
-    actions = pathway["level"][character_level]["actions"]
+    print(f"{fight_description}")
 
-    available_actions = {key: action for key, action in actions.items() if cooldowns.get(key, 0) == 0}
+    if action_type == "attack":
+        damage = calculate_damage(character, action)
+        enemy["health"] -= damage
+        print(f"You deal {damage} damage! The {enemy['name']} has {enemy['health']} HP remaining")
+    else:
+        print(f"Effect not implemented yet for type: {action_type}")
 
-    return available_actions
+    return enemy, cooldowns
 
 
 def display_inventory(character: dict) -> None:
