@@ -2,7 +2,7 @@ import random
 
 
 
-def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> tuple:
+def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> tuple | None:
     available_actions = get_available_actions(character, classes_data, cooldowns)
 
     current_mana = character["character"]["current"]["mana"]
@@ -52,6 +52,22 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
                 print("Please enter a number corresponding to one of the options.")
 
 
+def calculate_damage(character: dict, action: dict) -> int:
+    base_stats = character["character"]["base_stats"]
+    scaling = action["scaling"]
+
+    total_damage = 0
+    if isinstance(scaling, list):
+        for scale in scaling:
+            stat_value = base_stats[scale["stat"]]
+            total_damage += stat_value * scale["multiplier"]
+    else:
+        stat_value = base_stats[scaling["stat"]]
+        total_damage += stat_value * scaling["multiplier"]
+
+    return int(total_damage)
+
+
 def get_available_actions(character: dict, classes_data: dict, cooldowns: dict) -> dict:
     character_class = character["character"]["class"]
     character_level = character["character"]["level"]
@@ -84,7 +100,7 @@ def display_inventory(character: dict) -> None:
     return
 
 
-def use_item(character: dict) -> None:
+def use_item(character: dict) -> dict | None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
