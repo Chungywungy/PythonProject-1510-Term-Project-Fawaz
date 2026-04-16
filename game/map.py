@@ -7,10 +7,10 @@ def build(layers, rows, columns):
     if (type(layers) or type(rows) or type(columns)) != int:
         raise TypeError("layers, rows, and columns must be integers")
     else:
-        for layer in range(layers + 1):
+        for layer in range(layers):
             atlas[layer] = {"position": {}}
-            for row in range(rows + 1):
-                for column in range(columns + 1):
+            for row in range(rows):
+                for column in range(columns):
                     atlas[layer]["position"][(row, column)] = random.choice(range(1, 11))
 
     return atlas
@@ -50,7 +50,7 @@ def describe_location(events: dict, character: dict, atlas: dict) -> str:
     except KeyError:
         raise KeyError("The character does not have a location.")
     else:
-        return events["events"][atlas[character_z]["position"][(character_x, character_y)]]["description"]
+        return print(events["events"][atlas[character_z]["position"][(character_x, character_y)]]["description"])
 
 
 def get_user_choice() -> int:
