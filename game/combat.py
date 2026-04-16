@@ -35,7 +35,7 @@ def display_inventory(character: dict) -> None:
     return
 
 
-def use_item(character):
+def use_item(character: dict) -> None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
@@ -64,11 +64,21 @@ def use_item(character):
                 print("Please enter a number corresponding to one of the options.")
 
 
+def apply_item_effect(character: dict, item: dict) -> dict:
+    effect = item["effect"]
+    name = item["name"]
 
+    if "health" in effect:
+        constitution = character["character"]["base_stats"]["constitution"]
+        max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+        current_health = character["character"]["current"]["health"]
+        healed = effect["heal"], max_health - current_health
+        character["character"]["current"]["health"] += healed
 
+        print(f"You use {name} and recover {healed} HP!")
+        print(f"Current HP: {current_health}/{max_health}")
 
-def apply_item_effect(character, items):
-    pass
+    return character
 
 
 def flee(character: dict) -> bool:
