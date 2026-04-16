@@ -187,7 +187,25 @@ def equip_item(character: dict, item_name: str, items_data: dict) -> dict:
 
 
 def unequip_item(character: dict, slot: str, items_data: dict) -> dict:
-    pass
+    item_name = character["character"]["equipment"].get(slot)
+
+    if not item_name:
+        print(f"Nothing equipped in {slot}.")
+        return character
+
+    items_by_name = {item["name"]: item for item in items_data["items"]}
+    item_data = items_by_name[item_name]
+
+    character["character"]["inventory"].append({
+        "name": item_name,
+        "type": "equipment",
+        "slot": slot,
+        "stats": item_data["stats"]
+    })
+    character["character"]["equipment"][slot] = None
+
+    print(f"You unequipped {item_name}.")
+    return character
 
 
 def level_up():
