@@ -1,12 +1,12 @@
 import random
 
 
-def get_available_actions(character: dict, classes_data: dict, cooldowns: dict) -> dict:
+def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     character_class = character["character"]["class"]
     character_level = character["character"]["level"]
 
     pathway = None
-    for pathway_key, pathway_data in classes_data.items():
+    for pathway_key, pathway_data in class_data.items():
         if pathway_data["name"] == character_class or any(level_data["name"] == character_class
                                                           for level_data in pathway_data["levels"].values()):
             pathway = pathway_data
