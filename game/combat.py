@@ -20,8 +20,25 @@ def get_combat_command() -> int:
                 print("Please enter a number corresponding to one of the options.")
 
 
-def player_attack(character, events):
-    pass
+def get_available_actions(character: dict, classes_data: dict, cooldowns: dict) -> dict:
+    character_class = character["character"]["class"]
+    character_level = character["character"]["level"]
+
+    pathway = None
+    for pathway_key, pathway_data in classes_data.items():
+        if pathway_data["name"] == character_class or any(level_data["name"] == character_class
+                                                          for level_data in pathway_data["levels"].values()):
+            pathway = pathway_data
+            break
+
+    if pathway is None:
+        raise ValueError(f"No pathway found for {character_class}.")
+
+    actions = pathway["level"][character_level]["actions"]
+
+    available_actions = {key: action for key, action in actions.items() if cooldowns.get(key, 0) == 0}
+
+    return available_actions
 
 
 def display_inventory(character: dict) -> None:
