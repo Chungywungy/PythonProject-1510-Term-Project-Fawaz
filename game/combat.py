@@ -19,7 +19,9 @@ def enemy_behaviour(events, atlas, character):
     description = chosen_attack["description"]
     damage = chosen_attack["damage"]
 
-    print(f"{description}\nYou take {damage} damage!")
+    character["character"]["current"]["health"] -= damage
+    print(f"{description}\nYou take {damage} damage!\n"
+          f"You have {character["character"]["current"]["health"]} HP remaining.")
     return
 
 
