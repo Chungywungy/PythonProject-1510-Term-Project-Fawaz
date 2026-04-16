@@ -83,6 +83,26 @@ def character_class(file: str):
     return pick_class
 
 
+def get_effective_stats(character:dict, items_data: dict) -> dict:
+    base = dict(character["character"]["base_stats"])
+    effective = dict(base)
+
+    for trait_bonus in character["character"].get("trait_bonuses", {}).values():
+        for stat, amount in trait_bonus.items():
+            if stat in effective:
+                effective[stat] += amount
+
+    items_by_name = {item["name"]: item for item in items_data["items"] if item["type"] == "equipment"}
+
+    for slot, item_name in character["character"]["equipment"].items():
+        if item_name and item_name in items_by_name:
+            for stat, amount in items_by_name[item_name]["stats"].items():
+                if stat in effective:
+                    effective[stat] += amount
+
+    return effective
+
+
 def create_character(character: str, player: str, file: str, pathway: str):
     if ".json" not in file:
         raise ValueError("File is not a JSON file.")
