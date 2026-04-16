@@ -85,6 +85,10 @@ def calculate_damage(character: dict, action: dict) -> int:
         stat_value = base_stats[scaling["stat"]]
         total_damage += stat_value * scaling["multiplier"]
 
+    temp_buffs = character["character"].get("temp_buffs", {})
+    if "attack_boost" in temp_buffs:
+        total_damage += temp_buffs["attack_boost"]["amount"]
+
     return int(total_damage)
 
 
