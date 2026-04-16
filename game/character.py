@@ -224,7 +224,32 @@ def award_xp(character: dict, amount: int, class_data: dict, items_data: dict) -
 
 
 def level_up(character: dict, class_data: dict, items_data: dict) -> dict:
-    pass
+    old_level = character["character"]["level"]
+    new_level = old_level + 1
+    character["character"]["level"] = new_level
+
+    pathway_name = character["character"]["class"]
+    pathway = next(pathway for pathway in class_data.values() if pathway["name"] == pathway_name)
+    new_class_name = pathway["level"][str(new_level)]["name"]
+
+    print("*** Level Up! ***")
+    print(f"You are now level {new_level}: {new_class_name}!")
+
+    character = apply_class_traits(character, class_data)
+
+    effective = get_effective_stats(character, class_data)
+    hp_multiplier = character["character"]["derived_stats"]["max_health"]["multiplier"]
+    mana_multiplier = character["character"]["derived_stats"]["max_mana"]["multiplier"]
+    new_max_hp = effective["constitution"] * hp_multiplier
+    new_max_mana = effective["intellect"] * mana_multiplier
+
+    character["character"]["current"]["health"] = new_max_hp
+    character["character"]["current"]["mana"] = new_max_mana
+
+    print(f"Max HP: {new_max_hp} | Max Mana: {new_max_mana}")
+    print(f"Your hp and mana have been fully restored!")
+
+    return character
 
 
 def main():
