@@ -193,24 +193,16 @@ def flee(character: dict) -> bool:
         return False
 
 
-def enemy_behaviour(events, atlas, character):
-    character_x = character["character"]["location"]["character_x"]
-    character_y = character["character"]["location"]["character_y"]
-    character_z = character["character"]["location"]["character_z"]
-
-    location = atlas[character_z]["position"][(character_y, character_x)]
-
-    attacks = events["events"][location]["enemy"]["attacks"]
-
-    chosen_attack = random.choice(attacks)
-
-    description = chosen_attack["description"]
+def enemy_behaviour(character: dict, enemy: dict) -> dict:
+    chosen_attack = random.choice(enemy["attacks"])
     damage = chosen_attack["damage"]
+    description = chosen_attack["description"]
+
 
     character["character"]["current"]["health"] -= damage
     print(f"{description}\nYou take {damage} damage!\n"
           f"You have {character["character"]["current"]["health"]} HP remaining.")
-    return
+    return character
 
 
 def boss_behaviour():
