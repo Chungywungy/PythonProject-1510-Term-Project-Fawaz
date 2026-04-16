@@ -111,6 +111,16 @@ def perform_action(character: dict, enemy: dict, action_key: str, action: dict, 
     return enemy, cooldowns
 
 
+def tick_cooldowns(cooldowns: dict) -> dict:
+    updated_cooldowns = {}
+
+    for key, turns in cooldowns.items():
+        if turns - 1 > 0:
+            updated_cooldowns[key] = turns - 1
+
+    return updated_cooldowns
+
+
 def display_inventory(character: dict) -> None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
