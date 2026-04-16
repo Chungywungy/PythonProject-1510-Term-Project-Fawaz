@@ -1,7 +1,7 @@
 import random
 
 
-def build_map(layers, rows, columns):
+def build(layers, rows, columns):
     atlas = dict()
 
     if (type(layers) or type(rows) or type(columns)) != int:
@@ -42,7 +42,7 @@ def display_map(character: dict, atlas: dict) -> None:
     return
 
 
-def describe_location(events: str, character: str, atlas: dict) -> str:
+def describe_location(events: dict, character: dict, atlas: dict) -> str:
     try:
         character_x = character["character"]["location"]["character_x"]
         character_y = character["character"]["location"]["character_y"]
@@ -119,7 +119,7 @@ def validate_move(direction: int, character: dict, atlas: dict) -> bool:
 
 
 def main():
-    pass
+    return
 
 
 if __name__ == '__main__':

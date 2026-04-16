@@ -1,5 +1,6 @@
 import json
 from file_tampering import open_json
+from combat import combat
 
 def character_name() -> str:
     mc_name = str(input("What is your characters' name? ").strip().title())
@@ -83,9 +84,9 @@ def character_class(file: str):
     while True:
         pick_class = str(input("What is your character's pathway? ")).strip().title()
         if len(pick_class) > 0:
-            if pick_class in class_data["pathway"]["name"]:
+            if pick_class in class_data["pathway_1"]["name"]:
                 validate = str(
-                    input(f"Your character will be a knight of the {class_data["pathway"]["name"]} pathway. Are you "
+                    input(f"Your character will be a knight of the {class_data["pathway_1"]["name"]} pathway. Are you "
                           f"sure about that? (y/n) ")).strip().lower()
                 if validate == 'y':
                     break
@@ -100,23 +101,31 @@ def character_class(file: str):
     return pick_class
 
 
-def commands(character):
-    def equip():
-        pass
-
-    def inventory():
-        pass
-
-    def use_item():
-        pass
-
-    def flee():
-        pass
-
-    def attack():
-        pass
-
-    pass
+# def commands(character):
+#     def equip():
+#         pass
+#
+#     def inventory():
+#         pass
+#
+#     def use_item():
+#         pass
+#
+#     def flee():
+#         if not combat:
+#             print("You can't use flee here!")
+#         else:
+#             end = not combat
+#         return end
+#
+#     def attack(character, pathway):
+#         if not combat:
+#             print("You can't use attacks here!")
+#         else:
+#
+#         pass
+#
+#     pass
 
 
 def validate_equip():

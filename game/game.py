@@ -1,3 +1,7 @@
+import character, file_tampering, map
+
+
+
 def game() -> None:
     """
     Run the main game loop.
@@ -10,29 +14,31 @@ def game() -> None:
 
     The game ends when the player reaches the goal or runs out of HP.
     """
-    rows = 5
-    columns = 5
-    board = make_board(rows, columns)
-    character = make_character()
-    achieved_goal = False
+    rows = 4
+    columns = 4
+    layers = 0
 
-    describe_current_location(board, character)
-    while is_alive(character) and not achieved_goal:
-        direction = get_user_choice()
-        valid_move = validate_move(board, direction, character)
+    atlas = map.build(layers, rows, columns)
+    events = file_tampering.open_json("../json_files/events.json")
+
+    character_file = "../json_files/character.json"
+    class_name = character.character_class("../json_files/classes.json")
+    character_name = character.character_name()
+    player_name = character.player_name()
+
+    character_data = character.create_character(character_name, player_name, character_file, class_name)
+
+    map.display_map(character_data, atlas)
+    map.describe_location(events, character_data, atlas)
+    while character.is_alive(character_data):
+        direction = map.get_user_choice()
+        valid_move = map.validate_move(direction, character_data, atlas)
         if valid_move:
-            move_character(character, direction)
-            describe_current_location(board, character)
-            there_is_a_challenger = check_for_foes()
-            if there_is_a_challenger:
-                guessing_game(character)
-            achieved_goal = check_if_goal_attained(rows, columns, character)
+            map.move_character(character_data, direction)
+            map.display_map(character_data, atlas)
+            map.describe_location(events, character_data, atlas)
         else:
             print("You can't go that way. Try again")
-    if achieved_goal:
-        print("Congratulations! You made it to the goal.")
-    else:
-        print("Game over! You ran out of HP.")
     return
 
 
