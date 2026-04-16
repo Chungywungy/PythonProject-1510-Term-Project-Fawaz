@@ -111,19 +111,6 @@ def character_class(file: str):
 #     def use_item():
 #         pass
 #
-#     def flee():
-#         if not combat:
-#             print("You can't use flee here!")
-#         else:
-#             end = not combat
-#         return end
-#
-#     def attack(character, pathway):
-#         if not combat:
-#             print("You can't use attacks here!")
-#         else:
-#
-#         pass
 #
 #     pass
 

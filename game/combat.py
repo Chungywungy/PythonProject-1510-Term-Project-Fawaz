@@ -1,5 +1,5 @@
 import random
-import character
+
 
 
 def get_combat_command() -> int:
@@ -18,6 +18,14 @@ def get_combat_command() -> int:
                 return choice
             else:
                 print("Please enter a number corresponding to one of the options.")
+
+
+def player_attack(character, events):
+    pass
+
+
+def items(character):
+    pass
 
 
 def flee(character: dict) -> bool:
@@ -60,8 +68,7 @@ def combat():
 
 
 def main():
-    return flee(character.create_character
-                ("Bob","Fawaz", "../json_files/character.json","Sun"))
+    return
 
 
 if __name__ == '__main__':
