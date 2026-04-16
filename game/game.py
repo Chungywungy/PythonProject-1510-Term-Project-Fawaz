@@ -37,7 +37,7 @@ def game() -> None:
         if valid_move:
             map.move_character(character_data, direction)
             map.display_map(character_data, atlas, events_by_id)
-            map.describe_location(events, character_data, atlas)
+            map.describe_location(events_by_id, character_data, atlas)
         else:
             map.display_map(character_data, atlas, events_by_id)
             print("You can't go that way. Try again")
