@@ -1,9 +1,9 @@
 import random
-
+import character
 
 
 def get_combat_command() -> int:
-    options = {1: "Attack",2: "Items", 3: "Flee"}
+    options = {1: "Attack", 2: "Items", 3: "Flee"}
 
     while True:
         print("What will you do?")
@@ -24,8 +24,19 @@ def player_attack(character, events):
     pass
 
 
-def items(character):
-    pass
+def display_inventory(character: dict) -> None:
+    inventory = character["character"]["inventory"]
+    consumables = [item for item in inventory if item["type"] == "consumable"]
+
+    if len(consumables) == 0:
+        print(f"{character['character']['name']} has no consumable items!")
+        return
+
+    print("Inventory:")
+    for index, item in enumerate(consumables, 1):
+        print(f"{index}: {item['name']}")
+
+    return
 
 
 def flee(character: dict) -> bool:
@@ -68,7 +79,7 @@ def combat():
 
 
 def main():
-    return
+    return display_inventory(character.create_character("Bob","Fawaz", "../json_files/character.json", "Sun"))
 
 
 if __name__ == '__main__':
