@@ -130,19 +130,29 @@ def apply_class_traits(character:dict, class_data: dict) -> dict:
     return character
 
 
-def create_character(character: str, player: str, file: str, pathway: str):
-    if ".json" not in file:
-        raise ValueError("File is not a JSON file.")
-    else:
-        with open(file, 'r+') as file_object:
-            try:
-                character_data = json.load(file_object)
-            except json.JSONDecodeError:
-                raise ValueError("The JSON file is empty.")
-            else:
-                character_data["character"]["name"] = character
-                character_data["character"]["player"] = player
-                character_data["character"]["class"] = pathway
+def create_character(character: str, player: str, file: str, pathway: str, class_data: dict, items_data: dict) -> dict:
+    character_data = open_json(file)
+
+    character_data["character"]["name"] = character
+    character_data["character"]["player"] = player
+    character_data["character"]["class"] = pathway
+    character_data["character"]["level"] = 1
+    character_data["character"]["xp"] = 0
+    character_data["character"]["trait_bonuses"] = {}
+
+    character_data = apply_class_traits(character_data, class_data)
+
+    effective = get_effective_stats(character_data, items_data)
+    hp_multiplier = character_data["character"]["derived_stats"]["max_health"]["multiplier"]
+    mana_multiplier = character_data["character"]["derived_stats"]["max_mana"]["multiplier"]
+    character_data["character"]["current"]["health"] = effective["constitution"] * hp_multiplier
+    character_data["character"]["current"]["mana"] = effective["intellect"] * mana_multiplier
+
+    print(f"Welcome, {character}!")
+    print(f"Class: {pathway} (level 1)")
+    print(f"HP: {character_data['character']['current']['health']} | "
+          f"Mana: {character_data['character']['current']['mana']}")
+
     return character_data
 
 
