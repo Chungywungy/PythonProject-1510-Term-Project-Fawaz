@@ -30,7 +30,7 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
 
         if (character_y, character_x) == position:
             display.append("@")
-        elif events["events"][value].get("type") == "chest":
+        elif events[value].get("type") == "chest":
             display.append("C")
         else:
             display.append("-")
@@ -42,7 +42,7 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
     return
 
 
-def describe_location(events: dict, character: dict, atlas: dict) -> str:
+def describe_location(events: dict, character: dict, atlas: dict) -> None:
     try:
         character_x = character["character"]["location"]["character_x"]
         character_y = character["character"]["location"]["character_y"]
@@ -50,7 +50,7 @@ def describe_location(events: dict, character: dict, atlas: dict) -> str:
     except KeyError:
         raise KeyError("The character does not have a location.")
     else:
-        return print(events["events"][atlas[character_z]["position"][(character_y, character_x)]]["description"])
+        return print(events[atlas[character_z]["position"][(character_y, character_x)]]["description"])
 
 
 def get_user_choice() -> int:

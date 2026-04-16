@@ -20,25 +20,26 @@ def game() -> None:
 
     atlas = map.build(layers, rows, columns)
     events = file_tampering.open_json("../json_files/events.json")
+    events_by_id = {event["id"]: event for event in events["events"]}
 
     character_file = "../json_files/character.json"
-    class_name = character.character_class("../json_files/classes.json")
     character_name = character.character_name()
     player_name = character.player_name()
+    class_name = character.character_class("../json_files/classes.json")
 
     character_data = character.create_character(character_name, player_name, character_file, class_name)
 
-    map.display_map(character_data, atlas, events)
-    map.describe_location(events, character_data, atlas)
+    map.display_map(character_data, atlas, events_by_id)
+    map.describe_location(events_by_id, character_data, atlas)
     while character.is_alive(character_data):
         direction = map.get_user_choice()
         valid_move = map.validate_move(direction, character_data, atlas)
         if valid_move:
             map.move_character(character_data, direction)
-            map.display_map(character_data, atlas, events)
+            map.display_map(character_data, atlas, events_by_id)
             map.describe_location(events, character_data, atlas)
         else:
-            map.display_map(character_data, atlas, events)
+            map.display_map(character_data, atlas, events_by_id)
             print("You can't go that way. Try again")
     return
 
