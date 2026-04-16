@@ -156,22 +156,37 @@ def is_alive(character: dict) -> bool:
         return False
 
 
+def equip_item(character: dict, item_name: str, items_data: dict) -> dict:
+    items_by_name = {item["name"]: item for item in items_data["items"]}
 
-def commands(character):
-    def equip():
-        pass
+    if item_name not in items_by_name:
+        raise ValueError(f"Item '{item_name}' not found in items data.")
 
-    def inventory():
-        pass
+    item = items_by_name[item_name]
 
-    def use_item():
-        pass
+    if item["type"] != "equipment":
+        raise ValueError(f"Item '{item_name}' is not an equippable item.")
+
+    slot = item["slot"]
+    inventory = character["character"]["inventory"]
+    inventory_names = [index["name"] for index in inventory]
+
+    if item_name not in inventory_names:
+        raise ValueError(f"'{item_name}' is not in {character['character']['name']}'s inventory.")
+
+    current_equipped = character["character"]["equipment"][slot]
+    if current_equipped:
+        character = unequip_item(character, slot, items_data)
+
+    character["character"]["equipment"][slot] = item_name
+    inventory_item = next(item for item in inventory if item["name"] == item_name)
+    inventory.remove(inventory_item)
+
+    print(f"You equipped {item_name}.")
+    return character
 
 
-    pass
-
-
-def validate_equip():
+def unequip_item(character: dict, slot: str, items_data: dict) -> dict:
     pass
 
 
