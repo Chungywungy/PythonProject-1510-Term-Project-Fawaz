@@ -125,6 +125,22 @@ def tick_cooldowns(cooldowns: dict) -> dict:
     return updated_cooldowns
 
 
+def tick_temp_buffs(character: dict) -> dict:
+    buffs = character["character"].get("temp_buffs", {})
+    expired = []
+
+    for buff_key, buff in buffs.items():
+        buff["turns_remaining"] -= 1
+        if buff["turns_remaining"] <= 0:
+            expired.append(buff_key)
+            print(f"Your {buff_key.replace('_', ' ')} has worn off")
+
+    for key in expired:
+        del buffs[key]
+
+    return character
+
+
 def display_inventory(character: dict) -> None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
