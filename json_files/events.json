@@ -1,0 +1,148 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "type": "chest",
+      "name": "Old Wooden Chest",
+      "description": "You find an old chest partially buried in the ground."
+    },
+    {
+      "id": 2,
+      "type": "chest",
+      "name": "Locked Iron Chest",
+      "description": "A sturdy iron chest sits here, locked tight."
+    },
+    {
+      "id": 3,
+      "type": "fight",
+      "name": "Bandit Ambush",
+      "description": "Bandits jump out from hiding and attack!",
+      "enemy": {
+        "name": "Bandit",
+        "health": 30,
+        "attacks": [
+          {
+            "name": "Slash",
+            "damage": 6,
+            "description": "The bandit slashes at you with a rusty blade."
+          },
+          {
+            "name": "Stab",
+            "damage": 8,
+            "description": "The bandit lunges forward with a quick stab."
+          },
+          {
+            "name": "Kick",
+            "damage": 4,
+            "description": "The bandit kicks you back to create distance."
+          },
+          {
+            "name": "Throw Knife",
+            "damage": 7,
+            "description": "A knife flies toward you from the bandit's hand."
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "type": "fight",
+      "name": "Wild Beast",
+      "description": "A ferocious creature blocks your path.",
+      "enemy": {
+        "name": "Beast",
+        "health": 35,
+        "attacks": [
+          {
+            "name": "Bite",
+            "damage": 9,
+            "description": "The beast bites down with powerful jaws."
+          },
+          {
+            "name": "Claw",
+            "damage": 7,
+            "description": "Sharp claws rake across your body."
+          },
+          {
+            "name": "Roar",
+            "damage": 3,
+            "description": "A deafening roar shakes you, leaving you vulnerable."
+          },
+          {
+            "name": "Pounce",
+            "damage": 10,
+            "description": "The beast leaps and crashes into you."
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "type": "boon",
+      "name": "Blessed Shrine",
+      "description": "A shrine radiates energy, granting you a blessing."
+    },
+    {
+      "id": 6,
+      "type": "boon",
+      "name": "Healing Light",
+      "description": "A warm light surrounds you, restoring your strength."
+    },
+    {
+      "id": 7,
+      "type": "debuff",
+      "name": "Poisonous Fog",
+      "description": "A toxic mist weakens your body."
+    },
+    {
+      "id": 8,
+      "type": "debuff",
+      "name": "Cursed Ground",
+      "description": "The ground beneath you drains your energy."
+    },
+    {
+      "id": 9,
+      "type": "fight",
+      "name": "Skeleton Warrior",
+      "description": "An undead warrior rises and attacks.",
+      "enemy": {
+        "name": "Skeleton",
+        "health": 25,
+        "attacks": [
+          {
+            "name": "Bone Strike",
+            "damage": 6,
+            "description": "The skeleton swings a brittle arm at you."
+          },
+          {
+            "name": "Shield Bash",
+            "damage": 5,
+            "description": "A sudden bash knocks the wind out of you."
+          },
+          {
+            "name": "Rattle",
+            "damage": 2,
+            "description": "The skeleton rattles loudly, unsettling you."
+          },
+          {
+            "name": "Pierce",
+            "damage": 8,
+            "description": "A sharp weapon pierces toward your chest."
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": "boon",
+      "name": "Ancient Knowledge",
+      "description": "You uncover knowledge that sharpens your mind."
+    },
+    {
+      "id": 11,
+      "type": "traversal",
+      "name": "Stairs",
+      "description": "Stairs leading to the next floor await you."
+    }
+  ]
+}
