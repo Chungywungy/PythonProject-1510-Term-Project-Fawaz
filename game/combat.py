@@ -1,32 +1,26 @@
-from random import randint
-
-def check_for_foes() -> bool:
-    """
-    Check for foes.
-
-    A simple function that calculates the odds of a foe showing up.
-
-    :param: None
-    :precondition: 'chance' is a random number between [1, 4]
-    :postcondition: calculate chance
-    :return: True or False
-    >>> type(check_for_foes())
-    <class 'bool'>
-    """
-    chance = randint(1, 4)
-
-    if chance == 1:
-        return True
-    else:
-        return False
+import random
 
 
 def combat():
     pass
 
 
-def enemy_behaviour():
-    pass
+def enemy_behaviour(events, atlas, character):
+    character_x = character["character"]["location"]["character_x"]
+    character_y = character["character"]["location"]["character_y"]
+    character_z = character["character"]["location"]["character_z"]
+
+    location = atlas[character_z]["position"][(character_x, character_y)]
+
+    attacks = events["events"][location]["enemy"]["attacks"]
+
+    chosen_attack = random.choice(attacks)
+
+    description = chosen_attack["description"]
+    damage = chosen_attack["damage"]
+
+    print(f"{description}\nYou take {damage} damage!")
+    return
 
 
 def boss_behaviour():
