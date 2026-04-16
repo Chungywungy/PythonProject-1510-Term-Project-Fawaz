@@ -103,6 +103,33 @@ def get_effective_stats(character:dict, items_data: dict) -> dict:
     return effective
 
 
+def apply_class_traits(character:dict, class_data: dict) -> dict:
+    character_class_name = character["character"]["class"]
+    character_level = str(character["character"]["level"])
+
+    pathway = None
+    for pathway_data in class_data.values():
+        if pathway_data["name"] == character_class_name:
+            pathway = pathway_data
+            break
+
+    if pathway is None:
+        raise ValueError(f"No pathway found for class '{character_class_name}'.")
+
+    level_data = pathway["level"][character_level]
+    trait_bonuses = {}
+
+    for trait_key, trait in level_data["traits"].items():
+        effect = trait.get("effect", {})
+
+        if effect:
+            trait_bonuses[trait_key] = effect
+
+    character["character"]["trait_bonuses"] = trait_bonuses
+
+    return character
+
+
 def create_character(character: str, player: str, file: str, pathway: str):
     if ".json" not in file:
         raise ValueError("File is not a JSON file.")
