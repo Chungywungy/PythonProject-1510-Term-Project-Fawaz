@@ -1,3 +1,6 @@
+from game.character import level_up
+
+
 def award_xp(character: dict, amount: int, class_data: dict, items_data: dict) -> dict:
     """
     Award experience points to a character and handle level-ups when thresholds are reached.

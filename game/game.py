@@ -1,5 +1,5 @@
 import random
-from game import character, file_tampering, map, combat
+from game import character, file_tampering, map, combat, progression
 
 
 
@@ -26,10 +26,10 @@ def game() -> None:
     layers = 3
 
     atlas = map.build(layers, rows, columns)
-    events = file_tampering.open_json("../json_files/events.json")
+    events = file_tampering.open_json("json_files/events.json")
     events_by_id = {event["id"]: event for event in events["events"]}
-    class_data = file_tampering.open_json("../json_files/classes.json")
-    items_data = file_tampering.open_json("../json_files/items.json")
+    class_data = file_tampering.open_json("json_files/classes.json")
+    items_data = file_tampering.open_json("json_files/items.json")
 
     boss_id = 12
     if boss_id not in events_by_id:
@@ -63,11 +63,11 @@ def game() -> None:
         positions = [pos for pos in atlas[boss_z]["position"].keys()]
         atlas[boss_z]["position"][random.choice(positions)] = boss_id
 
-    character_file = "../json_files/character.json"
+    character_file = "json_files/character.json"
 
     character_name = character.character_name()
     player_name = character.player_name()
-    class_name = character.character_class("../json_files/classes.json")
+    class_name = character.character_class("json_files/classes.json")
     character_data = character.create_character(character_name, player_name, character_file, class_name,
                                                 class_data, items_data)
 
@@ -112,7 +112,7 @@ def game() -> None:
 
                     atlas[character_z]["position"][(character_y, character_x)] = None
 
-                    character_data = character.award_xp(character_data, 200, class_data, items_data)
+                    character_data = progression.award_xp(character_data, 200, class_data, items_data)
 
                     continue_choice = input("\nDo you want to continue exploring? (y/n): ").strip().lower()
                     if continue_choice != 'y':

@@ -1,5 +1,5 @@
 import random
-from game.character import award_xp
+from game.progression import award_xp
 
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     """
@@ -73,7 +73,7 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
     constitution = character["character"]["base_stats"]["constitution"]
     max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
 
-    print(f"--- {character['character']['name']} | HP: {current_health}/{max_health} | mana: {current_mana} ---")
+    print(f"--- {character['character']['name']} | HP: {current_health} | mana: {current_mana} ---")
     print("What will you do?")
 
     menu = {}
