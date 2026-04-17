@@ -475,6 +475,157 @@
             },
             "mana_cost": 0,
             "cooldown": 2
+          },
+          "iron_body": {
+            "name": "Iron Body",
+            "description": "Harden your body to reduce incoming damage.",
+            "fight_description": "Your muscles tense as your body hardens like iron.",
+            "type": "buff",
+            "effect": {
+              "damage_reduction": 0.3,
+              "duration": 2,
+              "target": "self"
+            },
+            "mana_cost": 0,
+            "cooldown": 3
+          },
+
+          "counter_stance": {
+            "name": "Counter Stance",
+            "description": "Prepare to counter the next incoming attack.",
+            "fight_description": "You take a defensive stance, waiting to strike back.",
+            "type": "buff",
+            "effect": {
+              "counter": true,
+              "duration": 1,
+              "target": "self"
+            },
+            "mana_cost": 0,
+            "cooldown": 2
+          },
+
+          "ground_slam": {
+            "name": "Ground Slam",
+            "description": "Smash the ground, damaging and destabilizing enemies.",
+            "fight_description": "You slam the ground with immense force.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 5
+            },
+            "effect": {
+              "type": "stun",
+              "chance": 0.5,
+              "duration": 1,
+              "target": "enemies"
+            },
+            "mana_cost": 0,
+            "cooldown": 3
+          }
+        }
+      },
+      "3": {
+        "name": "Weapon Master",
+
+        "traits": {
+          "physical_enhancement": {
+            "name": "Physical Enhancement",
+            "description": "They possess superhuman strength, physique, and agility.",
+            "effect": {
+              "strength": 4,
+              "dexterity": 3,
+              "constitution": 3
+            }
+          },
+
+          "weapon_mastery": {
+            "name": "Weapon Mastery",
+            "description": "Any weapon wielded is used at a master-level standard.",
+            "effect": {}
+          }
+        },
+
+        "actions": {
+          "strike": {
+            "name": "Strike",
+            "description": "A refined and powerful weapon strike.",
+            "fight_description": "You deliver a precise and deadly strike.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 4
+            },
+            "mana_cost": 0,
+            "cooldown": 0
+          },
+
+          "weapon_flurry": {
+            "name": "Weapon Flurry",
+            "description": "Unleash a rapid series of weapon strikes.",
+            "fight_description": "You unleash a flurry of attacks at blinding speed.",
+            "type": "attack",
+            "scaling": {
+              "stat": "dexterity",
+              "multiplier": 8
+            },
+            "mana_cost": 0,
+            "cooldown": 2
+          },
+
+          "cleaving_blow": {
+            "name": "Cleaving Blow",
+            "description": "A heavy strike that can hit multiple enemies.",
+            "fight_description": "Your weapon sweeps through enemies in a wide arc.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 7
+            },
+            "mana_cost": 0,
+            "cooldown": 2
+          },
+
+          "guardian_stance": {
+            "name": "Guardian Stance",
+            "description": "Take a stance that redirects damage from allies to yourself.",
+            "fight_description": "You stand firm, protecting your allies.",
+            "type": "buff",
+            "effect": {
+              "taunt": true,
+              "duration": 2,
+              "target": "self"
+            },
+            "mana_cost": 0,
+            "cooldown": 3
+          },
+
+          "weapon_counter": {
+            "name": "Weapon Counter",
+            "description": "Counterattack with deadly precision.",
+            "fight_description": "You parry and retaliate instantly.",
+            "type": "buff",
+            "effect": {
+              "counter": true,
+              "bonus_damage": 2,
+              "duration": 1,
+              "target": "self"
+            },
+            "mana_cost": 0,
+            "cooldown": 2
+          },
+
+          "unbreakable": {
+            "name": "Unbreakable",
+            "description": "Enter an unyielding state, greatly reducing incoming damage.",
+            "fight_description": "You become immovable, shrugging off attacks.",
+            "type": "buff",
+            "effect": {
+              "damage_reduction": 0.6,
+              "duration": 2,
+              "target": "self"
+            },
+            "mana_cost": 0,
+            "cooldown": 4
           }
         }
       }
