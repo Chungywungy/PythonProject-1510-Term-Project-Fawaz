@@ -3,7 +3,7 @@ import json
 
 def open_json(file: str) -> dict:
     """
-    Load and return the contents of a JSON file as a dictionary
+    Load and return the contents of a JSON file as a dictionary.
 
     The function checks that the file has a `.json` extension and attempts
     to parse it. If the file is not valid JSON or is empty, a ValueError
