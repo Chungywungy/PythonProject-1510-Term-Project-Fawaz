@@ -568,11 +568,15 @@ def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data:
     :postcondition: The boss fight modifies character and boss state until one is defeated
     :returns: True if the player defeats the boss, False if the player is defeated
     """
+    sound = playsound("sounds/escalon_shiro_sagisu.mp3", block=False)
+
     cooldowns = {}
 
     print(f"A {boss_enemy['name']} appears! This is the final challenge!")
 
     while boss_enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
+        if not sound.is_alive():
+            sound = playsound("sounds/escalon_shiro_sagisu.mp3", block=False)
         choice_type, action_key = get_combat_command(character, class_data, cooldowns)
 
         enemy_turn = False

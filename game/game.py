@@ -24,7 +24,7 @@ def game() -> None:
     :postcondition: modify game state continuously until termination condition is met
     :returns: None
     """
-    sound = playsound("sounds/nube_negra_shiro_sagisu.mp3", block=False)
+    sound = playsound("sounds/test.mp3", block=False)
 
     rows = 5
     columns = 5
@@ -81,7 +81,7 @@ def game() -> None:
 
     while character.is_alive(character_data):
         if not sound.is_alive():
-            sound = playsound("sounds/nube_negra_shiro_sagisu.mp3", block=False)
+            sound = playsound("sounds/test.mp3", block=False)
 
         direction = map.get_user_choice()
         valid_move = map.validate_move(direction, character_data, atlas)
@@ -104,6 +104,7 @@ def game() -> None:
                     map.describe_location(events_by_id, character_data, atlas)
                     continue
             elif event_id == boss_id:
+                sound.stop()
                 print("\n" + "=" * 50)
                 print("BOSS ENCOUNTER!")
                 print("=" * 50)
