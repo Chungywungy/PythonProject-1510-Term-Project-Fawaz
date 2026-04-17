@@ -123,6 +123,22 @@ def character_class(file: str):
 
 
 def get_effective_stats(character:dict, items_data: dict) -> dict:
+    """
+    Calculate and return a character's effective stats based on base stats,
+    trait bonuses, and equipped items.
+
+    The function starts with the character's base stats, then applies any
+    bonuses from traits, followed by stat increases from equipped items.
+    Only valid stats present in the base stats are modified.
+
+    :param character: A dictionary containing character data, including base stats,
+                     trait bonuses, and equipped items
+    :param items_data: A dictionary containing item data, including equipment stats
+    :precondition: character contains "character", "base_stats", and "equipment" keys
+                  items_data contains an "items" list with valid equipment entries
+    :postcondition: create a dictionary of effective stats with all applicable bonuses applied
+    :returns: a dictionary representing the character's effective stats
+    """
     base = dict(character["character"]["base_stats"])
     effective = dict(base)
 
