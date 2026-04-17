@@ -1,4 +1,7 @@
 import random
+
+from playsound3 import playsound
+
 from game import character, file_tampering, map, combat, progression
 
 
@@ -21,6 +24,8 @@ def game() -> None:
     :postcondition: modify game state continuously until termination condition is met
     :returns: None
     """
+    sound = playsound("sounds/nube_negra_shiro_sagisu.mp3", block=False)
+
     rows = 5
     columns = 5
     layers = 3
@@ -75,6 +80,9 @@ def game() -> None:
     map.describe_location(events_by_id, character_data, atlas)
 
     while character.is_alive(character_data):
+        if not sound.is_alive():
+            sound = playsound("sounds/nube_negra_shiro_sagisu.mp3", block=False)
+
         direction = map.get_user_choice()
         valid_move = map.validate_move(direction, character_data, atlas)
 
@@ -124,6 +132,7 @@ def game() -> None:
                     break
 
             elif events_by_id[event_id]["type"] == "fight":
+                sound.stop()
                 combat.combat(character_data, events_by_id, atlas, class_data, items_data)
                 if character.is_alive(character_data):
                     atlas[character_z]["position"][(character_y, character_x)] = None

@@ -1,5 +1,7 @@
 import random
 from game.progression import award_xp
+from playsound3 import playsound
+from itertools import cycle
 
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     """
@@ -469,6 +471,14 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
     :postcondition: Character and enemy states are modified through combat until one is defeated
     :returns: True if the player wins or successfully flees, False if the player is defeated
     """
+    sound = playsound("sounds/clavar_la_espada_shiro_sagisu.mp3", block=False)
+    songs = [
+        "sounds/la_distancia_para_un_duelo_shiro_sagisu.mp3",
+        "sounds/principio_de_lucha_shiro_sagisu.mp3",
+        "sounds/clavar_la_espada_shiro_sagisu.mp3"
+    ]
+    playlist = cycle(songs)
+
     xp_rewards = {
         "Bandit": 25,
         "Beast": 30,
@@ -488,6 +498,9 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
     print(f"A {enemy['name']} appears!")
 
     while enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
+        if not sound.is_alive():
+            sound = playsound(next(playlist), block=False)
+
         choice_type, action_key = get_combat_command(character, class_data, cooldowns)
 
         enemy_turn = False
@@ -500,6 +513,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
                 print(f"You defeated the {enemy['name']}!")
                 xp = xp_rewards.get(enemy["name"], 10)
                 character = award_xp(character, xp, class_data, items_data)
+                sound.stop()
                 return True
             enemy_turn = True
 
@@ -509,11 +523,13 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
                 print(f"You defeated the {enemy['name']}!")
                 xp = xp_rewards.get(enemy["name"], 10)
                 character = award_xp(character, xp, class_data, items_data)
+                sound.stop()
                 return True
             enemy_turn = False
 
         elif choice_type == "flee":
             if flee(character):
+                sound.stop()
                 return True
             enemy_turn = True
 
@@ -524,8 +540,9 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
 
             if character["character"]["current"]["health"] <= 0:
                 print(f"{character['character']['name']} has been defeated!")
+                sound.stop()
                 return False
-
+    sound.stop()
     return False
 
 

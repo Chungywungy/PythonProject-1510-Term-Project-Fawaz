@@ -15,7 +15,7 @@ def character_name() -> str:
     :postcondition: valid character name is returned as a string
     :returns: the confirmed character name as a string
     """
-    mc_name = str(input("What is your characters' name? ").strip().title())
+    mc_name = str(input("\x1b[1;35m What is your characters' name? ").strip().title())
 
     while True:
         if len(mc_name) == 0:
