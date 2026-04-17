@@ -59,6 +59,7 @@ PythonProject-1510-Term-Project-Fawaz/
 │   ├── test_get_available_actions.py
 │   ├── test_get_effective_stats.py
 │   ├── test_get_user_choice.py
+│   ├── test_god_mode.py
 │   ├── test_level_up.py
 │   ├── test_move_character.py
 │   ├── test_open_json.py
@@ -142,6 +143,8 @@ Combat is turn-based and includes:
 ## SPOILERS
 
 Boss encounter is located on the final layer of the map at a randomly assigned stair/empty tile position.
+
+God mode code is on the 25th line of game.py
 
 ---
 
