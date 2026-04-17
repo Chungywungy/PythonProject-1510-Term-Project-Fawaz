@@ -152,6 +152,27 @@ def calculate_damage(character: dict, action: dict) -> int:
 
 
 def perform_action(character: dict, enemy: dict, action_key: str, action: dict, cooldowns: dict) -> tuple | None:
+    """
+    Execute a combat action performed by the character against an enemy.
+
+    The function applies the effects of the selected action, including mana cost,
+    cooldown assignment, and damage calculation for attack-type actions. It also
+    prints a combat description and updates both the enemy's health and cooldown state.
+
+    If the action type is not implemented, a placeholder message is displayed.
+
+    :param character: A dictionary containing character stats and current resources
+    :param enemy: A dictionary representing the enemy, including health and name
+    :param action_key: The identifier of the action being performed
+    :param action: A dictionary containing action metadata (type, cost, scaling, etc.)
+    :param cooldowns: A dictionary tracking cooldown values for actions
+    :precondition: character contains valid "current" mana values
+                  enemy contains "health" and "name"
+                  action contains valid "type" and optional combat fields
+    :postcondition: enemy health may be reduced, character mana is reduced,
+                   cooldowns may be updated, and messages are printed
+    :returns: A tuple (enemy, cooldowns) after the action is applied
+    """
     action_type = action["type"]
     fight_description = action.get("fight_description", f"You use {action['name']}.")
     mana_cost = action.get("mana_cost", 0)
