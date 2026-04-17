@@ -66,6 +66,28 @@ def build(layers: int, rows: int, columns: int) -> dict:
 
 
 def display_map(character: dict, atlas: dict, events: dict) -> None:
+    """
+    Display the current layer of the atlas map with the character and event markers.
+
+    The function renders a visual representation of the current map layer based on
+    the character's position. Different symbols are used to represent tiles:
+
+    - "@" represents the player's current position
+    - "-" represents empty or normal tiles
+    - "C" represents chest events
+    - "S" represents stair tiles
+
+    The map is printed in rows of 5 columns.
+
+    :param character: A dictionary containing character data, including location coordinates
+    :param atlas: A dictionary representing the multi-layer map structure
+    :param events: A dictionary mapping tile IDs to event data
+    :precondition: character contains valid "location" with x, y, z coordinates
+                  atlas contains a valid layer structure with "position" data
+                  events contains valid event mappings for tile IDs
+    :postcondition: print current map layer to the console
+    :returns: None
+    """
     display = []
 
     character_x = character["character"]["location"]["character_x"]
