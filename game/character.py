@@ -159,6 +159,24 @@ def get_effective_stats(character:dict, items_data: dict) -> dict:
 
 
 def apply_class_traits(character:dict, class_data: dict) -> dict:
+    """
+    Apply class trait bonuses to a character based on their class and level.
+
+    The function searches the class data for the character's current class,
+    retrieves the appropriate level data, and extracts trait effects. These
+    effects are stored as trait bonuses inside the character dictionary.
+
+    If the character's class cannot be found in the class data, a ValueError
+    is raised.
+
+    :param character: A dictionary containing character data, including class and level
+    :param class_data: A dictionary containing all available class/pathway definitions
+    :precondition: character contains "character", "class", and "level" keys
+                   class_data contains valid pathway entries with level data
+    :postcondition: update character dictionary with a "trait_bonuses" key
+    :returns: the updated character dictionary with applied trait bonuses
+    :raises ValueError: if the character's class is not found in class_data
+    """
     character_class_name = character["character"]["class"]
     character_level = str(character["character"]["level"])
 
