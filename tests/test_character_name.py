@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from game.character import character_name
-from game.file_tampering import open_json
+
 
 
 class TestCharacterName(unittest.TestCase):
