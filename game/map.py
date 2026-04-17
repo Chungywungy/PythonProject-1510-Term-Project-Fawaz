@@ -272,6 +272,25 @@ def validate_move(direction: int, character: dict, atlas: dict) -> bool:
 
 
 def traverse_stairs(character: dict, direction: str, atlas: dict) -> dict:
+    """
+    Move a character between floors of the atlas if a valid stair transition exists.
+
+    The function adjusts the character's vertical position (z-axis) based on the
+    direction provided. The character can only move within the bounds of the atlas:
+    - "down" increases the floor level (goes deeper)
+    - "up" decreases the floor level (goes higher)
+
+    If the movement is not possible (invalid direction or out-of-bounds floor),
+    a message is printed and no movement occurs.
+
+    :param character: A dictionary containing character data, including location coordinates
+    :param direction: A string indicating stair movement ("up" or "down")
+    :param atlas: A dictionary representing the multi-layer map structure
+    :precondition: character contains "location" with a valid "character_z" value
+                   atlas contains at least one valid floor layer
+    :postcondition: update the character's floor (z-coordinate) if movement is valid
+    :returns: the updated character dictionary
+    """
     current_z = character["character"]["location"]["character_z"]
 
     if direction == "down" and current_z < len(atlas) - 1:
