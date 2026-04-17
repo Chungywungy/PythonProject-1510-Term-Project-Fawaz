@@ -143,6 +143,22 @@
       "type": "traversal",
       "name": "Stairs",
       "description": "Stairs leading to the next floor await you."
-    }
+    },
+    {
+      "id": 12,
+      "type": "boss",
+      "name": "Shadow Lord",
+      "description": "The Shadow Lord stands before you, radiating dark energy!",
+      "enemy": {
+          "name": "Shadow Lord",
+          "health": 100,
+          "attacks": [
+              {"name": "Dark Bolt", "damage": 15, "description": "The Shadow Lord fires a bolt of dark energy!"},
+              {"name": "Shadow Slash", "damage": 12, "description": "A blade of shadow cuts through the air!"},
+              {"name": "Soul Drain", "damage": 10, "description": "You feel your life force being drained!"},
+              {"name": "Dark Pulse", "damage": 18, "description": "A wave of darkness crashes over you!"}
+          ]
+      }
+  }
   ]
 }
