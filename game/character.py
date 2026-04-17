@@ -252,6 +252,19 @@ def create_character(character: str, player: str, file: str, pathway: str, class
 
 
 def is_alive(character: dict) -> bool:
+    """
+    Check whether a character is alive based on their current health.
+
+    The function checks the character's current health value. If health is
+    greater than 0, the character is considered alive. If required keys are
+    missing, a ValueError is raised.
+
+    :param character: A dictionary containing character data with current health
+    :precondition: character contains "character" -> "current" -> "health" keys
+    :postcondition: calculate True if health > 0, otherwise False
+    :returns: True if the character is alive, False if dead
+    :raises ValueError: if required keys are missing
+    """
     try:
         if character["character"]["current"]["health"] > 0:
             return True
