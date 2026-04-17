@@ -21,7 +21,7 @@ def god_mode(character_data:dict ) -> dict:
     :returns: the updated character_data dictionary
     """
     while True:
-        secret_code = str(input("What is the name of the best mmo ever? ")).lower().strip()
+        secret_code = str(input("\nWhat is the name of the best mmo ever? ")).lower().strip()
         if secret_code == "ffxiv":
             character_data["character"]["current"]["health"] = 9999
             print("God mode activated")
@@ -32,7 +32,7 @@ def god_mode(character_data:dict ) -> dict:
                 print("Hint: It's not WoW :)")
                 continue
             else:
-                print("Enjoy the game!")
+                print("\nEnjoy the game!")
                 break
     return character_data
 
