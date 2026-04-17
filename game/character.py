@@ -244,7 +244,7 @@ def create_character(character: str, player: str, file: str, pathway: str, class
     character_data["character"]["current"]["health"] = effective["constitution"] * hp_multiplier
     character_data["character"]["current"]["mana"] = effective["intellect"] * mana_multiplier
 
-    print(f"Welcome, {character}!")
+    print(f"\nWelcome, {character}!")
     print(f"Class: {pathway} (level 1)")
     print(f"HP: {character_data['character']['current']['health']} | "
           f"Mana: {character_data['character']['current']['mana']}")

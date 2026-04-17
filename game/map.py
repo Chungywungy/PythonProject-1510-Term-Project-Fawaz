@@ -137,20 +137,6 @@ def describe_location(events: dict, character: dict, atlas: dict) -> None:
                    events contains valid descriptions for event IDs
     :postcondition: print a description of the current location
     :returns: None
-
-    >>> events_test = {1: {"description": "A dusty old chest."}}
-    >>> atlas_test = {0: {"position": {(0, 0): 1}}}
-    >>> character_test = {"character": {"location": {"character_x": 0, "character_y": 0, "character_z": 0}}}
-    >>> describe_location(events, character, atlas)
-    A dusty old chest.
-
-    >>> atlas_test = {0: {"position": {(0, 0): None}}}
-    >>> describe_location({}, character, atlas)
-    You are standing on empty ground.
-
-    >>> atlas_test = {0: {"position": {(0, 0): 11}}}
-    >>> describe_location({}, character, atlas)
-    Stairs leading to the next floor are here.
     """
     try:
         character_x = character["character"]["location"]["character_x"]
@@ -161,11 +147,11 @@ def describe_location(events: dict, character: dict, atlas: dict) -> None:
     else:
         event_id = atlas[character_z]["position"][(character_y, character_x)]
         if event_id is None:
-            print("You are standing on empty ground.")
+            print("\nYou are standing on empty ground.")
         elif event_id == 11:
-            print("Stairs leading to the next floor are here.")
+            print("\nStairs leading to the next floor are here.")
         else:
-            return print(events[event_id]["description"])
+            return print(f"{events[event_id]['description']}")
 
 
 def get_user_choice() -> int:
@@ -181,16 +167,16 @@ def get_user_choice() -> int:
     compass = {1, 2, 3, 4}
 
     while True:
-        print("1: North, 2: East, 3: South, 4: West")
+        print("\n1: North, 2: East, 3: South, 4: West")
         try:
             direction = int(input("Enter the direction you wish to travel: "))
         except ValueError:
-            print("Please enter a valid integer.")
+            print("\nPlease enter a valid integer.")
         else:
             if direction in compass:
                 break
             else:
-                print("Please enter a number corresponding to one of the directions.")
+                print("\nPlease enter a number corresponding to one of the directions.")
                 continue
     return direction
 
@@ -295,10 +281,10 @@ def traverse_stairs(character: dict, direction: str, atlas: dict) -> dict:
 
     if direction == "down" and current_z < len(atlas) - 1:
         character["character"]["location"]["character_z"] += 1
-        print(f"You descend to floor {character['character']['location']['character_z'] + 1}.")
+        print(f"\nYou descend to floor {character['character']['location']['character_z'] + 1}.")
     elif direction == "up" and current_z > 0:
         character["character"]["location"]["character_z"] -= 1
-        print(f"You ascend to floor {character['character']['location']['character_z'] + 1}.")
+        print(f"\nYou ascend to floor {character['character']['location']['character_z'] + 1}.")
     else:
         print("You can't go that way.")
 

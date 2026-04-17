@@ -97,7 +97,7 @@ def game() -> None:
             event_id = atlas[character_z]["position"][(character_y, character_x)]
 
             if event_id == 11 and character_z < layers - 1:
-                stairs_choice = input("Stairs detected. Go down? (y/n): ").strip().lower()
+                stairs_choice = input("\nStairs detected. Go down? (y/n): ").strip().lower()
                 if stairs_choice == 'y':
                     character_data = map.traverse_stairs(character_data, "down", atlas)
                     map.display_map(character_data, atlas, events_by_id)
@@ -137,7 +137,7 @@ def game() -> None:
                 combat.combat(character_data, events_by_id, atlas, class_data, items_data)
                 if character.is_alive(character_data):
                     atlas[character_z]["position"][(character_y, character_x)] = None
-                    print("The area is now clear.")
+                    print("\nThe area is now clear.")
                 map.display_map(character_data, atlas, events_by_id)
 
 
@@ -147,7 +147,7 @@ def game() -> None:
 
         else:
             map.display_map(character_data, atlas, events_by_id)
-            print("You can't go that way. Try again")
+            print("\nYou can't go that way. Try again")
     return
 
 
