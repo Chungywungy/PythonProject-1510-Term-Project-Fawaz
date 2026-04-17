@@ -246,6 +246,21 @@ def tick_temp_buffs(character: dict) -> dict:
 
 
 def display_inventory(character: dict) -> None:
+    """
+    Display all consumable items in the character's inventory.
+
+    The function filters the character's inventory to show only items of type
+    "consumable". If no consumable items exist, a message is printed. Otherwise,
+    it prints a numbered list of all consumable items.
+
+    :param character: A dictionary containing character data, including an "inventory"
+                      list under the "character" key
+    :precondition: character["character"]["inventory"] exists and is a list of
+                   dictionaries containing at least "name" and "type" keys
+    :postcondition: print consumable items to the console in numbered order,
+                    or print a message if none exist
+    :returns: None
+    """
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
