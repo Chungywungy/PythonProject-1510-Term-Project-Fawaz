@@ -449,6 +449,26 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
 
 
 def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, items_data) -> bool:
+    """
+    Run a full combat encounter between the player and an enemy at the character's current location.
+
+    The function retrieves the enemy from the map (atlas + event data), then enters a turn-based
+    combat loop where the player can perform actions, use items, or attempt to flee. After each
+    player turn, the enemy may act. The system also manages cooldowns, temporary buffs, XP rewards,
+    and victory/defeat conditions.
+
+    :param character: A dictionary containing the player character state, including stats, location,
+                      health, mana, inventory, and class data
+    :param events_by_id: A dictionary mapping event IDs to event data including enemy definitions
+    :param atlas: A multi-layer map structure containing event IDs at each coordinate position
+    :param class_data: Class/pathway data used for available actions and scaling abilities
+    :param items_data: Item database used for consumables and equipment effects
+    :precondition: character must contain valid location, stats, and current health/mana values
+    :precondition: atlas coordinates must map to valid event IDs in events_by_id
+    :precondition: enemy data must contain at least "name" and "health"
+    :postcondition: Character and enemy states are modified through combat until one is defeated
+    :returns: True if the player wins or successfully flees, False if the player is defeated
+    """
     xp_rewards = {
         "Bandit": 25,
         "Beast": 30,
