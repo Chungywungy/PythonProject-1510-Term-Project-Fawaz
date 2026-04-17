@@ -99,7 +99,7 @@ def character_class(file: str):
         print("\nAvailable pathways:")
 
         for key, data in class_data.items():
-            print(f"{data['name']}: {data['description']}")
+            print(f"\n{data['name']}: {data['description']}")
 
         pick_class = str(input("\nWhat is your character's pathway? ")).strip().title()
 
