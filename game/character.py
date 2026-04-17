@@ -275,6 +275,26 @@ def is_alive(character: dict) -> bool:
 
 
 def equip_item(character: dict, item_name: str, items_data: dict) -> dict:
+    """
+    Equip an item to a character from their inventory and update their equipment slots.
+
+    The function validates that the item exists in the items data, is of type "equipment",
+    and is present in the character's inventory. If another item is already equipped in
+    the same slot, it is first unequipped. The item is then moved from inventory to the
+    appropriate equipment slot.
+
+    If the item does not exist, is not equippable, or is not in the character's inventory,
+    a ValueError is raised.
+
+    :param character: A dictionary containing character data, including inventory and equipment
+    :param item_name: The name of the item to equip
+    :param items_data: A dictionary containing item definitions and data
+    :precondition: character contains "inventory" and "equipment" keys
+                   items_data contains valid item definitions with "name", "type", and "slot"
+    :postcondition: update character's equipment and inventory accordingly
+    :returns: the updated character dictionary with the item equipped
+    :raises ValueError: if the item is not found, not equippable, or not in inventory
+    """
     items_by_name = {item["name"]: item for item in items_data["items"]}
 
     if item_name not in items_by_name:
