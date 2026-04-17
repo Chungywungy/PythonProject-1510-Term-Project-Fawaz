@@ -196,6 +196,17 @@ def perform_action(character: dict, enemy: dict, action_key: str, action: dict, 
 
 
 def tick_cooldowns(cooldowns: dict) -> dict:
+    """
+    Decrease all active cooldown values by one turn and remove expired cooldowns.
+
+    The function iterates through a dictionary of cooldowns, reducing each value by 1.
+    Any cooldown that reaches 0 or below is removed from the returned dictionary.
+
+    :param cooldowns: A dictionary mapping action names to remaining cooldown turns
+    :precondition: cooldowns contains action names as keys and positive integers as values
+    :postcondition: reduce all cooldown values by 1 and remove expired cooldowns
+    :returns: A new dictionary containing only active cooldowns with updated values
+    """
     updated_cooldowns = {}
 
     for key, turns in cooldowns.items():
