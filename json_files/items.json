@@ -1,7 +1,268 @@
 {
-  "name": "Health Potion",
-  "type": "consumable",
-  "effect": {
-    "heal": 20
-  }
+  "items": [
+    {
+      "name": "Iron Sword",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "strength": 3 }
+    },
+    {
+      "name": "Steel Sword",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "strength": 4 }
+    },
+    {
+      "name": "Great Axe",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "strength": 6, "dexterity": -2 }
+    },
+    {
+      "name": "Dagger",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "dexterity": 4 }
+    },
+    {
+      "name": "Twin Daggers",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "dexterity": 5, "strength": -1 }
+    },
+    {
+      "name": "War Hammer",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "strength": 5, "constitution": 2, "dexterity": -1 }
+    },
+    {
+      "name": "Magic Staff",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "intellect": 5, "wisdom": 2 }
+    },
+    {
+      "name": "Enchanted Wand",
+      "type": "equipment",
+      "slot": "weapon",
+      "stats": { "intellect": 4, "dexterity": 1 }
+    },
+
+    {
+      "name": "Wooden Shield",
+      "type": "equipment",
+      "slot": "offhand",
+      "stats": { "constitution": 2 }
+    },
+    {
+      "name": "Steel Shield",
+      "type": "equipment",
+      "slot": "offhand",
+      "stats": { "constitution": 4 }
+    },
+    {
+      "name": "Tower Shield",
+      "type": "equipment",
+      "slot": "offhand",
+      "stats": { "constitution": 6, "dexterity": -2 }
+    },
+    {
+      "name": "Spell Tome",
+      "type": "equipment",
+      "slot": "offhand",
+      "stats": { "intellect": 3 }
+    },
+    {
+      "name": "Orb of Insight",
+      "type": "equipment",
+      "slot": "offhand",
+      "stats": { "wisdom": 4 }
+    },
+    {
+      "name": "Leather Cap",
+      "type": "equipment",
+      "slot": "head",
+      "stats": { "dexterity": 2 }
+    },
+    {
+      "name": "Iron Helmet",
+      "type": "equipment",
+      "slot": "head",
+      "stats": { "constitution": 3 }
+    },
+    {
+      "name": "Steel Helmet",
+      "type": "equipment",
+      "slot": "head",
+      "stats": { "constitution": 4 }
+    },
+    {
+      "name": "Mystic Hood",
+      "type": "equipment",
+      "slot": "head",
+      "stats": { "intellect": 3, "wisdom": 2 }
+    },
+    {
+      "name": "Crown of Charm",
+      "type": "equipment",
+      "slot": "head",
+      "stats": { "charisma": 5 }
+    },
+    {
+      "name": "Leather Armor",
+      "type": "equipment",
+      "slot": "chest",
+      "stats": { "dexterity": 3 }
+    },
+    {
+      "name": "Steel Chestplate",
+      "type": "equipment",
+      "slot": "chest",
+      "stats": { "constitution": 5 }
+    },
+    {
+      "name": "Heavy Plate Armor",
+      "type": "equipment",
+      "slot": "chest",
+      "stats": { "constitution": 7, "dexterity": -3 }
+    },
+    {
+      "name": "Robes of Insight",
+      "type": "equipment",
+      "slot": "chest",
+      "stats": { "intellect": 4, "wisdom": 2 }
+    },
+    {
+      "name": "Noble Garments",
+      "type": "equipment",
+      "slot": "chest",
+      "stats": { "charisma": 4 }
+    },
+    {
+      "name": "Leather Leggings",
+      "type": "equipment",
+      "slot": "legs",
+      "stats": { "dexterity": 2 }
+    },
+    {
+      "name": "Steel Leggings",
+      "type": "equipment",
+      "slot": "legs",
+      "stats": { "constitution": 3 }
+    },
+    {
+      "name": "Heavy Greaves",
+      "type": "equipment",
+      "slot": "legs",
+      "stats": { "constitution": 5, "dexterity": -2 }
+    },
+    {
+      "name": "Shadow Pants",
+      "type": "equipment",
+      "slot": "legs",
+      "stats": { "dexterity": 3, "charisma": 1 }
+    },
+    {
+      "name": "Sage Wraps",
+      "type": "equipment",
+      "slot": "legs",
+      "stats": { "wisdom": 3 }
+    },
+    {
+      "name": "Leather Boots",
+      "type": "equipment",
+      "slot": "feet",
+      "stats": { "dexterity": 2 }
+    },
+    {
+      "name": "Steel Boots",
+      "type": "equipment",
+      "slot": "feet",
+      "stats": { "constitution": 2 }
+    },
+    {
+      "name": "Swift Boots",
+      "type": "equipment",
+      "slot": "feet",
+      "stats": { "dexterity": 4 }
+    },
+    {
+      "name": "Heavy Boots",
+      "type": "equipment",
+      "slot": "feet",
+      "stats": { "constitution": 3, "dexterity": -1 }
+    },
+    {
+      "name": "Boots of Grace",
+      "type": "equipment",
+      "slot": "feet",
+      "stats": { "dexterity": 2, "charisma": 2 }
+    },
+    {
+      "name": "Fire Bomb",
+      "type": "consumable",
+      "effect": {
+        "damage": 15,
+        "target": "enemy"
+      }
+    },
+    {
+      "name": "Poison Vial",
+      "type": "consumable",
+      "effect": {
+        "damage": 5,
+        "duration": 3,
+        "target": "enemy"
+      }
+    },
+    {
+      "name": "Experience Scroll",
+      "type": "consumable",
+      "effect": {
+        "xp": 25
+      }
+    },
+    {
+      "name": "Ancient Tome",
+      "type": "consumable",
+      "effect": {
+        "xp": 50
+      }
+    },
+    {
+      "name": "Rage Potion",
+      "type": "consumable",
+      "effect": {
+        "attack_boost": 5,
+        "duration": 3
+      }
+    },
+    {
+      "name": "Elixir of Power",
+      "type": "consumable",
+      "effect": {
+        "attack_boost": 10,
+        "duration": 2
+      }
+    },
+    {
+      "name": "Cursed Potion",
+      "type": "consumable",
+      "effect": {
+        "damage": 10,
+        "target": "self"
+      }
+    },
+    {
+      "name": "Blood Pact",
+      "type": "consumable",
+      "effect": {
+        "damage": 10,
+        "attack_boost": 8,
+        "duration": 3,
+        "target": "self"
+      }
+    }
+]
 }
