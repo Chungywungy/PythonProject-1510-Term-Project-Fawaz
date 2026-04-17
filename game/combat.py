@@ -8,7 +8,7 @@ def get_available_actions(character: dict, class_data: dict, cooldowns: dict) ->
     pathway = None
     for pathway_key, pathway_data in class_data.items():
         if pathway_data["name"] == character_class or any(level_data["name"] == character_class
-                                                          for level_data in pathway_data["levels"].values()):
+                                                          for level_data in pathway_data["level"].values()):
             pathway = pathway_data
             break
 
