@@ -77,7 +77,6 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
     - "C" represents chest events
     - "S" represents stair tiles
 
-    The map is printed in rows of 5 columns.
 
     :param character: A dictionary containing character data, including location coordinates
     :param atlas: A dictionary representing the multi-layer map structure
@@ -118,6 +117,41 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
 
 
 def describe_location(events: dict, character: dict, atlas: dict) -> None:
+    """
+    Describe the player's current location based on the atlas tile and event data.
+
+    The function checks the character's current coordinates and retrieves the tile
+    value from the atlas. It then prints a description depending on the tile type:
+
+    - None → empty ground
+    - 11 → stairs to next floor
+    - otherwise → event description from events dictionary
+
+    If the character has no valid location data, a KeyError is raised.
+
+    :param events: Dictionary of event data indexed by tile ID
+    :param character: Character dictionary containing location coordinates
+    :param atlas: Multi-layer map structure containing tile positions
+    :precondition: character contains valid "location" with x, y, z coordinates
+                   atlas contains valid positions for the given coordinates
+                   events contains valid descriptions for event IDs
+    :postcondition: print a description of the current location
+    :returns: None
+
+    >>> events = {1: {"description": "A dusty old chest."}}
+    >>> atlas = {0: {"position": {(0, 0): 1}}}
+    >>> character = {"character": {"location": {"character_x": 0, "character_y": 0, "character_z": 0}}}
+    >>> describe_location(events, character, atlas)
+    A dusty old chest.
+
+    >>> atlas = {0: {"position": {(0, 0): None}}}
+    >>> describe_location({}, character, atlas)
+    You are standing on empty ground.
+
+    >>> atlas = {0: {"position": {(0, 0): 11}}}
+    >>> describe_location({}, character, atlas)
+    Stairs leading to the next floor are here.
+    """
     try:
         character_x = character["character"]["location"]["character_x"]
         character_y = character["character"]["location"]["character_y"]
