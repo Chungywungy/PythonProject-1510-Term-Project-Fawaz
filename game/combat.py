@@ -323,6 +323,31 @@ def use_item(character: dict, enemy: dict) -> tuple | None:
 
 
 def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
+    """
+   Apply the effects of a consumable item to the character and/or enemy.
+
+   The function processes different possible item effects, including healing,
+   direct damage, XP gain, and temporary attack buffs. Effects are applied
+   based on the item dictionary structure and may modify both the character
+   and enemy state.
+
+   Supported effects:
+   - "heal": Restores health up to the character's maximum health
+   - "damage": Deals damage to an enemy or the character depending on target
+   - "xp": Adds experience points to the character's pending XP
+   - "attack_boost": Applies a temporary attack buff for a set duration
+
+   :param character: A dictionary containing character data, including stats,
+                     current health/mana, and optional temporary effects
+   :param item: A dictionary representing the item being used, containing an
+                "effect" dictionary and a "name"
+   :param enemy: A dictionary representing the current enemy (may be None for
+                 self-targeting effects)
+   :precondition: item must contain a valid "effect" dictionary with supported keys
+   :precondition: character must contain "base_stats", "derived_stats", and "current"
+   :postcondition: character and/or enemy are modified based on item effects
+   :returns: A tuple containing the updated (character, enemy)
+   """
     effect = item["effect"]
     name = item["name"]
 
