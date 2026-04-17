@@ -1,32 +1,31 @@
 import random
-from character import award_xp
+from game.character import award_xp
 
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     """
-   Retrieve the list of actions currently available to a character based on their class,
-   level, and cooldown status.
+    Retrieve the list of actions currently available to a character based on their class,
+    level, and cooldown status.
 
-   The function identifies the correct pathway from class_data by matching the character's
-   class name. It then retrieves the actions available at the character's current level
-   and filters out any actions that are still on cooldown.
+    The function identifies the correct pathway from class_data by matching the character's
+    class name. It then retrieves the actions available at the character's current level
+    and filters out any actions that are still on cooldown.
 
-   :param character: A dictionary containing character data, including class and level
-   :param class_data: A dictionary containing all class/pathway definitions and actions
-   :param cooldowns: A dictionary mapping action names to remaining cooldown turns
-   :precondition: character contains valid "class" and "level" fields
+    :param character: A dictionary containing character data, including class and level
+    :param class_data: A dictionary containing all class/pathway definitions and actions
+    :param cooldowns: A dictionary mapping action names to remaining cooldown turns
+    :precondition: character contains valid "class" and "level" fields
                   class_data contains matching pathway and level data for the class
                   cooldowns maps action names to integers (0 means available)
-   :postcondition: compute available actions
-   :returns: A dictionary of actions that are currently available for use
-   :raises ValueError: if no matching pathway is found for the character's class
-   """
+    :postcondition: compute available actions
+    :returns: A dictionary of actions that are currently available for use
+    :raises ValueError: if no matching pathway is found for the character's class
+    """
     character_class = character["character"]["class"]
     character_level = str(character["character"]["level"])
 
     pathway = None
-    for pathway_key, pathway_data in class_data.items():
-        if pathway_data["name"] == character_class or any(level_data["name"] == character_class
-                                                          for level_data in pathway_data["level"].values()):
+    for pathway_data in class_data.values():
+        if pathway_data["name"] == character_class:
             pathway = pathway_data
             break
 
@@ -35,12 +34,38 @@ def get_available_actions(character: dict, class_data: dict, cooldowns: dict) ->
 
     actions = pathway["level"][character_level]["actions"]
 
-    available_actions = {key: action for key, action in actions.items() if cooldowns.get(key, 0) == 0}
+    available_actions = {
+        key: action
+        for key, action in actions.items()
+        if cooldowns.get(key, 0) == 0
+    }
 
     return available_actions
 
 
 def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> tuple | None:
+    """
+    Display the combat menu and retrieve the player's chosen combat command.
+
+    The function builds a list of available actions based on the character's class,
+    level, mana, and cooldown status. It then presents a menu including actions,
+    items, and flee options, and prompts the user to select an option.
+
+    If an action is selected, the function checks whether the character has enough
+    mana before confirming the choice.
+
+    :param character: A dictionary containing character stats, current health, mana,
+                      and base/derived attributes
+    :param classes_data: A dictionary containing class definitions, levels, and actions
+    :param cooldowns: A dictionary mapping action names to remaining cooldown values
+    :precondition: character contains valid "base_stats", "derived_stats", and "current"
+                   classes_data contains valid actions for the character's class and level
+                   cooldowns maps action keys to integers (0 = available)
+    :postcondition: print a menu and prompt the user until a valid choice is made
+    :returns: A tuple in the form (choice_type, action_key) where:
+              - choice_type is "action", "items", or "flee"
+              - action_key is the selected action key or None for non-action choices
+    """
     available_actions = get_available_actions(character, classes_data, cooldowns)
 
     current_mana = character["character"]["current"]["mana"]
