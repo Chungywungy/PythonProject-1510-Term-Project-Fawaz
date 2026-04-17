@@ -104,8 +104,8 @@ def character_class(file: str):
         pick_class = str(input("\nWhat is your character's pathway? ")).strip().title()
 
         if len(pick_class) == 0:
-           print("\nyour character's pathway can't be empty.")
-           continue
+            print("\nyour character's pathway can't be empty.")
+            continue
         if pick_class not in pathway_names:
             print(f"\n{pick_class} is not a valid pathway. Please choose from the list of available pathways.")
             continue
@@ -123,7 +123,7 @@ def character_class(file: str):
     return pick_class
 
 
-def get_effective_stats(character:dict, items_data: dict) -> dict:
+def get_effective_stats(character: dict, items_data: dict) -> dict:
     """
     Calculate and return a character's effective stats based on base stats,
     trait bonuses, and equipped items.
@@ -159,7 +159,7 @@ def get_effective_stats(character:dict, items_data: dict) -> dict:
     return effective
 
 
-def apply_class_traits(character:dict, class_data: dict) -> dict:
+def apply_class_traits(character: dict, class_data: dict) -> dict:
     """
     Apply class trait bonuses to a character based on their class and level.
 

@@ -4,7 +4,8 @@ from playsound3 import playsound
 
 from game import character, file_tampering, map, combat, progression
 
-def god_mode(character_data:dict ) -> dict:
+
+def god_mode(character_data: dict) -> dict:
     """
     Prompt the user to enter a secret code to activate god mode for the character.
 
@@ -85,7 +86,6 @@ def game() -> None:
                 ]
             }
         }
-
 
     boss_z = layers - 1
     boss_placed = False
@@ -171,7 +171,6 @@ def game() -> None:
                     atlas[character_z]["position"][(character_y, character_x)] = None
                     print("\nThe area is now clear.")
                 map.display_map(character_data, atlas, events_by_id)
-
 
             if not character.is_alive(character_data):
                 print("Game Over! Your character has died.")

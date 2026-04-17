@@ -181,7 +181,6 @@ def get_user_choice() -> int:
     return direction
 
 
-
 def move_character(character: dict, direction: int) -> dict:
     """
     Move a character in one of four cardinal directions by updating their coordinates.
@@ -289,7 +288,6 @@ def traverse_stairs(character: dict, direction: str, atlas: dict) -> dict:
         print("You can't go that way.")
 
     return character
-
 
 
 def main():
