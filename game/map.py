@@ -32,6 +32,8 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
             display.append("@")
         elif events[value].get("type") == "chest":
             display.append("C")
+        elif events[value].get("type") == "stairs":
+            display.append("S")
         else:
             display.append("-")
 
@@ -115,6 +117,21 @@ def validate_move(direction: int, character: dict, atlas: dict) -> bool:
         return True
     else:
         return False
+
+
+def traverse_stairs(character: dict, direction: str, atlas: dict) -> dict:
+    current_z = character["character"]["location"]["character_z"]
+
+    if direction == "down" and current_z < len(atlas) - 1:
+        character["character"]["location"]["character_z"] += 1
+        print(f"You descend to floor {character['character']['location']['character_z'] + 1}.")
+    elif direction == "up" and current_z > 0:
+        character["character"]["location"]["character_z"] -= 1
+        print(f"You ascend to floor {character['character']['location']['character_z'] + 1}.")
+    else:
+        print("You can't go that way.")
+
+    return character
 
 
 
