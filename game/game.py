@@ -59,7 +59,7 @@ def game() -> None:
 
     rows = 5
     columns = 5
-    layers = 3
+    layers = 4
 
     atlas = map.build(layers, rows, columns)
     events = file_tampering.open_json("json_files/events.json")
