@@ -397,6 +397,19 @@ def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
 
 
 def flee(character: dict) -> bool:
+    """
+    Attempt to flee from combat with a 50% success rate.
+
+    The function generates a random value to determine whether the character
+    successfully escapes from combat. If the value is 0.5 or higher, the flee
+    attempt succeeds; otherwise, it fails.
+
+    :param character: A dictionary containing character data, including the
+                      character's name under "character" -> "name"
+    :precondition: character must contain "character" and "name" keys
+    :postcondition: print a message indicating success or failure of fleeing
+    :returns: True if the character successfully flees, False otherwise
+    """
     chance = random.random()
 
     if chance >= 0.5:
