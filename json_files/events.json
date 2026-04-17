@@ -151,12 +151,12 @@
       "description": "The Shadow Lord stands before you, radiating dark energy!",
       "enemy": {
           "name": "Shadow Lord",
-          "health": 100,
+          "health": 200,
           "attacks": [
-              {"name": "Dark Bolt", "damage": 15, "description": "The Shadow Lord fires a bolt of dark energy!"},
-              {"name": "Shadow Slash", "damage": 12, "description": "A blade of shadow cuts through the air!"},
-              {"name": "Soul Drain", "damage": 10, "description": "You feel your life force being drained!"},
-              {"name": "Dark Pulse", "damage": 18, "description": "A wave of darkness crashes over you!"}
+              {"name": "Dark Bolt", "damage": 37, "description": "The Shadow Lord fires a bolt of dark energy!"},
+              {"name": "Shadow Slash", "damage": 40, "description": "A blade of shadow cuts through the air!"},
+              {"name": "Soul Drain", "damage": 50, "description": "You feel your life force being drained!"},
+              {"name": "Dark Pulse", "damage": 67, "description": "A wave of darkness crashes over you!"}
           ]
       }
   }
