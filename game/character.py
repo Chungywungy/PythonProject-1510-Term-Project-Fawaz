@@ -1,8 +1,20 @@
-import json
-from file_tampering import open_json
+from game.file_tampering import open_json
 
 
 def character_name() -> str:
+    """
+    Prompt the user to input and confirm a character name.
+
+    The function asks the user to enter a name, formats it, and then
+    requests confirmation. If no name is provided, the user is prompted
+    to accept a default name ("Amon") or re-enter a name. The process
+    repeats until a valid confirmation is received.
+
+    :param: None
+    :precondition: The user is able to provide input via the console
+    :postcondition: valid character name is returned as a string
+    :returns: the confirmed character name as a string
+    """
     mc_name = str(input("What is your characters' name? ").strip().title())
 
     while True:
