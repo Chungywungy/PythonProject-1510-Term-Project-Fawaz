@@ -20,17 +20,26 @@ Chungywungy
 PythonProject-1510-Term-Project-Fawaz/
 │
 ├── game/
+│   ├── __init__.py
 │   ├── character.py
 │   ├── combat.py
 │   ├── file_tampering.py
 │   ├── game.py
-│   └── map.py
+│   ├── map.py
+│   └── progression.py
 │
 ├── json_files/
 │   ├── character.json
 │   ├── classes.json
 │   ├── events.json
 │   └── items.json
+│
+├── sounds/
+│   ├── clavar_la_espada_shiro_sagisu.mp3
+│   ├── escalon_shiro_sagisu.mp3
+│   ├── la_distancia_para_un_duelo_shiro_sagisu.mp3
+│   ├── nube_negra_shiro_sagisu.mp3
+│   └── test.mp3
 │
 ├── tests/
 │   ├── __init__.py
@@ -73,7 +82,7 @@ PythonProject-1510-Term-Project-Fawaz/
 
 1. Open terminal.
 2. Navigate to the location of this project.
-3. Run game.py from the terminal.
+3. Run game.py from the terminal with ```python -m game.game```
 
 ---
 
@@ -86,6 +95,11 @@ PythonProject-1510-Term-Project-Fawaz/
 - Combat timing and difficulty are balanced around turn-based decision making.
 - Using items in combat does not use up a turn.
 - one of the classes is significantly stronger than the other.
+
+Legend:
+  - S = stairs
+  - C = chests
+  - "-" = random event
 
 ---
 
@@ -101,6 +115,7 @@ PythonProject-1510-Term-Project-Fawaz/
 | `random` module usage | `map.py`, `combat.py`, `enemy_behaviour` |
 | File handling | `file_tampering.py` |
 | Formatted output | throughout `combat.py` and `game.py` |
+| Itertools | `combat.combat` and `combat.boss_combat`|
 
 ---
 
