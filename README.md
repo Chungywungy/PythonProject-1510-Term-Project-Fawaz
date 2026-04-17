@@ -16,82 +16,76 @@ A01443086
 Chungywungy
 
 ## PROJECT STRUCTURE
+```text
 PythonProject-1510-Term-Project-Fawaz/
 │
 ├── game/
-│ ├── character.py
-│ ├── combat.py
-│ ├── file_tampering.py
-│ ├── game.py
-│ └── map.py
+│   ├── character.py
+│   ├── combat.py
+│   ├── file_tampering.py
+│   ├── game.py
+│   └── map.py
 │
 ├── json_files/
-│ ├── character.json
-│ ├── classes.json
-│ ├── events.json
-│ └── items.json
+│   ├── character.json
+│   ├── classes.json
+│   ├── events.json
+│   └── items.json
 │
 ├── tests/
-│ ├── init.py
-│ ├── test_apply_class_traits.py
-│ ├── test_apply_item_effect.py
-│ ├── test_award_xp.py
-│ ├── test_build.py
-│ ├── test_calculate_damage.py
-│ ├── test_character_class.py
-│ ├── test_character_name.py
-│ ├── test_create_character.py
-│ ├── test_describe_location.py
-│ ├── test_display_inventory.py
-│ ├── test_enemy_behaviour.py
-│ ├── test_equip_item.py
-│ ├── test_flee.py
-│ ├── test_get_avaliable_actions.py
-│ ├── test_get_effective_stats.py
-│ ├── test_get_user_choice.py
-│ ├── test_level_up.py
-│ ├── test_move_character.py
-│ ├── test_open_json.py
-│ ├── test_perform_action.py
-│ ├── test_player_name.py
-│ ├── test_tick_cooldowns.py
-│ ├── test_tick_temp_buffs.py
-│ ├── test_traverse_stairs.py
-│ ├── test_unequip_item.py
-│ ├── test_use_item.py
-│ └── test_validate_move.py
+│   ├── __init__.py
+│   ├── test_apply_class_traits.py
+│   ├── test_apply_item_effect.py
+│   ├── test_award_xp.py
+│   ├── test_build.py
+│   ├── test_calculate_damage.py
+│   ├── test_character_class.py
+│   ├── test_character_name.py
+│   ├── test_create_character.py
+│   ├── test_describe_location.py
+│   ├── test_display_inventory.py
+│   ├── test_enemy_behaviour.py
+│   ├── test_equip_item.py
+│   ├── test_flee.py
+│   ├── test_get_available_actions.py
+│   ├── test_get_effective_stats.py
+│   ├── test_get_user_choice.py
+│   ├── test_level_up.py
+│   ├── test_move_character.py
+│   ├── test_open_json.py
+│   ├── test_perform_action.py
+│   ├── test_player_name.py
+│   ├── test_tick_cooldowns.py
+│   ├── test_tick_temp_buffs.py
+│   ├── test_traverse_stairs.py
+│   ├── test_unequip_item.py
+│   ├── test_use_item.py
+│   └── test_validate_move.py
 │
 ├── .gitignore
 ├── character_information.pdf
 ├── flowchart.pdf
 └── README.md
-
+```
 ---
 
 ## INSTRUCTIONS
 
 1. Open terminal.
-2. Go to terminal settings \(cmd + ,).
-3. Drag and drop map.terminal in to the profile display on the right.
-4. Open a terminal window with the profile 'Map' **DO NOT RESIZE THIS WINDOW** \(feel free to move it as you wish).
-5. In the map window navigate to the location of this project. (the text cursor is the same colour as the background)
-6. In the map terminal window run display_map.py \(this is an auto refreshing map that updates every few seconds).
-   Its use is optional, but I highly recommend it.
-7. Open a second terminal window in the profile of your choice.
-8. Resize the window to over 100 characters wide and 40 tall.
-9. Navigate to the location of this project.
-10. Run game.py from the terminal.
+2. Navigate to the location of this project.
+3. Run game.py from the terminal.
 
 ---
 
 ## HELPFUL INFORMATION
 
-- Don't skip the tutorial the first time you run the game.
 - The game is designed to be challenging and may require multiple runs.
 - Avoid unnecessary exploration early game unless you are prepared for fights.
 - The boss encounter is placed on the final floor.
 - Map generation includes stairs, fights, and special event tiles.
 - Combat timing and difficulty are balanced around turn-based decision making.
+- Using items in combat does not use up a turn.
+- one of the classes is significantly stronger than the other.
 
 ---
 
