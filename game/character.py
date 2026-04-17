@@ -78,14 +78,28 @@ def player_name() -> str:
 
 
 def character_class(file: str):
+    """
+    Prompt the user to select and confirm a character pathway from a JSON file.
+
+    The function loads pathway data from a JSON file, displays the available
+    pathway names, and prompts the user to choose one. The user must enter a
+    valid, non-empty pathway name and confirm their selection. The process
+    repeats until a valid and confirmed pathway is chosen.
+
+    :param file: the path to the JSON file containing pathway data as a string
+    :precondition: file is a valid path to a JSON file with properly formatted pathway data
+    :postcondition: valid character pathway name is returned as a string
+    :returns: the confirmed character pathway name as a string
+    """
     class_data = open_json(file)
 
     pathway_names = {data["name"]: key for key, data in class_data.items()}
 
 
     while True:
+        print("Available pathways: " + ", ".join(pathway_names.keys()))
         pick_class = str(input("What is your character's pathway? ")).strip().title()
-        print("Available pathways: "+", ".join(pathway_names.keys()))
+
 
         if len(pick_class) == 0:
            print("your character's pathway can't be empty.")
