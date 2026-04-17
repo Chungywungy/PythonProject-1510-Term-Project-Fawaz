@@ -4,6 +4,37 @@ from playsound3 import playsound
 
 from game import character, file_tampering, map, combat, progression
 
+def god_mode(character_data:dict ) -> dict:
+    """
+    Prompt the user to enter a secret code to activate god mode for the character.
+
+    The function repeatedly asks the user to guess the name of a specific MMO.
+    If the correct answer ("ffxiv") is provided, the character's health is set
+    to a very high value (9999), effectively enabling god mode. If the user
+    answers incorrectly, they may request a hint or exit the prompt.
+
+    :param character_data: a dictionary containing the character's full data,
+                           including nested "character" -> "current" -> "health"
+    :precondition: character_data contains valid nested keys for modifying health
+    :postcondition: enter the correct code and the character's health will be set
+                    to 9999; otherwise, no changes are made
+    :returns: the updated character_data dictionary
+    """
+    while True:
+        secret_code = str(input("What is the name of the best mmo ever? ")).lower().strip()
+        if secret_code == "ffxiv":
+            character_data["character"]["current"]["health"] = 9999
+            print("God mode activated")
+            break
+        else:
+            hint = str(input("Would you like a hint? (y/n) ")).lower().strip()
+            if hint == "y":
+                print("Hint: It's not WoW :)")
+                continue
+            else:
+                print("Enjoy the game!")
+                break
+    return character_data
 
 
 def game() -> None:
@@ -75,6 +106,7 @@ def game() -> None:
     class_name = character.character_class("json_files/classes.json")
     character_data = character.create_character(character_name, player_name, character_file, class_name,
                                                 class_data, items_data)
+    character_data = god_mode(character_data)
 
     map.display_map(character_data, atlas, events_by_id)
     map.describe_location(events_by_id, character_data, atlas)

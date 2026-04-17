@@ -3,6 +3,7 @@ from game.progression import award_xp
 from playsound3 import playsound
 from itertools import cycle
 
+
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     """
     Retrieve the list of actions currently available to a character based on their class,
@@ -442,12 +443,10 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
     damage = chosen_attack["damage"]
     description = chosen_attack["description"]
 
-
     character["character"]["current"]["health"] -= damage
     print(f"\n{description}\nYou take {damage} damage!\n"
           f"You have {character["character"]["current"]["health"]} HP remaining.")
     return character
-
 
 
 def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, items_data) -> bool:
