@@ -75,8 +75,8 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
     constitution = character["character"]["base_stats"]["constitution"]
     max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
 
-    print(f"--- {character['character']['name']} | HP: {current_health} | mana: {current_mana} ---")
-    print("What will you do?")
+    print(f"\n--- {character['character']['name']} | HP: {current_health} | mana: {current_mana} ---")
+    print("\nWhat will you do?")
 
     menu = {}
     index = 1
@@ -87,7 +87,7 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
         cooldown_string = f"Cooldown: {cooldown}" if cooldown > 0 else ""
         affordable = "" if current_mana >= mana_cost else "Not enough mana."
 
-        print(f"{index}: {action['name']} | {cost_string}{cooldown_string}{affordable}")
+        print(f"{index}: {action['name']} | {cost_string} {cooldown_string} {affordable}")
 
         menu[index] = ("action", key)
         index += 1
@@ -100,7 +100,7 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
 
     while True:
         try:
-            choice = int(input("Enter your choice: ").strip())
+            choice = int(input("\nEnter your choice: ").strip())
         except ValueError:
             print("Please enter an integer.")
             continue
@@ -316,7 +316,7 @@ def use_item(character: dict, enemy: dict) -> tuple | None:
                 return character, enemy
             elif 1 <= choice <= len(consumables):
                 item = consumables[choice - 1]
-                character = apply_item_effect(character, item, enemy)
+                character, enemy = apply_item_effect(character, item, enemy)
                 inventory.remove(item)
 
                 return character, enemy
@@ -358,11 +358,11 @@ def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
 
     if "heal" in effect:
         current_health = character["character"]["current"]["health"]
-        healed = min(effect["heal"], max_health) - current_health
+        healed = current_health + min(effect["heal"], max_health)
         character["character"]["current"]["health"] += healed
 
-        print(f"You use {name} and recover {healed} HP!")
-        print(f"Current HP: {current_health}/{max_health}")
+        print(f"You use {name} and gain {healed} HP!")
+        print(f"Current HP: {current_health}")
 
     if "damage" in effect:
         target = effect.get("target", "enemy")
