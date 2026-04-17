@@ -1,4 +1,5 @@
 import random
+import time
 
 from playsound3 import playsound
 
@@ -104,6 +105,12 @@ def game() -> None:
     character_name = character.character_name()
     player_name = character.player_name()
     class_name = character.character_class("json_files/classes.json")
+
+    print("\nChosen by forces long forgotten, you descend as a lone knight into the Eternal Dungeon.\n"
+          "Beneath its endless layers, a living darkness stirs, corrupting all it touches.\n"
+          "Steel your resolve. You are the last light it has yet to consume.", flush=True)
+    time.sleep(5)
+
     character_data = character.create_character(character_name, player_name, character_file, class_name,
                                                 class_data, items_data)
     character_data = god_mode(character_data)
