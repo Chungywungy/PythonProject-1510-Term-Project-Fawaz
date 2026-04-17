@@ -530,6 +530,27 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
 
 
 def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data: dict) -> bool:
+    """
+    Run a boss combat encounter between the player and a final boss enemy.
+
+    This function manages a turn-based combat loop similar to regular combat, but
+    with special boss rules (e.g., fleeing is disabled). The player can perform
+    actions or use items while cooldowns and temporary buffs are tracked. The boss
+    acts after the player's turn when applicable. The fight continues until either
+    the boss or the player is defeated.
+
+    :param character: A dictionary containing the player character state, including
+                      stats, inventory, current health/mana, and class data
+    :param boss_enemy: A dictionary representing the boss enemy, including at least
+                       "name" and "health"
+    :param class_data: Class/pathway data used for available actions and scaling abilities
+    :param items_data: Item database used for consumable effects
+    :precondition: character must contain valid stats, location, and current health/mana
+    :precondition: boss_enemy must contain valid "name" and "health" keys
+    :precondition: class_data must match the character's class structure
+    :postcondition: The boss fight modifies character and boss state until one is defeated
+    :returns: True if the player defeats the boss, False if the player is defeated
+    """
     cooldowns = {}
 
     print(f"A {boss_enemy['name']} appears! This is the final challenge!")
