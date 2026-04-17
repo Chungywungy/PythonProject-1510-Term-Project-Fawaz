@@ -217,6 +217,19 @@ def tick_cooldowns(cooldowns: dict) -> dict:
 
 
 def tick_temp_buffs(character: dict) -> dict:
+    """
+    Decrease the duration of temporary buffs on a character and remove expired buffs.
+
+    The function iterates through all active temporary buffs, reducing their remaining
+    turn duration by 1. If a buff's duration reaches zero or below, it is removed from
+    the character and a message is printed indicating that the buff has expired.
+
+    :param character: A dictionary containing character data, including optional "temp_buffs"
+    :precondition: If present, "temp_buffs" is a dictionary where each buff contains a
+                  "turns_remaining" integer value
+    :postcondition: reduce all buff durations by 1 and remove expired buffs
+    :returns: The updated character dictionary with modified temporary buffs
+    """
     buffs = character["character"].get("temp_buffs", {})
     expired = []
 
