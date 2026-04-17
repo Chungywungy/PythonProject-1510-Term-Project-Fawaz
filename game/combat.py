@@ -156,13 +156,13 @@ def display_inventory(character: dict) -> None:
     return
 
 
-def use_item(character: dict) -> dict | None:
+def use_item(character: dict, enemy: dict) -> tuple | None:
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
     if len(consumables) == 0:
         print("You have no consumable items!")
-        return character
+        return character, enemy
 
     display_inventory(character)
 
@@ -175,23 +175,25 @@ def use_item(character: dict) -> dict | None:
         else:
             if choice == 0:
                 print("You put your bag away.")
-                return character
+                return character, enemy
             elif 1 <= choice <= len(consumables):
                 item = consumables[choice - 1]
-                character = apply_item_effect(character, item)
+                character = apply_item_effect(character, item, enemy)
                 inventory.remove(item)
-                return character
+
+                return character, enemy
             else:
                 print("Please enter a number corresponding to one of the options.")
 
 
-def apply_item_effect(character: dict, item: dict) -> dict:
+def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
     effect = item["effect"]
     name = item["name"]
 
+    constitution = character["character"]["base_stats"]["constitution"]
+    max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+
     if "health" in effect:
-        constitution = character["character"]["base_stats"]["constitution"]
-        max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
         current_health = character["character"]["current"]["health"]
         healed = effect["heal"], max_health - current_health
         character["character"]["current"]["health"] += healed
@@ -199,7 +201,38 @@ def apply_item_effect(character: dict, item: dict) -> dict:
         print(f"You use {name} and recover {healed} HP!")
         print(f"Current HP: {current_health}/{max_health}")
 
-    return character
+    if "damage" in effect:
+        target = effect.get("target", "enemy")
+        damage = effect["damage"]
+        duration = effect.get("duration", 0)
+
+        if target == "enemy" and enemy is not None:
+            enemy["health"] -= damage
+            if duration > 0:
+                print(f"You use {name}! The {enemy['name']} takes {damage} damage per turn for {duration} turns.\n"
+                      f"{enemy['name']} has {enemy['health']} HP remaining.")
+            else:
+                print(f"You use {name}! The {enemy['name']} takes {damage} damage.\n"
+                      f"{enemy['name']} has {enemy['health']} HP remaining.")
+        elif target == "self":
+            character["character"]["current"]["health"] -= damage
+            print(f"You use {name}! You take {damage} damage.\n"
+                  f"You have {character['character']['current']['health']} HP remaining.")
+
+    if "xp" in effect:
+        character["character"]["pending_xp"] = character["character"].get("pending_xp", 0) + effect["xp"]
+
+        print(f"You use {name} and gain {effect['xp']} xp!")
+
+    if "attack_boost" in effect:
+        duration = effect.get("duration", 1)
+        boost = effect["attack_boost"]
+        buffs = character["character"].setdefault("temp_buffs", {})
+        buffs["attack_boost"] = {"amount": boost, "turns_remaining": duration}
+
+        print(f"You use {name}! Your attack power increases by {boost} for {duration} turns.")
+
+    return character, enemy
 
 
 def flee(character: dict) -> bool:
