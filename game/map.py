@@ -1,7 +1,32 @@
 import random
 
 
-def build(layers, rows, columns):
+def build(layers: int, rows: int, columns: int) -> dict:
+    """
+    Generate a multi-layer atlas map with randomly assigned tile values and guaranteed stair placement.
+
+    The function builds a 3D-like structure represented as nested dictionaries.
+    Each layer contains a grid of (row, column) positions mapped to tile IDs.
+
+    Tile values are randomly assigned:
+    - Values 1–10 represent normal tiles
+    - Value 11 represents a stair tile
+
+    The first tile in layer 0 at position (0, 0) is always set to None.
+
+    Stair rules:
+    - Each non-final layer must contain at least one stair tile (value 11)
+    - If no stairs are generated, one is forcibly added
+    - If multiple stairs exist, extra stairs are removed
+
+    :param layers: Number of layers in the atlas
+    :param rows: Number of rows per layer grid
+    :param columns: Number of columns per layer grid
+    :precondition: layers, rows, and columns are positive integers
+    :postcondition: generate a structured atlas dictionary with valid tile placement
+    :returns: a dictionary representing the full multi-layer atlas map
+    :raises TypeError: if layers, rows, or columns are not integers
+    """
     atlas = dict()
 
     if (type(layers) or type(rows) or type(columns)) != int:
@@ -9,9 +34,33 @@ def build(layers, rows, columns):
     else:
         for layer in range(layers):
             atlas[layer] = {"position": {}}
+
             for row in range(rows):
                 for column in range(columns):
-                    atlas[layer]["position"][(row, column)] = random.choice(range(1, 11))
+                    if layer == 0 and row == 0 and column == 0:
+
+                        atlas[layer]["position"][(row, column)] = None
+                    else:
+                        if layer < layers - 1:
+                            if random.random() < 0.1 and (row, column) != (0, 0):
+                                atlas[layer]["position"][(row, column)] = 11
+                            else:
+                                atlas[layer]["position"][(row, column)] = random.choice(range(1, 11))
+                        else:
+                            atlas[layer]["position"][(row, column)] = random.choice(range(1, 11))
+
+    for layer in range(layers - 1):
+        stair_count = sum(1 for pos_id in atlas[layer]["position"].values() if pos_id == 11)
+
+        if stair_count == 0:
+            positions = [(row, col) for row in range(rows) for col in range(columns)
+                         if (layer != 0 or (row, col) != (0, 0))]
+            random_pos = random.choice(positions)
+            atlas[layer]["position"][random_pos] = 11
+        elif stair_count > 1:
+            stair_positions = [pos for pos, pos_id in atlas[layer]["position"].items() if pos_id == 11]
+            for pos in stair_positions[1:]:
+                atlas[layer]["position"][pos] = random.choice(range(1, 11))
 
     return atlas
 
@@ -30,9 +79,11 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
 
         if (character_y, character_x) == position:
             display.append("@")
+        elif value is None:
+            display.append("-")
         elif events[value].get("type") == "chest":
             display.append("C")
-        elif events[value].get("type") == "stairs":
+        elif value == 11:
             display.append("S")
         else:
             display.append("-")
@@ -52,7 +103,13 @@ def describe_location(events: dict, character: dict, atlas: dict) -> None:
     except KeyError:
         raise KeyError("The character does not have a location.")
     else:
-        return print(events[atlas[character_z]["position"][(character_y, character_x)]]["description"])
+        event_id = atlas[character_z]["position"][(character_y, character_x)]
+        if event_id is None:
+            print("You are standing on empty ground.")
+        elif event_id == 11:
+            print("Stairs leading to the next floor are here.")
+        else:
+            return print(events[event_id]["description"])
 
 
 def get_user_choice() -> int:
