@@ -3,7 +3,7 @@ from character import award_xp
 
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     character_class = character["character"]["class"]
-    character_level = character["character"]["level"]
+    character_level = str(character["character"]["level"])
 
     pathway = None
     for pathway_key, pathway_data in class_data.items():
