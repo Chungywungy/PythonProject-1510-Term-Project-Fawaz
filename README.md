@@ -153,3 +153,4 @@ God mode code is on the 25th line of game.py
 - The game uses JSON files to define classes, items, and events.
 - Map generation is partially random, meaning each playthrough differs.
 - Combat system is modular and split across multiple files for maintainability.
+- Some events and attacks(mainly sun pathway) don't currently work.
