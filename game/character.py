@@ -11,7 +11,7 @@ def character_name() -> str:
     repeats until a valid confirmation is received.
 
     :param: None
-    :precondition: The user is able to provide input via the console
+    :precondition: the user is able to provide input via the console
     :postcondition: valid character name is returned as a string
     :returns: the confirmed character name as a string
     """
@@ -44,6 +44,19 @@ def character_name() -> str:
 
 
 def player_name() -> str:
+    """
+    Prompt the user to input and confirm their player name.
+
+    The function asks the user to enter their name and ensures that it is
+    not empty. The user must then confirm their input. If the name is empty
+    or not confirmed, the user is repeatedly prompted until a valid and
+    confirmed name is provided.
+
+    :param: None
+    :precondition: the user is able to provide input via the console
+    :postcondition: valid player name is returned as a string
+    :returns: the confirmed player name as a string
+    """
     player = str(input("What is your name oh mighty player? ")).strip().title()
 
     while True:
