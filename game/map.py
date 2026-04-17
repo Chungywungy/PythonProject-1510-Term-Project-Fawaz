@@ -197,6 +197,23 @@ def get_user_choice() -> int:
 
 
 def move_character(character: dict, direction: int) -> dict:
+    """
+    Move a character in one of four cardinal directions by updating their coordinates.
+
+    The function updates the character's location in-place based on the given
+    direction value:
+    - 1: North (decrease y)
+    - 2: East (increase x)
+    - 3: South (increase y)
+    - 4: West (decrease x)
+
+    :param character: A dictionary containing character data, including location coordinates
+    :param direction: An integer representing movement direction (1–4)
+    :precondition: character contains a valid "location" dictionary with "character_x" and "character_y"
+                   direction is expected to be an integer between 1 and 4
+    :postcondition: update the character's x or y coordinate based on direction
+    :returns: the updated character dictionary
+    """
     if direction == 1:
         character["character"]["location"]["character_y"] -= 1
     elif direction == 2:
