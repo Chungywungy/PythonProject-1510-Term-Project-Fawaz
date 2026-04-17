@@ -325,6 +325,23 @@ def equip_item(character: dict, item_name: str, items_data: dict) -> dict:
 
 
 def unequip_item(character: dict, slot: str, items_data: dict) -> dict:
+    """
+    Unequip an item from a character's equipment slot and return it to the inventory.
+
+    The function checks the specified equipment slot. If an item is equipped,
+    it retrieves the item data from items_data, adds the item back into the
+    character's inventory, and clears the equipment slot. If no item is
+    equipped in the slot, the function prints a message and returns the
+    character unchanged.
+
+    :param character: A dictionary containing character data, including inventory and equipment
+    :param slot: The equipment slot to unequip from (e.g., "weapon", "armor")
+    :param items_data: A dictionary containing item definitions and stats
+    :precondition: character contains valid "inventory" and "equipment" structures
+                   items_data contains matching item definitions for equipped items
+    :postcondition: remove item (if any) from equipment and add to inventory
+    :returns: the updated character dictionary
+    """
     item_name = character["character"]["equipment"].get(slot)
 
     if not item_name:
