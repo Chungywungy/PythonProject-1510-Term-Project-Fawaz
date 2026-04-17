@@ -276,6 +276,23 @@ def display_inventory(character: dict) -> None:
 
 
 def use_item(character: dict, enemy: dict) -> tuple | None:
+    """
+    Allow the player to use a consumable item from their inventory during combat.
+
+    The function filters the character's inventory for consumable items and displays
+    them using `display_inventory`. The player is then prompted to select an item
+    to use or cancel the action. If an item is selected, its effect is applied to
+    the character and/or enemy using `apply_item_effect`, and the item is removed
+    from the inventory.
+
+    :param character: A dictionary containing character data, including inventory
+    :param enemy: A dictionary representing the current enemy in combat
+    :precondition: character contains an "inventory" list under "character"
+                   consumable items contain valid data for `apply_item_effect`
+    :postcondition: select item if it's valid, remove it from inventory and
+                    apply its effect; otherwise, no changes occur
+    :returns: A tuple (character, enemy) after item usage or cancellation
+    """
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
 
