@@ -336,7 +336,7 @@
   },
   "pathway_2": {
     "name": "Twilight Giant",
-    "description": "A Pathway focused on traditional warrior abilities, both offensive and defensive. They possess extreme strength and can enter an almost unbreakable defensive stance.",
+    "description": "A Pathway focused on traditional warrior abilities, both offensive and defensive.\nThey possess extreme strength and can enter an almost unbreakable defensive stance.",
     "level": {
       "1": {
         "name": "Warrior",

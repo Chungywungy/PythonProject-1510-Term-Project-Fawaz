@@ -19,26 +19,26 @@ def character_name() -> str:
 
     while True:
         if len(mc_name) == 0:
-            validate = str(input("The default name is Amon. Are you sure about your choice? (y/n) ")).strip().lower()
+            validate = str(input("\nThe default name is Amon. Are you sure about your choice? (y/n) ")).strip().lower()
             if validate == 'y':
                 mc_name = 'Amon'
                 break
             elif validate == 'n':
-                mc_name = str(input("What is your characters' name? ").strip().title())
+                mc_name = str(input("\nWhat is your characters' name? ").strip().title())
                 continue
             else:
-                print("Please input 'y' or 'n'.")
+                print("\nPlease input 'y' or 'n'.")
                 continue
         else:
             validate = str(
-                input(f"Your character's name is {mc_name}. Are you sure about that? (y/n) ")).strip().lower()
+                input(f"\nYour character's name is {mc_name}. Are you sure about that? (y/n) ")).strip().lower()
             if validate == 'y':
                 break
             elif validate == 'n':
-                mc_name = str(input("What is your characters' name? ").strip().title())
+                mc_name = str(input("\nWhat is your characters' name? ").strip().title())
                 continue
             else:
-                print("Please input 'y' or 'n'.")
+                print("\nPlease input 'y' or 'n'.")
                 continue
     return mc_name
 
@@ -57,22 +57,22 @@ def player_name() -> str:
     :postcondition: valid player name is returned as a string
     :returns: the confirmed player name as a string
     """
-    player = str(input("What is your name oh mighty player? ")).strip().title()
+    player = str(input("\nWhat is your name oh mighty player? ")).strip().title()
 
     while True:
         if len(player) == 0:
-            player = str(input("You can't have no name. Now tell me what is your name? ")).strip().title()
+            player = str(input("\nYou can't have no name. Now tell me what is your name? ")).strip().title()
             continue
         else:
             validate = str(
-                input(f"Your name is {player}. Are you sure about that? (y/n) ")).strip().lower()
+                input(f"\nYour name is {player}. Are you sure about that? (y/n) ")).strip().lower()
             if validate == 'y':
                 break
             elif validate == 'n':
-                player = str(input("What is your name, player? ").strip().title())
+                player = str(input("\nWhat is your name, player? ").strip().title())
                 continue
             else:
-                print("Please input 'y' or 'n'.")
+                print("\nPlease input 'y' or 'n'.")
                 continue
     return player
 
@@ -95,21 +95,22 @@ def character_class(file: str):
 
     pathway_names = {data["name"]: key for key, data in class_data.items()}
 
-
     while True:
-        print("Available pathways: " + ", ".join(pathway_names.keys()))
-        pick_class = str(input("What is your character's pathway? ")).strip().title()
+        print("\nAvailable pathways:")
 
+        for key, data in class_data.items():
+            print(f"{data['name']}: {data['description']}")
+
+        pick_class = str(input("\nWhat is your character's pathway? ")).strip().title()
 
         if len(pick_class) == 0:
-           print("your character's pathway can't be empty.")
+           print("\nyour character's pathway can't be empty.")
            continue
         if pick_class not in pathway_names:
-            print(f"{pick_class} is not a valid pathway. Please choose from the list of available pathways.")
+            print(f"\n{pick_class} is not a valid pathway. Please choose from the list of available pathways.")
             continue
 
-        print(f"")
-        validate = str(input(f"your character will follow the {pick_class} pathway.\n"
+        validate = str(input(f"\nyour character will follow the {pick_class} pathway.\n"
                              f"Are you sure about that? (y/n) ")).strip().lower()
 
         if validate == 'y':
