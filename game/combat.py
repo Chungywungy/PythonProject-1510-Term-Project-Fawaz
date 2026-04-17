@@ -2,6 +2,24 @@ import random
 from character import award_xp
 
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
+    """
+   Retrieve the list of actions currently available to a character based on their class,
+   level, and cooldown status.
+
+   The function identifies the correct pathway from class_data by matching the character's
+   class name. It then retrieves the actions available at the character's current level
+   and filters out any actions that are still on cooldown.
+
+   :param character: A dictionary containing character data, including class and level
+   :param class_data: A dictionary containing all class/pathway definitions and actions
+   :param cooldowns: A dictionary mapping action names to remaining cooldown turns
+   :precondition: character contains valid "class" and "level" fields
+                  class_data contains matching pathway and level data for the class
+                  cooldowns maps action names to integers (0 means available)
+   :postcondition: compute available actions
+   :returns: A dictionary of actions that are currently available for use
+   :raises ValueError: if no matching pathway is found for the character's class
+   """
     character_class = character["character"]["class"]
     character_level = str(character["character"]["level"])
 
@@ -321,8 +339,46 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
     return False
 
 
-def boss_behaviour():
-    pass
+def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data: dict) -> bool:
+    cooldowns = {}
+
+    print(f"A {boss_enemy['name']} appears! This is the final challenge!")
+
+    while boss_enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
+        choice_type, action_key = get_combat_command(character, class_data, cooldowns)
+
+        enemy_turn = False
+
+        if choice_type == "action":
+            action = get_available_actions(character, class_data, cooldowns)[action_key]
+            boss_enemy, cooldowns = perform_action(character, boss_enemy, action_key, action, cooldowns)
+
+            if boss_enemy["health"] <= 0:
+                print(f"You defeated the {boss_enemy['name']}!")
+                return True
+            enemy_turn = True
+
+        elif choice_type == "items":
+            character, boss_enemy = use_item(character, boss_enemy)
+            if boss_enemy is not None and boss_enemy["health"] <= 0:
+                print(f"You defeated the {boss_enemy['name']}!")
+                return True
+            enemy_turn = False
+
+        elif choice_type == "flee":
+            print("You cannot flee from a boss!")
+            enemy_turn = False
+
+        if enemy_turn and character["character"]["current"]["health"] > 0:
+            character = enemy_behaviour(character, boss_enemy)
+            cooldowns = tick_cooldowns(cooldowns)
+            character = tick_temp_buffs(character)
+
+            if character["character"]["current"]["health"] <= 0:
+                print(f"{character['character']['name']} has been defeated!")
+                return False
+
+    return False
 
 
 def main():
