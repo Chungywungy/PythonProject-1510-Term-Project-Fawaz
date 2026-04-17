@@ -444,7 +444,7 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
 
 
     character["character"]["current"]["health"] -= damage
-    print(f"{description}\nYou take {damage} damage!\n"
+    print(f"\n{description}\nYou take {damage} damage!\n"
           f"You have {character["character"]["current"]["health"]} HP remaining.")
     return character
 
@@ -520,7 +520,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
         elif choice_type == "items":
             character, enemy = use_item(character, enemy)
             if enemy is not None and enemy["health"] <= 0:
-                print(f"You defeated the {enemy['name']}!")
+                print(f"\nYou defeated the {enemy['name']}!")
                 xp = xp_rewards.get(enemy["name"], 10)
                 character = award_xp(character, xp, class_data, items_data)
                 sound.stop()
@@ -539,7 +539,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
             character = tick_temp_buffs(character)
 
             if character["character"]["current"]["health"] <= 0:
-                print(f"{character['character']['name']} has been defeated!")
+                print(f"\n{character['character']['name']} has been defeated!")
                 sound.stop()
                 return False
     sound.stop()
@@ -572,7 +572,7 @@ def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data:
 
     cooldowns = {}
 
-    print(f"A {boss_enemy['name']} appears! This is the final challenge!")
+    print(f"The {boss_enemy['name']} appears! This is the final challenge!")
 
     while boss_enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
         if not sound.is_alive():
