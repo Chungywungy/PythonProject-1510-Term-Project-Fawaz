@@ -226,6 +226,28 @@ def move_character(character: dict, direction: int) -> dict:
 
 
 def validate_move(direction: int, character: dict, atlas: dict) -> bool:
+    """
+    Validate whether a character can move to a target position on the atlas map.
+
+    The function calculates the target coordinates based on the given direction
+    and checks whether the destination tile exists in the current layer of the atlas.
+    A move is considered valid only if the target position exists and contains a
+    truthy value in the atlas.
+
+    Direction mapping:
+    - 1: North (y - 1)
+    - 2: East (x + 1)
+    - 3: South (y + 1)
+    - 4: West (x - 1)
+
+    :param direction: An integer representing movement direction (1–4)
+    :param character: A dictionary containing character location data
+    :param atlas: A dictionary representing the multi-layer map structure
+    :precondition: character contains "location" with x, y, z coordinates
+                   atlas contains a valid "position" dictionary for the current layer
+    :postcondition: validate character movement
+    :returns: True if the move is valid, otherwise False
+    """
     character_z = character["character"]["location"]["character_z"]
 
     if direction == 1:
