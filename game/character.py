@@ -398,6 +398,25 @@ def award_xp(character: dict, amount: int, class_data: dict, items_data: dict) -
 
 
 def level_up(character: dict, class_data: dict, items_data: dict) -> dict:
+    """
+    Increase a character's level and update their class traits and derived stats.
+
+    The function increments the character's level, determines the new class name
+    based on the pathway data, and prints level-up messages. It then reapplies
+    class traits, recalculates effective stats, and updates the character's
+    maximum health and mana based on derived stat multipliers.
+
+    Health and mana are fully restored after leveling up.
+
+    :param character: A dictionary containing character data, including level, class, and stats
+    :param class_data: A dictionary containing class/pathway definitions and level progression
+    :param items_data: A dictionary containing item definitions used for stat calculation
+    :precondition: character contains valid level, class, derived_stats, and current stats
+                  class_data contains valid pathway and level definitions
+                  items_data contains valid item structures
+    :postcondition: update the character's level, traits, and derived stats
+    :returns: the updated character dictionary after leveling up
+    """
     old_level = character["character"]["level"]
     new_level = old_level + 1
     character["character"]["level"] = new_level
