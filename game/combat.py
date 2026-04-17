@@ -421,6 +421,21 @@ def flee(character: dict) -> bool:
 
 
 def enemy_behaviour(character: dict, enemy: dict) -> dict:
+    """
+    Execute the enemy's turn by selecting a random attack and applying its damage to the character.
+
+    The function randomly selects one attack from the enemy's available attack list,
+    applies its damage to the character's current health, and prints a description
+    of the action taken along with the resulting health.
+
+    :param character: A dictionary containing character data, including current health
+    :param enemy: A dictionary containing enemy data, including an "attacks" list where
+                  each attack has "damage" and "description" keys
+    :precondition: enemy["attacks"] must be a non-empty list of valid attack dictionaries
+    :precondition: character must contain "character" -> "current" -> "health"
+    :postcondition: reduce character health based on the selected enemy attack
+    :returns: The updated character dictionary after receiving damage
+    """
     chosen_attack = random.choice(enemy["attacks"])
     damage = chosen_attack["damage"]
     description = chosen_attack["description"]
