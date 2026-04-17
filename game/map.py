@@ -138,17 +138,17 @@ def describe_location(events: dict, character: dict, atlas: dict) -> None:
     :postcondition: print a description of the current location
     :returns: None
 
-    >>> events = {1: {"description": "A dusty old chest."}}
-    >>> atlas = {0: {"position": {(0, 0): 1}}}
-    >>> character = {"character": {"location": {"character_x": 0, "character_y": 0, "character_z": 0}}}
+    >>> events_test = {1: {"description": "A dusty old chest."}}
+    >>> atlas_test = {0: {"position": {(0, 0): 1}}}
+    >>> character_test = {"character": {"location": {"character_x": 0, "character_y": 0, "character_z": 0}}}
     >>> describe_location(events, character, atlas)
     A dusty old chest.
 
-    >>> atlas = {0: {"position": {(0, 0): None}}}
+    >>> atlas_test = {0: {"position": {(0, 0): None}}}
     >>> describe_location({}, character, atlas)
     You are standing on empty ground.
 
-    >>> atlas = {0: {"position": {(0, 0): 11}}}
+    >>> atlas_test = {0: {"position": {(0, 0): 11}}}
     >>> describe_location({}, character, atlas)
     Stairs leading to the next floor are here.
     """
