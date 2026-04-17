@@ -117,6 +117,21 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
 
 
 def calculate_damage(character: dict, action: dict) -> int:
+    """
+    Calculate the total damage dealt by a character using a given action.
+
+    The function computes damage based on the character's base stats and the
+    scaling rules defined in the action. It supports both single-stat scaling
+    (dictionary format) and multi-stat scaling (list format). After calculating
+    base damage, any temporary buffs (such as attack boosts) are applied.
+
+    :param character: A dictionary containing character data, including base stats
+    :param action: A dictionary containing action data, including scaling rules
+    :precondition: character contains valid "base_stats" with required stat keys
+                   action contains a valid "scaling" field (dict or list of dicts)
+    :postcondition: calculate damage to be done as an integer
+    :returns: The total calculated damage as an integer
+    """
     base_stats = character["character"]["base_stats"]
     scaling = action["scaling"]
 
