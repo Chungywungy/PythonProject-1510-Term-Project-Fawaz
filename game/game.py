@@ -1,5 +1,5 @@
 import random
-import character, file_tampering, map, combat
+from game import character, file_tampering, map, combat
 
 
 
