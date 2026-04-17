@@ -44,11 +44,12 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
 
         print(f"{index}: {action['name']} | {cost_string}{cooldown_string}{affordable}")
 
-        menu[index] = action
+        menu[index] = ("action", key)
         index += 1
 
     print(f"{index}: Items")
     menu[index] = ("items", None)
+    index += 1
     print(f"{index}: Flee")
     menu[index] = ("flee", None)
 
@@ -193,9 +194,9 @@ def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
     constitution = character["character"]["base_stats"]["constitution"]
     max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
 
-    if "health" in effect:
+    if "heal" in effect:
         current_health = character["character"]["current"]["health"]
-        healed = effect["heal"], max_health - current_health
+        healed = min(effect["heal"], max_health) - current_health
         character["character"]["current"]["health"] += healed
 
         print(f"You use {name} and recover {healed} HP!")
@@ -311,7 +312,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
         if enemy_turn:
             character = enemy_behaviour(character, enemy)
             cooldowns = tick_cooldowns(cooldowns)
-            character = tick_cooldowns(character)
+            character = tick_temp_buffs(character)
 
             if character["character"]["current"]["health"] <= 0:
                 print(f"{character['character']['name']} has been defeated!")

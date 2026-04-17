@@ -247,7 +247,7 @@ def level_up(character: dict, class_data: dict, items_data: dict) -> dict:
 
     character = apply_class_traits(character, class_data)
 
-    effective = get_effective_stats(character, class_data)
+    effective = get_effective_stats(character, items_data)
     hp_multiplier = character["character"]["derived_stats"]["max_health"]["multiplier"]
     mana_multiplier = character["character"]["derived_stats"]["max_mana"]["multiplier"]
     new_max_hp = effective["constitution"] * hp_multiplier
