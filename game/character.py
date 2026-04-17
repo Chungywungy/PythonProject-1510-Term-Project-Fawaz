@@ -204,6 +204,28 @@ def apply_class_traits(character:dict, class_data: dict) -> dict:
 
 
 def create_character(character: str, player: str, file: str, pathway: str, class_data: dict, items_data: dict) -> dict:
+    """
+    Create and initialize a new character with base stats, class traits, and derived attributes.
+
+    The function loads a character template from a JSON file, assigns basic identity
+    fields (name, player, class, level), and initializes experience and trait bonuses.
+    It then applies class traits and calculates effective stats using class and item data.
+
+    Finally, derived stats such as health and mana are calculated using multipliers
+    from the character's configuration and printed as a welcome summary.
+
+    :param character: The name of the character being created
+    :param player: The name of the player controlling the character
+    :param file: Path to the JSON file containing the base character template
+    :param pathway: The selected class/pathway name
+    :param class_data: Dictionary containing class definitions and traits
+    :param items_data: Dictionary containing item and equipment data
+    :precondition: file is a valid JSON file path with a valid character structure
+                  class_data contains valid class definitions
+                  items_data contains valid equipment definitions
+    :postcondition: A fully initialized character dictionary is created and returned
+    :returns: a dictionary representing the fully created character
+    """
     character_data = open_json(file)
 
     character_data["character"]["name"] = character
