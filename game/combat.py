@@ -1,5 +1,5 @@
 import random
-
+from character import award_xp
 
 def get_available_actions(character: dict, class_data: dict, cooldowns: dict) -> dict:
     character_class = character["character"]["class"]
@@ -259,7 +259,13 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
 
 
 
-def combat(character: dict, events_by_id: dict, atlas: dict, classes_data: dict) -> bool:
+def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, items_data) -> bool:
+    xp_rewards = {
+        "Bandit": 25,
+        "Beast": 30,
+        "Skeleton": 20
+    }
+
     character_x = character["character"]["location"]["character_x"]
     character_y = character["character"]["location"]["character_y"]
     character_z = character["character"]["location"]["character_z"]
@@ -273,21 +279,28 @@ def combat(character: dict, events_by_id: dict, atlas: dict, classes_data: dict)
     print(f"A {enemy['name']} appears!")
 
     while enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
-        choice_type, action_key = get_combat_command(character, classes_data, cooldowns)
+        choice_type, action_key = get_combat_command(character, class_data, cooldowns)
 
         enemy_turn = False
 
         if choice_type == "action":
-            action = get_available_actions(character, classes_data, cooldowns)[action_key]
+            action = get_available_actions(character, class_data, cooldowns)[action_key]
             enemy, cooldowns = perform_action(character, enemy, action_key, action, cooldowns)
 
             if enemy["health"] <= 0:
                 print(f"You defeated the {enemy['name']}!")
+                xp = xp_rewards.get(enemy["name"], 10)
+                character = award_xp(character, xp, class_data, items_data)
                 return True
             enemy_turn = True
 
         elif choice_type == "items":
-            use_item(character)
+            character, enemy = use_item(character, enemy)
+            if enemy is not None and enemy["health"] <= 0:
+                print(f"You defeated the {enemy['name']}!")
+                xp = xp_rewards.get(enemy["name"], 10)
+                character = award_xp(character, xp, class_data, items_data)
+                return True
             enemy_turn = False
 
         elif choice_type == "flee":
@@ -298,6 +311,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, classes_data: dict)
         if enemy_turn:
             character = enemy_behaviour(character, enemy)
             cooldowns = tick_cooldowns(cooldowns)
+            character = tick_cooldowns(character)
 
             if character["character"]["current"]["health"] <= 0:
                 print(f"{character['character']['name']} has been defeated!")
