@@ -4,6 +4,7 @@ import time
 from playsound3 import playsound
 
 from game import character, file_tampering, map, combat, progression
+from game.colours import Colours, colourize
 
 
 def god_mode(character_data: dict) -> dict:
@@ -106,9 +107,9 @@ def game() -> None:
     player_name = character.player_name()
     class_name = character.character_class("json_files/classes.json")
 
-    print("\nChosen by forces long forgotten, you descend as a lone knight into the Eternal Dungeon.\n"
-          "Beneath its endless layers, a living darkness stirs, corrupting all it touches.\n"
-          "Steel your resolve. You are the last light it has yet to consume.", flush=True)
+    print(colourize("\nChosen by forces long forgotten, you descend as a lone knight into the Eternal Dungeon.\n"
+                   "Beneath its endless layers, a living darkness stirs, corrupting all it touches.\n"
+                   "Steel your resolve. You are the last light it has yet to consume.", Colours.TITLE), flush=True)
     time.sleep(5)
 
     character_data = character.create_character(character_name, player_name, character_file, class_name,
