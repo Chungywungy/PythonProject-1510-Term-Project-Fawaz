@@ -462,27 +462,37 @@ def flee(character: dict) -> bool:
 
 def enemy_behaviour(character: dict, enemy: dict) -> dict:
     """
-    Execute the enemy's turn by selecting a random attack and applying its damage to the character.
-
-    The function randomly selects one attack from the enemy's available attack list,
-    applies its damage to the character's current health, and prints a description
-    of the action taken along with the resulting health.
-
-    :param character: A dictionary containing character data, including current health
-    :param enemy: A dictionary containing enemy data, including an "attacks" list where
-                  each attack has "damage" and "description" keys
-    :precondition: enemy["attacks"] must be a non-empty list of valid attack dictionaries
-    :precondition: character must contain "character" -> "current" -> "health"
-    :postcondition: reduce character health based on the selected enemy attack
-    :returns: The updated character dictionary after receiving damage
+    Execute the enemy's turn with status effect handling.
     """
+    # Process enemy status effects first
+    if "status_effects" in enemy:
+        for status, data in list(enemy["status_effects"].items()):
+            if data.get("active"):
+                if status == "stun":
+                    print(f"\033[94mThe {enemy['name']} is stunned and cannot act!\033[0m")
+                    # Update duration and return without attacking
+                    data["duration"] = data.get("duration", 1) - 1
+                    if data["duration"] <= 0:
+                        del enemy["status_effects"][status]
+                    return character
+                elif status == "blind":
+                    # 50% chance to miss when blinded
+                    if random.random() < 0.5:
+                        print(f"\033[94mThe {enemy['name']} is blinded and misses!\033[0m")
+                        data["duration"] = data.get("duration", 1) - 1
+                        if data["duration"] <= 0:
+                            del enemy["status_effects"][status]
+                        return character
+
+    # Normal enemy attack
     chosen_attack = random.choice(enemy["attacks"])
     damage = chosen_attack["damage"]
     description = chosen_attack["description"]
 
     character["character"]["current"]["health"] -= damage
-    print(f"\n{description}\nYou take {damage} damage!\n"
-          f"You have {character["character"]["current"]["health"]} HP remaining.")
+    print(f"\n{description}")
+    print(f"\033[91mYou take {damage} damage!\033[0m")
+    print(f"You have {character['character']['current']['health']} HP remaining.")
     return character
 
 
