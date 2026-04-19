@@ -1,5 +1,5 @@
-class Colors:
-    """ANSI color codes for terminal output."""
+class Colours:
+    """ANSI colour codes for terminal output."""
     HEADER = '\033[95m'
     BLUE = '\033[94m'
     CYAN = '\033[96m'
@@ -10,7 +10,7 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-    # Specific colors for game elements
+    # Specific colours for game elements
     HP = '\033[91m'  # Red for HP
     MANA = '\033[94m'  # Blue for Mana
     XP = '\033[92m'  # Green for XP
@@ -22,9 +22,9 @@ class Colors:
     TITLE = '\033[95m\033[1m'  # Bold purple for titles
 
 
-def colorize(text: str, color: str) -> str:
+def colourize(text: str, color: str) -> str:
     """Wrap text with color codes."""
-    return f"{color}{text}{Colors.ENDC}"
+    return f"{color}{text}{Colours.ENDC}"
 
 
 def hp_bar(current: int, maximum: int, width: int = 20) -> str:
@@ -36,13 +36,13 @@ def hp_bar(current: int, maximum: int, width: int = 20) -> str:
     bar = "█" * filled + "░" * empty
 
     if percentage > 0.6:
-        bar_color = Colors.GREEN
+        bar_color = Colours.GREEN
     elif percentage > 0.3:
-        bar_color = Colors.WARNING
+        bar_color = Colours.WARNING
     else:
-        bar_color = Colors.FAIL
+        bar_color = Colours.FAIL
 
-    return f"{bar_color}{bar}{Colors.ENDC} [{current}/{maximum}]"
+    return f"{bar_color}{bar}{Colours.ENDC} [{current}/{maximum}]"
 
 
 def mana_bar(current: int, maximum: int, width: int = 20) -> str:
@@ -52,4 +52,4 @@ def mana_bar(current: int, maximum: int, width: int = 20) -> str:
     empty = width - filled
 
     bar = "█" * filled + "░" * empty
-    return f"{Colors.MANA}{bar}{Colors.ENDC} [{current}/{maximum}]"
+    return f"{Colours.MANA}{bar}{Colours.ENDC} [{current}/{maximum}]"

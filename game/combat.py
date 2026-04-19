@@ -1,5 +1,6 @@
 import random
 from game.progression import award_xp
+from game.colours import Colours, colourize, hp_bar, mana_bar
 from playsound3 import playsound
 from itertools import cycle
 
@@ -47,36 +48,20 @@ def get_available_actions(character: dict, class_data: dict, cooldowns: dict) ->
 
 
 def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> tuple | None:
-    """
-    Display the combat menu and retrieve the player's chosen combat command.
-
-    The function builds a list of available actions based on the character's class,
-    level, mana, and cooldown status. It then presents a menu including actions,
-    items, and flee options, and prompts the user to select an option.
-
-    If an action is selected, the function checks whether the character has enough
-    mana before confirming the choice.
-
-    :param character: A dictionary containing character stats, current health, mana,
-                      and base/derived attributes
-    :param classes_data: A dictionary containing class definitions, levels, and actions
-    :param cooldowns: A dictionary mapping action names to remaining cooldown values
-    :precondition: character contains valid "base_stats", "derived_stats", and "current"
-                   classes_data contains valid actions for the character's class and level
-                   cooldowns maps action keys to integers (0 = available)
-    :postcondition: print a menu and prompt the user until a valid choice is made
-    :returns: A tuple in the form (choice_type, action_key) where:
-              - choice_type is "action", "items", or "flee"
-              - action_key is the selected action key or None for non-action choices
-    """
+    """Display the combat menu and retrieve the player's chosen combat command."""
     available_actions = get_available_actions(character, classes_data, cooldowns)
 
     current_mana = character["character"]["current"]["mana"]
     current_health = character["character"]["current"]["health"]
     constitution = character["character"]["base_stats"]["constitution"]
     max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+    intellect = character["character"]["base_stats"]["intellect"]
+    max_mana = intellect * character["character"]["derived_stats"]["max_mana"]["multiplier"]
 
-    print(f"\n--- {character['character']['name']} | HP: {current_health} | mana: {current_mana} ---")
+
+    print(f"\n--- {colourize(character['character']['name'], Colours.BOLD)} ---")
+    print(f"❤️ HP:  {hp_bar(current_health, max_health)}")
+    print(f"💙 Mana: {mana_bar(current_mana, max_mana)}")
     print("\nWhat will you do?")
 
     menu = {}
@@ -86,17 +71,29 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
         cooldown = action.get("cooldown", 0)
         cost_string = f"Mana: {mana_cost}" if mana_cost > 0 else ""
         cooldown_string = f"Cooldown: {cooldown}" if cooldown > 0 else ""
-        affordable = "" if current_mana >= mana_cost else "Not enough mana."
 
-        print(f"{index}: {action['name']} | {cost_string} {cooldown_string} {affordable}")
+
+        action_type = action.get("type", "attack")
+        if action_type == "attack":
+            action_color = Colours.FAIL
+        elif action_type == "heal":
+            action_color = Colours.HEAL
+        elif action_type == "buff":
+            action_color = Colours.BUFF
+        else:
+            action_color = Colours.SPECIAL
+
+        affordable = "" if current_mana >= mana_cost else f"{Colours.FAIL}Not enough mana.{Colours.ENDC}"
+
+        print(f"{index}: {colourize(action['name'], action_color)} | {cost_string} {cooldown_string} {affordable}")
 
         menu[index] = ("action", key)
         index += 1
 
-    print(f"{index}: Items")
+    print(f"{index}: {colourize('Items', Colours.CYAN)}")
     menu[index] = ("items", None)
     index += 1
-    print(f"{index}: Flee")
+    print(f"{index}: {colourize('Flee', Colours.WARNING)}")
     menu[index] = ("flee", None)
 
     while True:
@@ -112,7 +109,7 @@ def get_combat_command(character: dict, classes_data: dict, cooldowns: dict) -> 
                 if choice_type == "action":
                     action = available_actions[action_key]
                     if current_mana < action.get("mana_cost", 0):
-                        print(f"You don't have enough mana for {action}!")
+                        print(f"{Colours.FAIL}You don't have enough mana for {action['name']}!{Colours.ENDC}")
                         continue
                 return choice_type, action_key
             else:
