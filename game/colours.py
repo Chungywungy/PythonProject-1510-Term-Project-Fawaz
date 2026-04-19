@@ -42,7 +42,7 @@ def hp_bar(current: int, maximum: int, width: int = 20) -> str:
     else:
         bar_color = Colours.FAIL
 
-    return f"{bar_color}{bar}{Colours.ENDC} [{current}/{maximum}]"
+    return f"{bar_color}{bar}{Colours.ENDC} [{current}]"
 
 
 def mana_bar(current: int, maximum: int, width: int = 20) -> str:
@@ -52,4 +52,4 @@ def mana_bar(current: int, maximum: int, width: int = 20) -> str:
     empty = width - filled
 
     bar = "█" * filled + "░" * empty
-    return f"{Colours.MANA}{bar}{Colours.ENDC} [{current}/{maximum}]"
+    return f"{Colours.MANA}{bar}{Colours.ENDC} [{current}]"

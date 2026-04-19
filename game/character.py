@@ -1,5 +1,5 @@
 from game.file_tampering import open_json
-
+from game.colours import colourize, Colours
 
 def character_name() -> str:
     """
@@ -275,27 +275,13 @@ def is_alive(character: dict) -> bool:
         return False
 
 
+# In character.py, fix equip_item:
+
 def equip_item(character: dict, item_name: str, items_data: dict) -> dict:
     """
     Equip an item to a character from their inventory and update their equipment slots.
-
-    The function validates that the item exists in the items data, is of type "equipment",
-    and is present in the character's inventory. If another item is already equipped in
-    the same slot, it is first unequipped. The item is then moved from inventory to the
-    appropriate equipment slot.
-
-    If the item does not exist, is not equippable, or is not in the character's inventory,
-    a ValueError is raised.
-
-    :param character: A dictionary containing character data, including inventory and equipment
-    :param item_name: The name of the item to equip
-    :param items_data: A dictionary containing item definitions and data
-    :precondition: character contains "inventory" and "equipment" keys
-                   items_data contains valid item definitions with "name", "type", and "slot"
-    :postcondition: update character's equipment and inventory accordingly
-    :returns: the updated character dictionary with the item equipped
-    :raises ValueError: if the item is not found, not equippable, or not in inventory
     """
+    # Build items lookup
     items_by_name = {item["name"]: item for item in items_data["items"]}
 
     if item_name not in items_by_name:
@@ -308,20 +294,29 @@ def equip_item(character: dict, item_name: str, items_data: dict) -> dict:
 
     slot = item["slot"]
     inventory = character["character"]["inventory"]
-    inventory_names = [index["name"] for index in inventory]
 
-    if item_name not in inventory_names:
+    # Find item in inventory (it might be stored as dict with name)
+    inventory_item = None
+    for inv_item in inventory:
+        if inv_item["name"] == item_name:
+            inventory_item = inv_item
+            break
+
+    if inventory_item is None:
         raise ValueError(f"'{item_name}' is not in {character['character']['name']}'s inventory.")
 
-    current_equipped = character["character"]["equipment"][slot]
+    # Unequip current item if any
+    current_equipped = character["character"]["equipment"].get(slot)
     if current_equipped:
         character = unequip_item(character, slot, items_data)
 
+    # Equip new item
     character["character"]["equipment"][slot] = item_name
-    inventory_item = next(item for item in inventory if item["name"] == item_name)
     inventory.remove(inventory_item)
 
-    print(f"You equipped {item_name}.")
+    print(colourize(f"\n✅ You equipped {item_name}!", Colours.HEAL))
+    print(f"   Slot: {slot} | Stats: +{item.get('stats', {})}")
+
     return character
 
 
@@ -365,25 +360,7 @@ def unequip_item(character: dict, slot: str, items_data: dict) -> dict:
 
 
 def level_up(character: dict, class_data: dict, items_data: dict) -> dict:
-    """
-    Increase a character's level and update their class traits and derived stats.
-
-    The function increments the character's level, determines the new class name
-    based on the pathway data, and prints level-up messages. It then reapplies
-    class traits, recalculates effective stats, and updates the character's
-    maximum health and mana based on derived stat multipliers.
-
-    Health and mana are fully restored after leveling up.
-
-    :param character: A dictionary containing character data, including level, class, and stats
-    :param class_data: A dictionary containing class/pathway definitions and level progression
-    :param items_data: A dictionary containing item definitions used for stat calculation
-    :precondition: character contains valid level, class, derived_stats, and current stats
-                  class_data contains valid pathway and level definitions
-                  items_data contains valid item structures
-    :postcondition: update the character's level, traits, and derived stats
-    :returns: the updated character dictionary after leveling up
-    """
+    """Increase a character's level and update their class traits and derived stats."""
     old_level = character["character"]["level"]
     new_level = old_level + 1
     character["character"]["level"] = new_level
@@ -403,6 +380,7 @@ def level_up(character: dict, class_data: dict, items_data: dict) -> dict:
     new_max_hp = effective["constitution"] * hp_multiplier
     new_max_mana = effective["intellect"] * mana_multiplier
 
+    # Update max health by setting current to new max (full heal)
     character["character"]["current"]["health"] = new_max_hp
     character["character"]["current"]["mana"] = new_max_mana
 

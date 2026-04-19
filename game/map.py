@@ -1,4 +1,5 @@
 import random
+from game.colours import Colours, colourize
 
 
 def build(layers: int, rows: int, columns: int) -> dict:
@@ -68,24 +69,6 @@ def build(layers: int, rows: int, columns: int) -> dict:
 def display_map(character: dict, atlas: dict, events: dict) -> None:
     """
     Display the current layer of the atlas map with the character and event markers.
-
-    The function renders a visual representation of the current map layer based on
-    the character's position. Different symbols are used to represent tiles:
-
-    - "@" represents the player's current position
-    - "-" represents empty or normal tiles
-    - "C" represents chest events
-    - "S" represents stair tiles
-
-
-    :param character: A dictionary containing character data, including location coordinates
-    :param atlas: A dictionary representing the multi-layer map structure
-    :param events: A dictionary mapping tile IDs to event data
-    :precondition: character contains valid "location" with x, y, z coordinates
-                  atlas contains a valid layer structure with "position" data
-                  events contains valid event mappings for tile IDs
-    :postcondition: print current map layer to the console
-    :returns: None
     """
     display = []
 
@@ -93,26 +76,68 @@ def display_map(character: dict, atlas: dict, events: dict) -> None:
     character_y = character["character"]["location"]["character_y"]
     character_z = character["character"]["location"]["character_z"]
 
+    # Print current location info
+    print(colourize(f"\n📍 Current Position: Floor {character_z + 1}, ({character_x}, {character_y})", Colours.CYAN))
+
     current_layer = character_z
 
-    for position in atlas[current_layer]["position"]:
-        value = atlas[current_layer]["position"].get(position)
+    # Get grid dimensions
+    positions = list(atlas[current_layer]["position"].keys())
+    if not positions:
+        return
 
-        if (character_y, character_x) == position:
-            display.append("@")
-        elif value is None:
-            display.append("-")
-        elif events[value].get("type") == "chest":
-            display.append("C")
-        elif value == 11:
-            display.append("S")
-        else:
-            display.append("-")
+    max_row = max(pos[0] for pos in positions)
+    max_col = max(pos[1] for pos in positions)
 
-    for index, point in enumerate(display):
-        print(point, end=" ")
-        if (index + 1) % 5 == 0:
-            print()
+    # Print column numbers
+    print("   ", end="")
+    for col in range(max_col + 1):
+        print(f" {col} ", end="")
+    print()
+
+    # Create a grid
+    for row in range(max_row + 1):
+        print(f"{row:2} ", end="")
+        for col in range(max_col + 1):
+            position = (row, col)
+            if position not in atlas[current_layer]["position"]:
+                print("   ", end="")
+                continue
+
+            value = atlas[current_layer]["position"].get(position)
+
+            if (character_y, character_x) == position:
+                print(colourize(" @ ", Colours.SPECIAL), end="")
+            elif value is None:
+                print(colourize(" . ", Colours.WARNING), end="")
+            elif value == 11:
+                print(colourize(" S ", Colours.CYAN), end="")
+            else:
+                event = events.get(value, {})
+                event_type = event.get("type", "unknown")
+
+                if event_type == "chest":
+                    print(colourize(" C ", Colours.BUFF), end="")
+                elif event_type == "fight":
+                    print(colourize(" F ", Colours.FAIL), end="")
+                elif event_type == "boon":
+                    print(colourize(" B ", Colours.HEAL), end="")
+                elif event_type == "debuff":
+                    print(colourize(" D ", Colours.DEBUFF), end="")
+                elif event_type == "boss":
+                    print(colourize(" ⚔️ ", Colours.TITLE), end="")
+                else:
+                    print(colourize(" ? ", Colours.WARNING), end="")
+        print()
+
+    # Print legend
+    print(colourize("\nLegend:", Colours.CYAN))
+    print(
+        f"{colourize('@', Colours.SPECIAL)} = You     {colourize('C', Colours.BUFF)} = Chest     {colourize('B', Colours.HEAL)} = Boon")
+    print(
+        f"{colourize('F', Colours.FAIL)} = Fight   {colourize('D', Colours.DEBUFF)} = Debuff   {colourize('S', Colours.CYAN)} = Stairs")
+    print(f"{colourize('⚔️', Colours.TITLE)} = Boss    {colourize('.', Colours.WARNING)} = Empty")
+
     return
 
 
@@ -185,28 +210,28 @@ def move_character(character: dict, direction: int) -> dict:
     """
     Move a character in one of four cardinal directions by updating their coordinates.
 
-    The function updates the character's location in-place based on the given
-    direction value:
+    Direction mapping:
     - 1: North (decrease y)
     - 2: East (increase x)
     - 3: South (increase y)
     - 4: West (decrease x)
-
-    :param character: A dictionary containing character data, including location coordinates
-    :param direction: An integer representing movement direction (1–4)
-    :precondition: character contains a valid "location" dictionary with "character_x" and "character_y"
-                   direction is expected to be an integer between 1 and 4
-    :postcondition: update the character's x or y coordinate based on direction
-    :returns: the updated character dictionary
     """
-    if direction == 1:
+    if direction == 1:  # North
         character["character"]["location"]["character_y"] -= 1
-    elif direction == 2:
+        print(
+            f"\nYou move North to ({character['character']['location']['character_x']}, {character['character']['location']['character_y']})")
+    elif direction == 2:  # East
         character["character"]["location"]["character_x"] += 1
-    elif direction == 3:
+        print(
+            f"\nYou move East to ({character['character']['location']['character_x']}, {character['character']['location']['character_y']})")
+    elif direction == 3:  # South
         character["character"]["location"]["character_y"] += 1
-    else:
+        print(
+            f"\nYou move South to ({character['character']['location']['character_x']}, {character['character']['location']['character_y']})")
+    else:  # West
         character["character"]["location"]["character_x"] -= 1
+        print(
+            f"\nYou move West to ({character['character']['location']['character_x']}, {character['character']['location']['character_y']})")
     return character
 
 
@@ -214,43 +239,35 @@ def validate_move(direction: int, character: dict, atlas: dict) -> bool:
     """
     Validate whether a character can move to a target position on the atlas map.
 
-    The function calculates the target coordinates based on the given direction
-    and checks whether the destination tile exists in the current layer of the atlas.
-    A move is considered valid only if the target position exists and contains a
-    truthy value in the atlas.
-
     Direction mapping:
     - 1: North (y - 1)
     - 2: East (x + 1)
     - 3: South (y + 1)
     - 4: West (x - 1)
-
-    :param direction: An integer representing movement direction (1–4)
-    :param character: A dictionary containing character location data
-    :param atlas: A dictionary representing the multi-layer map structure
-    :precondition: character contains "location" with x, y, z coordinates
-                   atlas contains a valid "position" dictionary for the current layer
-    :postcondition: validate character movement
-    :returns: True if the move is valid, otherwise False
     """
     character_z = character["character"]["location"]["character_z"]
+    character_x = character["character"]["location"]["character_x"]
+    character_y = character["character"]["location"]["character_y"]
 
-    if direction == 1:
-        character_x = character["character"]["location"]["character_x"]
-        character_y = character["character"]["location"]["character_y"] - 1
-    elif direction == 2:
-        character_x = character["character"]["location"]["character_x"] + 1
-        character_y = character["character"]["location"]["character_y"]
-    elif direction == 3:
-        character_x = character["character"]["location"]["character_x"]
-        character_y = character["character"]["location"]["character_y"] + 1
-    elif direction == 4:
-        character_x = character["character"]["location"]["character_x"] - 1
-        character_y = character["character"]["location"]["character_y"]
+    # Calculate target coordinates
+    if direction == 1:  # North
+        target_y = character_y - 1
+        target_x = character_x
+    elif direction == 2:  # East
+        target_y = character_y
+        target_x = character_x + 1
+    elif direction == 3:  # South
+        target_y = character_y + 1
+        target_x = character_x
+    elif direction == 4:  # West
+        target_y = character_y
+        target_x = character_x - 1
     else:
         return False
 
-    if atlas[character_z]["position"].get((character_x, character_y)):
+    target_position = (target_y, target_x)
+
+    if target_position in atlas[character_z]["position"]:
         return True
     else:
         return False

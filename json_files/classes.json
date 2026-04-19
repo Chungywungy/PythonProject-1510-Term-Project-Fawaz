@@ -620,5 +620,382 @@
         }
       }
     }
+  },
+  "pathway_3": {
+    "name": "Abyss",
+    "description": "A pathway focused on demonic powers, ritual magic, and corruption. Followers gain inhuman strength, the ability to cast dark spells,\nsummon devil projections, and manipulate the desires of others. They are feared as monsters who have lost their conscience.",
+    "level": {
+      "1": {
+        "name": "Criminal",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Physical Enhancement",
+            "description": "Criminals possess a strong body with keen instincts.",
+            "effect": {
+              "strength": 3,
+              "dexterity": 2,
+              "constitution": 2
+            }
+          },
+          "criminal_proficiency": {
+            "name": "Criminal Proficiency",
+            "description": "Mastery of all weapons - from swords to firearms to improvised tools.",
+            "effect": {}
+          }
+        },
+        "actions": {
+          "brutal_strike": {
+            "name": "Brutal Strike",
+            "description": "A savage attack with any weapon or even bare hands.",
+            "fight_description": "You strike with brutal force, uncaring for your own safety.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 2
+            },
+            "mana_cost": 0,
+            "cooldown": 0
+          },
+          "dirty_fighting": {
+            "name": "Dirty Fighting",
+            "description": "Fight without rules - kick, bite, or use underhanded tactics.",
+            "fight_description": "You fight dirty, exploiting every weakness.",
+            "type": "attack",
+            "scaling": {
+              "stat": "dexterity",
+              "multiplier": 2
+            },
+            "mana_cost": 0,
+            "cooldown": 1
+          },
+          "keen_instincts": {
+            "name": "Keen Instincts",
+            "description": "Sense danger before it strikes.",
+            "fight_description": "Your instincts scream a warning as you anticipate the enemy's attack.",
+            "type": "buff",
+            "effect": {
+              "damage_reduction": 0.2,
+              "duration": 3,
+              "target": "self"
+            },
+            "mana_cost": 1,
+            "cooldown": 3
+          },
+          "bloodlust": {
+            "name": "Bloodlust",
+            "description": "Surrender to your violent desires for a surge of power.",
+            "fight_description": "Bloodlust consumes you as you throw yourself at the enemy!",
+            "type": "buff",
+            "effect": {
+              "attack_boost": 4,
+              "duration": 2,
+              "target": "self"
+            },
+            "mana_cost": 1,
+            "cooldown": 3
+          },
+          "execute": {
+            "name": "Execute",
+            "description": "A devastating blow against weakened enemies.",
+            "fight_description": "You sense weakness and strike with lethal precision.",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 3
+            },
+            "mana_cost": 0,
+            "cooldown": 2
+          }
+        }
+      },
+      "2": {
+        "name": "Unwinged Angel",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Demonic Physique",
+            "description": "Your body becomes inhuman, twisted by demonic power.",
+            "effect": {
+              "strength": 4,
+              "constitution": 4,
+              "dexterity": 2
+            }
+          },
+          "demonic_attribute": {
+            "name": "Demonic Attribute",
+            "description": "You gain demonic spell-like abilities.",
+            "effect": {
+              "intellect": 3,
+              "charisma": 2
+            }
+          }
+        },
+        "actions": {
+          "demonic_strike": {
+            "name": "Demonic Strike",
+            "description": "Your attacks are infused with demonic energy.",
+            "fight_description": "Demonic energy courses through your weapon as you strike!",
+            "type": "attack",
+            "scaling": {
+              "stat": "strength",
+              "multiplier": 2.5
+            },
+            "mana_cost": 1,
+            "cooldown": 0
+          },
+          "poison_flame": {
+            "name": "Poison Flame",
+            "description": "Conjure sickly green flames that burn and poison.",
+            "fight_description": "Toxic green flames erupt from your hands, searing the enemy!",
+            "type": "attack",
+            "scaling": {
+              "stat": "intellect",
+              "multiplier": 2
+            },
+            "effect": {
+              "type": "poison",
+              "duration": 2,
+              "damage_per_turn": 5
+            },
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "language_of_foulness": {
+            "name": "Language of Foulness",
+            "description": "Utter profane words that weaken your enemies.",
+            "fight_description": "You speak words that should never be spoken, cursing your foe!",
+            "type": "status_effect",
+            "effect": {
+              "type": "weakness",
+              "chance": 0.7,
+              "duration": 3,
+              "damage_reduction": 0.2,
+              "target": "enemy"
+            },
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "slowness": {
+            "name": "Slowness",
+            "description": "Crush down with your palms to slow your target.",
+            "fight_description": "You raise your arms and press down, making your enemy sink as though their wings were broken!",
+            "type": "status_effect",
+            "effect": {
+              "type": "slow",
+              "chance": 0.8,
+              "duration": 3,
+              "damage_reduction": 0.3,
+              "target": "enemy"
+            },
+            "mana_cost": 2,
+            "cooldown": 2
+          },
+          "toxic_smoke": {
+            "name": "Toxic Smoke",
+            "description": "Create a cloud of black toxic smoke.",
+            "fight_description": "Thick black smoke billows forth, choking your enemies!",
+            "type": "status_effect",
+            "effect": {
+              "type": "poison",
+              "chance": 0.9,
+              "duration": 3,
+              "damage_per_turn": 8,
+              "target": "enemy"
+            },
+            "mana_cost": 2,
+            "cooldown": 3
+          },
+          "demonic_blessing": {
+            "name": "Demonic Blessing",
+            "description": "Your demonic patron grants you protection.",
+            "fight_description": "Demonic energy shields you from harm.",
+            "type": "buff",
+            "effect": {
+              "damage_reduction": 0.3,
+              "duration": 3,
+              "target": "self"
+            },
+            "mana_cost": 2,
+            "cooldown": 3
+          },
+          "devil_spell": {
+            "name": "Devil Spell",
+            "description": "Unleash one of your devil-granted spells.",
+            "fight_description": "You channel the power of the Abyss through your very soul!",
+            "type": "attack",
+            "scaling": [
+              {
+                "stat": "strength",
+                "multiplier": 1.5
+              },
+              {
+                "stat": "intellect",
+                "multiplier": 1.5
+              }
+            ],
+            "mana_cost": 2,
+            "cooldown": 2
+          }
+        }
+      },
+      "3": {
+        "name": "Serial Killer",
+        "traits": {
+          "physical_enhancement": {
+            "name": "Enhanced Demonic Body",
+            "description": "Your demonic transformation continues, granting immense power.",
+            "effect": {
+              "strength": 5,
+              "constitution": 5,
+              "dexterity": 3,
+              "intellect": 3
+            }
+          },
+          "devil_worship": {
+            "name": "Devil Worship Knowledge",
+            "description": "You master ritualistic magic and devil summoning.",
+            "effect": {
+              "intellect": 4,
+              "charisma": 3
+            }
+          },
+          "interference": {
+            "name": "Interference",
+            "description": "You can effectively interfere with divination and spirit channeling.",
+            "effect": {
+              "wisdom": 3
+            }
+          }
+        },
+        "actions": {
+          "ritual_sacrifice": {
+            "name": "Ritual Sacrifice",
+            "description": "Perform a dark ritual that drains life from enemies.",
+            "fight_description": "Dark symbols appear in the air as you begin your sacrifice!",
+            "type": "attack",
+            "scaling": {
+              "stat": "intellect",
+              "multiplier": 4
+            },
+            "effect": {
+              "heal": 15,
+              "target": "self"
+            },
+            "mana_cost": 3,
+            "cooldown": 3
+          },
+          "summon_devil_projection": {
+            "name": "Summon Devil Projection",
+            "description": "Summon a projection of a devil from the Abyss to fight for you.",
+            "fight_description": "A rift opens as a devil projection emerges to serve you!",
+            "type": "attack",
+            "scaling": {
+              "stat": "charisma",
+              "multiplier": 5
+            },
+            "mana_cost": 3,
+            "cooldown": 4
+          },
+          "corrupt_desires": {
+            "name": "Corrupt Desires",
+            "description": "Twist your enemy's desires, turning them against themselves.",
+            "fight_description": "You whisper into the enemy's soul, corrupting their very desires!",
+            "type": "status_effect",
+            "effect": {
+              "type": "corruption",
+              "chance": 0.8,
+              "duration": 3,
+              "confusion": true,
+              "target": "enemy"
+            },
+            "mana_cost": 3,
+            "cooldown": 3
+          },
+          "danger_intuition": {
+            "name": "Danger Intuition",
+            "description": "Your demonic senses warn you of incoming danger.",
+            "fight_description": "You sense the enemy's intent before they act!",
+            "type": "buff",
+            "effect": {
+              "damage_reduction": 0.4,
+              "duration": 4,
+              "target": "self"
+            },
+            "mana_cost": 2,
+            "cooldown": 3
+          },
+          "demonic_growth": {
+            "name": "Demonic Growth",
+            "description": "Increase your size and power temporarily.",
+            "fight_description": "Dark energy courses through you as you grow in size and might!",
+            "type": "buff",
+            "effect": {
+              "attack_boost": 8,
+              "damage_reduction": 0.2,
+              "duration": 3,
+              "target": "self"
+            },
+            "mana_cost": 3,
+            "cooldown": 4
+          },
+          "abyss_resistance": {
+            "name": "Abyss Resistance",
+            "description": "Your demonic nature resists mental attacks, poison, and curses.",
+            "fight_description": "Dark energy shields your mind and body from harm.",
+            "type": "buff",
+            "effect": {
+              "status_immunity": true,
+              "duration": 3,
+              "target": "self"
+            },
+            "mana_cost": 2,
+            "cooldown": 4
+          },
+          "serial_killing_spree": {
+            "name": "Serial Killing Spree",
+            "description": "Unleash a devastating combo of attacks fueled by bloodlust.",
+            "fight_description": "You lose yourself in the ecstasy of murder, striking again and again!",
+            "type": "attack",
+            "scaling": [
+              {
+                "stat": "strength",
+                "multiplier": 2
+              },
+              {
+                "stat": "dexterity",
+                "multiplier": 2
+              }
+            ],
+            "mana_cost": 2,
+            "cooldown": 3
+          },
+          "devil_favor": {
+            "name": "Devil's Favor",
+            "description": "Call upon the favor you've earned from the Abyss.",
+            "fight_description": "The Abyss answers your call, empowering your next attack!",
+            "type": "buff",
+            "effect": {
+              "attack_boost": 10,
+              "duration": 2,
+              "target": "self"
+            },
+            "mana_cost": 3,
+            "cooldown": 5
+          },
+          "abyss_gate": {
+            "name": "Abyss Gate",
+            "description": "Open a gate to the Abyss, dealing massive damage.",
+            "fight_description": "A gate to the Abyss opens, pulling your enemy toward damnation!",
+            "type": "attack",
+            "scaling": {
+              "stat": "intellect",
+              "multiplier": 6
+            },
+            "mana_cost": 4,
+            "cooldown": 5
+          }
+        }
+      }
+    }
   }
 }
+

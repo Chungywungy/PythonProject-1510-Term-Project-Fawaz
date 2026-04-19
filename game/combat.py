@@ -1,6 +1,10 @@
 import random
+import time
+
 from game.progression import award_xp
 from game.colours import Colours, colourize, hp_bar, mana_bar
+from game.events import apply_status_effects
+from game.character import get_effective_stats
 from playsound3 import playsound
 from itertools import cycle
 
@@ -151,7 +155,7 @@ def calculate_damage(character: dict, action: dict) -> int:
     return int(total_damage)
 
 
-def perform_action(character: dict, enemy: dict, action_key: str, action: dict, cooldowns: dict) -> tuple | None:
+def perform_action(character: dict, enemy: dict, action_key: str, action: dict, cooldowns: dict, items_data: dict) -> tuple | None:
     """
     Execute a combat action performed by the character against an enemy.
 
@@ -176,45 +180,137 @@ def perform_action(character: dict, enemy: dict, action_key: str, action: dict, 
         enemy["health"] -= damage
         print(f"\033[91mYou deal {damage} damage!\033[0m The {enemy['name']} has {enemy['health']} HP remaining")
 
+
     elif action_type == "heal":
         amount = action.get("amount", 0)
         target = action.get("target", "self")
-
-        # Calculate max health
+        # Calculate max health properly
         constitution = character["character"]["base_stats"]["constitution"]
-        max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+        # Add trait bonuses
 
+        for trait_bonus in character["character"].get("trait_bonuses", {}).values():
+            if "constitution" in trait_bonus:
+                constitution += trait_bonus["constitution"]
+
+        max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
         if target in ["self", "allies"]:
             old_hp = character["character"]["current"]["health"]
-            character["character"]["current"]["health"] = min(old_hp + amount, max_health)
-            healed = character["character"]["current"]["health"] - old_hp
-            print(f"\033[92mYou heal for {healed} HP!\033[0m Now at {character['character']['current']['health']} HP")
+            # Can't heal above max health
+            new_hp = min(old_hp + amount, max_health)
+            actual_heal = new_hp - old_hp
+            character["character"]["current"]["health"] = new_hp
+
+            if actual_heal > 0:
+                print(colourize(f"\n💚 {action['name']} heals for {actual_heal} HP!", Colours.HEAL))
+                print(f"❤️ HP: {old_hp} → {new_hp}/{max_health}")
+            else:
+                print(
+                    colourize(f"\n💚 {action['name']} attempts to heal, but you're already at full health!", Colours.HEAL))
+
 
     elif action_type == "buff":
         effect = action.get("effect", {})
-        stat = effect.get("stat")
-        amount = effect.get("amount", 0)
         duration = effect.get("duration", 1)
         target = effect.get("target", "self")
 
+        # Check for different types of buff effects
+
         if target in ["self", "allies"]:
             buffs = character["character"].setdefault("temp_buffs", {})
-            buff_key = f"{stat}_boost"
-            buffs[buff_key] = {"amount": amount, "turns_remaining": duration}
-            print(f"\033[93mYour {stat} increases by {amount} for {duration} turns!\033[0m")
+            # Handle damage reduction buff
 
-            # Handle special buff effects
-            if effect.get("taunt"):
-                print("\033[93mYou draw the enemy's attention!\033[0m")
-            if effect.get("damage_reduction"):
-                print(f"\033[93mDamage reduced by {effect['damage_reduction'] * 100}%!\033[0m")
+            if "damage_reduction" in effect:
+                reduction = effect["damage_reduction"]
+                buff_key = "damage_reduction"
+                buffs[buff_key] = {"amount": reduction, "turns_remaining": duration}
+
+                print(colourize(f"\n🛡️ Your damage is reduced by {int(reduction * 100)}% for {duration} turns!",
+                               Colours.BUFF))
+
+
+            # Handle attack boost buff
+
+            elif "attack_boost" in effect:
+                boost = effect["attack_boost"]
+                buff_key = "attack_boost"
+                buffs[buff_key] = {"amount": boost, "turns_remaining": duration}
+
+                print(colourize(f"\n⚔️ Your attack power increases by {boost} for {duration} turns!", Colours.BUFF))
+
+
+            # Handle stat buff (like Song of Strength)
+
+            elif "stat" in effect:
+                stat = effect["stat"]
+                amount = effect.get("amount", 0)
+                buff_key = f"{stat}_boost"
+
+                # For strength boosts, add to attack_boost for combat
+
+                if stat == "strength":
+                    buffs["attack_boost"] = {"amount": amount, "turns_remaining": duration}
+                    print(colourize(f"\n💪 Your {stat.capitalize()} increases by {amount} for {duration} turns!",
+                                   Colours.BUFF))
+
+                else:
+                    # Store generic stat buff
+                    buffs[buff_key] = {"amount": amount, "turns_remaining": duration, "stat": stat}
+                    print(colourize(f"\n✨ Your {stat.capitalize()} increases by {amount} for {duration} turns!",
+                                   Colours.BUFF))
+
+            # Handle taunt effect (Guardian Stance)
+            elif effect.get("taunt"):
+                buffs["taunt"] = {"active": True, "turns_remaining": duration}
+                print(colourize(f"\n🛡️ You draw the enemy's attention for {duration} turns!", Colours.BUFF))
+
+            # Handle counter stance
+            elif effect.get("counter"):
+                bonus_damage = effect.get("bonus_damage", 0)
+                buffs["counter"] = {"active": True, "turns_remaining": duration, "bonus_damage": bonus_damage}
+                print(colourize(f"\n⚔️ You prepare to counter the next attack for {duration} turns!", Colours.BUFF))
+
+
+            # Handle status immunity (Sun Halo)
+            elif effect.get("status_immunity"):
+                buffs["status_immunity"] = {"active": True, "turns_remaining": duration}
+                print(colourize(f"\n✨ You are immune to status effects for {duration} turns!", Colours.BUFF))
+
+            # Handle barricade (scaling buff)
+
+            elif "scaling" in action:
+                scaling = action.get("scaling", {})
+
+                if scaling:
+                    stat = scaling.get("stat", "constitution")
+                    multiplier = scaling.get("multiplier", 1)
+                    stat_value = character["character"]["base_stats"].get(stat, 10)
+                    reduction = min(0.5, stat_value * multiplier / 100)  # Cap at 50% reduction
+                    buffs["damage_reduction"] = {"amount": reduction, "turns_remaining": duration}
+                    print(colourize(
+                        f"\n🛡️ You brace yourself, reducing damage by {int(reduction * 100)}% for {duration} turns!",
+                        Colours.BUFF))
+
+            else:
+                # Generic buff message
+                print(colourize(f"\n✨ You use {action['name']}!", Colours.BUFF))
 
     elif action_type == "cleanse":
         removes = action.get("removes", [])
-        for status in removes:
-            if status in character["character"].get("status_effects", {}):
-                character["character"]["status_effects"][status]["active"] = False
-                print(f"\033[92m{status.capitalize()} has been cleansed!\033[0m")
+        target = action.get("target", "self")
+
+        if target in ["self", "allies"]:
+            statuses = character["character"].get("status_effects", {})
+            removed_any = False
+
+            for status in removes:
+                if status in statuses and statuses[status].get("active"):
+                    del statuses[status]
+                    removed_any = True
+
+                    print(colourize(f"\n✨ {status.capitalize()} has been cleansed!", Colours.HEAL))
+
+            if not removed_any:
+                print(colourize(f"\n✨ No status effects to cleanse.", Colours.HEAL))
 
     elif action_type == "status_effect":
         effect = action.get("effect", {})
@@ -226,8 +322,39 @@ def perform_action(character: dict, enemy: dict, action_key: str, action: dict, 
         if target in ["enemies", "enemy"] and random.random() < chance:
             # Apply status effect to enemy
             enemy_statuses = enemy.setdefault("status_effects", {})
-            enemy_statuses[effect_type] = {"active": True, "duration": duration}
-            print(f"\033[94m{enemy['name']} is now {effect_type} for {duration} turns!\033[0m")
+
+            if effect_type == "blind":
+                enemy_statuses[effect_type] = {"active": True, "duration": duration}
+                print(colourize(f"\n🌑 The {enemy['name']} is blinded for {duration} turns!", Colours.DEBUFF))
+
+
+            elif effect_type == "slow":
+                enemy_statuses[effect_type] = {"active": True, "duration": duration, "damage_reduction": 0.3}
+                print(colourize(f"\n🐌 The {enemy['name']} is slowed for {duration} turns!", Colours.DEBUFF))
+
+
+            elif effect_type == "weakness":
+                enemy_statuses[effect_type] = {"active": True, "duration": duration, "damage_reduction": 0.2}
+                print(colourize(f"\n💪 The {enemy['name']} is weakened for {duration} turns!", Colours.DEBUFF))
+
+
+            elif effect_type == "corruption":
+                enemy_statuses[effect_type] = {"active": True, "duration": duration, "confusion": True}
+                print(colourize(f"\n🌑 The {enemy['name']} is corrupted for {duration} turns!", Colours.DEBUFF))
+
+
+            elif effect_type == "stun":
+                enemy_statuses[effect_type] = {"active": True, "duration": duration}
+                print(colourize(f"\n💫 The {enemy['name']} is stunned for {duration} turns!", Colours.DEBUFF))
+
+
+            else:
+                # Generic status effect
+                enemy_statuses[effect_type] = {"active": True, "duration": duration}
+                print(colourize(f"\n✨ The {enemy['name']} is affected by {effect_type} for {duration} turns!", Colours.DEBUFF))
+
+    else:
+        print(colourize(f"\n❌ The status effect failed to apply!", Colours.FAIL))
 
     return enemy, cooldowns
 
@@ -312,23 +439,9 @@ def display_inventory(character: dict) -> None:
     return
 
 
-def use_item(character: dict, enemy: dict) -> tuple | None:
+def use_item(character: dict, enemy: dict, items_data: dict) -> tuple | None:
     """
     Allow the player to use a consumable item from their inventory during combat.
-
-    The function filters the character's inventory for consumable items and displays
-    them using `display_inventory`. The player is then prompted to select an item
-    to use or cancel the action. If an item is selected, its effect is applied to
-    the character and/or enemy using `apply_item_effect`, and the item is removed
-    from the inventory.
-
-    :param character: A dictionary containing character data, including inventory
-    :param enemy: A dictionary representing the current enemy in combat
-    :precondition: character contains an "inventory" list under "character"
-                   consumable items contain valid data for `apply_item_effect`
-    :postcondition: select item if it's valid, remove it from inventory and
-                    apply its effect; otherwise, no changes occur
-    :returns: A tuple (character, enemy) after item usage or cancellation
     """
     inventory = character["character"]["inventory"]
     consumables = [item for item in inventory if item["type"] == "consumable"]
@@ -351,7 +464,7 @@ def use_item(character: dict, enemy: dict) -> tuple | None:
                 return character, enemy
             elif 1 <= choice <= len(consumables):
                 item = consumables[choice - 1]
-                character, enemy = apply_item_effect(character, item, enemy)
+                character, enemy = apply_item_effect(character, item, enemy, items_data)
                 inventory.remove(item)
 
                 return character, enemy
@@ -359,45 +472,29 @@ def use_item(character: dict, enemy: dict) -> tuple | None:
                 print("Please enter a number corresponding to one of the options.")
 
 
-def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
+def apply_item_effect(character: dict, item: dict, enemy: dict, items_data: dict) -> tuple:
     """
-   Apply the effects of a consumable item to the character and/or enemy.
-
-   The function processes different possible item effects, including healing,
-   direct damage, XP gain, and temporary attack buffs. Effects are applied
-   based on the item dictionary structure and may modify both the character
-   and enemy state.
-
-   Supported effects:
-   - "heal": Restores health up to the character's maximum health
-   - "damage": Deals damage to an enemy or the character depending on target
-   - "xp": Adds experience points to the character's pending XP
-   - "attack_boost": Applies a temporary attack buff for a set duration
-
-   :param character: A dictionary containing character data, including stats,
-                     current health/mana, and optional temporary effects
-   :param item: A dictionary representing the item being used, containing an
-                "effect" dictionary and a "name"
-   :param enemy: A dictionary representing the current enemy (may be None for
-                 self-targeting effects)
-   :precondition: item must contain a valid "effect" dictionary with supported keys
-   :precondition: character must contain "base_stats", "derived_stats", and "current"
-   :postcondition: character and/or enemy are modified based on item effects
-   :returns: A tuple containing the updated (character, enemy)
-   """
+    Apply the effects of a consumable item to the character and/or enemy.
+    """
     effect = item["effect"]
     name = item["name"]
 
-    constitution = character["character"]["base_stats"]["constitution"]
-    max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+    # Get max health properly
+    effective_stats = get_effective_stats(character, items_data)
+
+    max_health = effective_stats["constitution"] * character["character"]["derived_stats"]["max_health"]["multiplier"]
+    max_mana = effective_stats["intellect"] * character["character"]["derived_stats"]["max_mana"]["multiplier"]
 
     if "heal" in effect:
         current_health = character["character"]["current"]["health"]
-        healed = current_health + min(effect["heal"], max_health)
-        character["character"]["current"]["health"] += healed
+        heal_amount = effect["heal"]
 
-        print(f"You use {name} and gain {healed} HP!")
-        print(f"Current HP: {current_health}")
+        # Calculate actual healing (can't exceed max health)
+        actual_heal = min(heal_amount, max_health - current_health)
+        character["character"]["current"]["health"] += actual_heal
+
+        print(colourize(f"\n💚 You use {name} and gain {actual_heal} HP!", Colours.HEAL))
+        print(f"❤️ HP: {current_health} → {character['character']['current']['health']}/{max_health}")
 
     if "damage" in effect:
         target = effect.get("target", "enemy")
@@ -407,28 +504,36 @@ def apply_item_effect(character: dict, item: dict, enemy: dict) -> tuple:
         if target == "enemy" and enemy is not None:
             enemy["health"] -= damage
             if duration > 0:
-                print(f"You use {name}! The {enemy['name']} takes {damage} damage per turn for {duration} turns.\n"
-                      f"{enemy['name']} has {enemy['health']} HP remaining.")
+                print(colourize(
+                    f"\n💥 You use {name}! The {enemy['name']} takes {damage} damage per turn for {duration} turns.",
+                    Colours.FAIL))
+                # Add damage over time effect to enemy
+                enemy.setdefault("status_effects", {})
+                enemy["status_effects"]["burn"] = {
+                    "active": True,
+                    "duration": duration,
+                    "damage_per_turn": damage
+                }
+                print(f"{enemy['name']} has {enemy['health']} HP remaining.")
             else:
-                print(f"You use {name}! The {enemy['name']} takes {damage} damage.\n"
-                      f"{enemy['name']} has {enemy['health']} HP remaining.")
+                print(colourize(f"\n💥 You use {name}! The {enemy['name']} takes {damage} damage.", Colours.FAIL))
+                print(f"{enemy['name']} has {enemy['health']} HP remaining.")
         elif target == "self":
             character["character"]["current"]["health"] -= damage
-            print(f"You use {name}! You take {damage} damage.\n"
-                  f"You have {character['character']['current']['health']} HP remaining.")
+            print(colourize(f"\n💀 You use {name}! You take {damage} damage.", Colours.FAIL))
+            print(f"❤️ HP: {character['character']['current']['health']}/{max_health}")
 
     if "xp" in effect:
         character["character"]["pending_xp"] = character["character"].get("pending_xp", 0) + effect["xp"]
-
-        print(f"You use {name} and gain {effect['xp']} xp!")
+        print(colourize(f"\n📚 You use {name} and gain {effect['xp']} XP!", Colours.XP))
 
     if "attack_boost" in effect:
         duration = effect.get("duration", 1)
         boost = effect["attack_boost"]
         buffs = character["character"].setdefault("temp_buffs", {})
         buffs["attack_boost"] = {"amount": boost, "turns_remaining": duration}
-
-        print(f"You use {name}! Your attack power increases by {boost} for {duration} turns.")
+        print(
+            colourize(f"\n⚔️ You use {name}! Your attack power increases by {boost} for {duration} turns.", Colours.BUFF))
 
     return character, enemy
 
@@ -466,20 +571,75 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
         for status, data in list(enemy["status_effects"].items()):
             if data.get("active"):
                 if status == "stun":
-                    print(f"\033[94mThe {enemy['name']} is stunned and cannot act!\033[0m")
-                    # Update duration and return without attacking
+                    print(colourize(f"\n💫 The {enemy['name']} is stunned and cannot act!", Colours.DEBUFF))
                     data["duration"] = data.get("duration", 1) - 1
                     if data["duration"] <= 0:
                         del enemy["status_effects"][status]
                     return character
+
                 elif status == "blind":
                     # 50% chance to miss when blinded
                     if random.random() < 0.5:
-                        print(f"\033[94mThe {enemy['name']} is blinded and misses!\033[0m")
+                        print(colourize(f"\n🌑 The {enemy['name']} is blinded and misses!", Colours.DEBUFF))
                         data["duration"] = data.get("duration", 1) - 1
                         if data["duration"] <= 0:
                             del enemy["status_effects"][status]
                         return character
+
+                elif status == "slow":
+                    print(colourize(f"\n🐌 The {enemy['name']} is slowed and attacks weakly!", Colours.DEBUFF))
+                    # Slowed enemies deal less damage (handled in attack calculation)
+
+                elif status == "weakness":
+                    print(colourize(f"\n💪 The {enemy['name']} is weakened!", Colours.DEBUFF))
+
+                elif status == "poison":
+                    poison_damage = data.get("damage_per_turn", 5)
+                    character["character"]["current"]["health"] -= poison_damage
+                    print(colourize(f"\n☠️ Poison deals {poison_damage} damage to {enemy['name']}!", Colours.DEBUFF))
+                    data["duration"] = data.get("duration", 1) - 1
+                    if data["duration"] <= 0:
+                        del enemy["status_effects"][status]
+                    # Don't return - enemy still attacks this turn
+
+                elif status == "burn":
+                    burn_damage = data.get("damage_per_turn", 5)
+                    character["character"]["current"]["health"] -= burn_damage
+                    print(colourize(f"\n🔥 Burn deals {burn_damage} damage to {enemy['name']}!", Colours.DEBUFF))
+                    data["duration"] = data.get("duration", 1) - 1
+                    if data["duration"] <= 0:
+                        del enemy["status_effects"][status]
+
+                # Update duration for other status effects
+                elif "duration" in data:
+                    data["duration"] -= 1
+                    if data["duration"] <= 0:
+                        del enemy["status_effects"][status]
+
+    # Calculate damage with any active debuffs on enemy
+    chosen_attack = random.choice(enemy["attacks"])
+    damage = chosen_attack["damage"]
+    description = chosen_attack["description"]
+
+    # Apply enemy debuffs to damage
+    if "status_effects" in enemy:
+        if "weakness" in enemy["status_effects"]:
+            damage = int(damage * 0.8)
+        if "slow" in enemy["status_effects"]:
+            damage = int(damage * 0.7)
+
+    character["character"]["current"]["health"] -= damage
+    print(colourize(f"\n{description}", Colours.FAIL))
+    print(colourize(f"💥 You take {damage} damage!", Colours.FAIL))
+
+    # Get max health for display
+    constitution = character["character"]["base_stats"]["constitution"]
+    for trait_bonus in character["character"].get("trait_bonuses", {}).values():
+        if "constitution" in trait_bonus:
+            constitution += trait_bonus["constitution"]
+
+
+    return character
 
     # Normal enemy attack
     chosen_attack = random.choice(enemy["attacks"])
@@ -541,6 +701,13 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
     print(f"A {enemy['name']} appears!")
 
     while enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
+        character = apply_status_effects(character)
+
+        if character["character"]["current"]["health"] <= 0:
+            print(colourize(f"\n{character['character']['name']} has been defeated by lingering effects!", Colours.FAIL))
+            sound.stop()
+            return False
+
         if not sound.is_alive():
             sound = playsound(next(playlist), block=False)
 
@@ -550,7 +717,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
 
         if choice_type == "action":
             action = get_available_actions(character, class_data, cooldowns)[action_key]
-            enemy, cooldowns = perform_action(character, enemy, action_key, action, cooldowns)
+            enemy, cooldowns = perform_action(character, enemy, action_key, action, cooldowns, items_data)
 
             if enemy["health"] <= 0:
                 print(f"You defeated the {enemy['name']}!")
@@ -561,7 +728,7 @@ def combat(character: dict, events_by_id: dict, atlas: dict, class_data: dict, i
             enemy_turn = True
 
         elif choice_type == "items":
-            character, enemy = use_item(character, enemy)
+            character, enemy = use_item(character, enemy, items_data)
             if enemy is not None and enemy["health"] <= 0:
                 print(f"\nYou defeated the {enemy['name']}!")
                 xp = xp_rewards.get(enemy["name"], 10)
@@ -617,16 +784,24 @@ def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data:
 
     if "original_player_name" in boss_enemy:
         original_name = boss_enemy["original_player_name"]
+        original_class = boss_enemy.get("original_class", "Unknown")
+        original_level = boss_enemy.get("original_level", 1)
+
         print(colourize(f"\n{'=' * 60}", Colours.TITLE))
         print(colourize(f"⚠️  THE CORRUPTED SHADOW OF {original_name.upper()}  ⚠️", Colours.FAIL))
         print(colourize(f"{'=' * 60}", Colours.TITLE))
         print(f"\nA dark, twisted version of {original_name} stands before you.")
-        print(f"Corrupted by the dungeon's power, they have become the ultimate guardian.")
-        print(f"To escape, you must put their soul to rest...")
+        print(f"Once a level {original_level} {original_class}, they have been corrupted by the dungeon's power.")
+        print(f"Their techniques have been twisted into dark reflections of their former glory.")
+        print(colourize(f"\n\"I remember you... but I cannot stop...\"", Colours.DEBUFF))
+        print(f"\nTo escape, you must put their soul to rest...")
     else:
         print(colourize(f"\n{'=' * 50}", Colours.TITLE))
         print(colourize(f"BOSS ENCOUNTER: {boss_enemy['name']}", Colours.FAIL))
         print(colourize(f"{'=' * 50}", Colours.TITLE))
+
+        # Add a dramatic pause
+    time.sleep(2)
 
     while boss_enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
         if not sound.is_alive():
@@ -637,7 +812,7 @@ def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data:
 
         if choice_type == "action":
             action = get_available_actions(character, class_data, cooldowns)[action_key]
-            boss_enemy, cooldowns = perform_action(character, boss_enemy, action_key, action, cooldowns)
+            boss_enemy, cooldowns = perform_action(character, boss_enemy, action_key, action, cooldowns, items_data)
 
             if boss_enemy["health"] <= 0:
                 print(f"You defeated the {boss_enemy['name']}!")
@@ -645,7 +820,7 @@ def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data:
             enemy_turn = True
 
         elif choice_type == "items":
-            character, boss_enemy = use_item(character, boss_enemy)
+            character, boss_enemy = use_item(character, boss_enemy, items_data)
             if boss_enemy is not None and boss_enemy["health"] <= 0:
                 print(f"You defeated the {boss_enemy['name']}!")
                 return True
