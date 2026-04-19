@@ -615,7 +615,18 @@ def boss_combat(character: dict, boss_enemy: dict, class_data: dict, items_data:
 
     cooldowns = {}
 
-    print(f"The {boss_enemy['name']} appears! This is the final challenge!")
+    if "original_player_name" in boss_enemy:
+        original_name = boss_enemy["original_player_name"]
+        print(colourize(f"\n{'=' * 60}", Colours.TITLE))
+        print(colourize(f"⚠️  THE CORRUPTED SHADOW OF {original_name.upper()}  ⚠️", Colours.FAIL))
+        print(colourize(f"{'=' * 60}", Colours.TITLE))
+        print(f"\nA dark, twisted version of {original_name} stands before you.")
+        print(f"Corrupted by the dungeon's power, they have become the ultimate guardian.")
+        print(f"To escape, you must put their soul to rest...")
+    else:
+        print(colourize(f"\n{'=' * 50}", Colours.TITLE))
+        print(colourize(f"BOSS ENCOUNTER: {boss_enemy['name']}", Colours.FAIL))
+        print(colourize(f"{'=' * 50}", Colours.TITLE))
 
     while boss_enemy["health"] > 0 and character["character"]["current"]["health"] > 0:
         if not sound.is_alive():
