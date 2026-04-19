@@ -639,9 +639,6 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
             constitution += trait_bonus["constitution"]
 
 
-    return character
-
-    # Normal enemy attack
     chosen_attack = random.choice(enemy["attacks"])
     damage = chosen_attack["damage"]
     description = chosen_attack["description"]
