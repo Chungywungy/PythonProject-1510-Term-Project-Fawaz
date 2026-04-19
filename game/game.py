@@ -5,6 +5,7 @@ from playsound3 import playsound
 
 from game import character, file_tampering, map, combat, progression
 from game.colours import Colours, colourize
+from game.boss_manager import save_character_as_boss, load_previous_boss, has_previous_boss
 
 
 def god_mode(character_data: dict) -> dict:
@@ -71,7 +72,15 @@ def game() -> None:
     items_data = file_tampering.open_json("json_files/items.json")
 
     boss_id = 12
-    if boss_id not in events_by_id:
+
+    saved_boss = load_previous_boss()
+
+    if saved_boss:
+        events_by_id[boss_id] = saved_boss
+        print(colourize(f"\n⚠️ A dark presence lingers in the depths...", Colours.WARNING))
+        print(colourize(f"   The shadow of {saved_boss['enemy']['original_player_name']} awaits!", Colours.SPECIAL))
+        time.sleep(2)
+    else:
         events_by_id[boss_id] = {
             "id": 12,
             "type": "boss",
@@ -156,8 +165,10 @@ def game() -> None:
                 combat_result = combat.boss_combat(character_data, temp_enemy, class_data, items_data)
 
                 if combat_result:
-                    print(f"\nCongratulations! You defeated the {boss_enemy['name']}!")
+                    print(f"\n{Colours.GREEN}Congratulations! You defeated the {boss_enemy['name']}!{Colours.ENDC}")
                     print("You have conquered this dungeon!")
+
+                    save_character_as_boss(character_data)
 
                     atlas[character_z]["position"][(character_y, character_x)] = None
 
