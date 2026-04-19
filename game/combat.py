@@ -158,31 +158,17 @@ def perform_action(character: dict, enemy: dict, action_key: str, action: dict, 
     """
     Execute a combat action performed by the character against an enemy.
 
-    The function applies the effects of the selected action, including mana cost,
-    cooldown assignment, and damage calculation for attack-type actions. It also
-    prints a combat description and updates both the enemy's health and cooldown state.
-
-    If the action type is not implemented, a placeholder message is displayed.
-
-    :param character: A dictionary containing character stats and current resources
-    :param enemy: A dictionary representing the enemy, including health and name
-    :param action_key: The identifier of the action being performed
-    :param action: A dictionary containing action metadata (type, cost, scaling, etc.)
-    :param cooldowns: A dictionary tracking cooldown values for actions
-    :precondition: character contains valid "current" mana values
-                  enemy contains "health" and "name"
-                  action contains valid "type" and optional combat fields
-    :postcondition: enemy health may be reduced, character mana is reduced,
-                   cooldowns may be updated, and messages are printed
-    :returns: A tuple (enemy, cooldowns) after the action is applied
+    Supports: attack, heal, buff, cleanse, status_effect types.
     """
     action_type = action["type"]
     fight_description = action.get("fight_description", f"You use {action['name']}.")
     mana_cost = action.get("mana_cost", 0)
     cooldown = action.get("cooldown", 0)
 
+    # Apply mana cost
     character["character"]["current"]["mana"] -= mana_cost
 
+    # Set cooldown if applicable
     if cooldown > 0:
         cooldowns[action_key] = cooldown
 
@@ -191,9 +177,60 @@ def perform_action(character: dict, enemy: dict, action_key: str, action: dict, 
     if action_type == "attack":
         damage = calculate_damage(character, action)
         enemy["health"] -= damage
-        print(f"You deal {damage} damage! The {enemy['name']} has {enemy['health']} HP remaining")
-    else:
-        print(f"Effect not implemented yet for type: {action_type}")
+        print(f"\033[91mYou deal {damage} damage!\033[0m The {enemy['name']} has {enemy['health']} HP remaining")
+
+    elif action_type == "heal":
+        amount = action.get("amount", 0)
+        target = action.get("target", "self")
+
+        # Calculate max health
+        constitution = character["character"]["base_stats"]["constitution"]
+        max_health = constitution * character["character"]["derived_stats"]["max_health"]["multiplier"]
+
+        if target in ["self", "allies"]:
+            old_hp = character["character"]["current"]["health"]
+            character["character"]["current"]["health"] = min(old_hp + amount, max_health)
+            healed = character["character"]["current"]["health"] - old_hp
+            print(f"\033[92mYou heal for {healed} HP!\033[0m Now at {character['character']['current']['health']} HP")
+
+    elif action_type == "buff":
+        effect = action.get("effect", {})
+        stat = effect.get("stat")
+        amount = effect.get("amount", 0)
+        duration = effect.get("duration", 1)
+        target = effect.get("target", "self")
+
+        if target in ["self", "allies"]:
+            buffs = character["character"].setdefault("temp_buffs", {})
+            buff_key = f"{stat}_boost"
+            buffs[buff_key] = {"amount": amount, "turns_remaining": duration}
+            print(f"\033[93mYour {stat} increases by {amount} for {duration} turns!\033[0m")
+
+            # Handle special buff effects
+            if effect.get("taunt"):
+                print("\033[93mYou draw the enemy's attention!\033[0m")
+            if effect.get("damage_reduction"):
+                print(f"\033[93mDamage reduced by {effect['damage_reduction'] * 100}%!\033[0m")
+
+    elif action_type == "cleanse":
+        removes = action.get("removes", [])
+        for status in removes:
+            if status in character["character"].get("status_effects", {}):
+                character["character"]["status_effects"][status]["active"] = False
+                print(f"\033[92m{status.capitalize()} has been cleansed!\033[0m")
+
+    elif action_type == "status_effect":
+        effect = action.get("effect", {})
+        effect_type = effect.get("type")
+        chance = effect.get("chance", 1.0)
+        duration = effect.get("duration", 1)
+        target = effect.get("target", "enemies")
+
+        if target in ["enemies", "enemy"] and random.random() < chance:
+            # Apply status effect to enemy
+            enemy_statuses = enemy.setdefault("status_effects", {})
+            enemy_statuses[effect_type] = {"active": True, "duration": duration}
+            print(f"\033[94m{enemy['name']} is now {effect_type} for {duration} turns!\033[0m")
 
     return enemy, cooldowns
 
