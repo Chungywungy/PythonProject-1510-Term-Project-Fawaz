@@ -632,21 +632,7 @@ def enemy_behaviour(character: dict, enemy: dict) -> dict:
     print(colourize(f"\n{description}", Colours.FAIL))
     print(colourize(f"💥 You take {damage} damage!", Colours.FAIL))
 
-    # Get max health for display
-    constitution = character["character"]["base_stats"]["constitution"]
-    for trait_bonus in character["character"].get("trait_bonuses", {}).values():
-        if "constitution" in trait_bonus:
-            constitution += trait_bonus["constitution"]
 
-
-    chosen_attack = random.choice(enemy["attacks"])
-    damage = chosen_attack["damage"]
-    description = chosen_attack["description"]
-
-    character["character"]["current"]["health"] -= damage
-    print(f"\n{description}")
-    print(f"\033[91mYou take {damage} damage!\033[0m")
-    print(f"You have {character['character']['current']['health']} HP remaining.")
     return character
 
 
